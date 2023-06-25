@@ -7,7 +7,7 @@ export default function Logo() {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('InBoarding');
+      navigation.navigate('In boarding one');
     }, 2500);
 
     return () => {
@@ -30,9 +30,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#fff'
   },
   logo: {
-    width: 200,
+    width: 250,
     height: 200,
     alignSelf: 'center',
   },
