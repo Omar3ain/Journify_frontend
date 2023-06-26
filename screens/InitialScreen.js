@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Text, Image } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import Logo from '../components/Logo';
+import { StyleSheet, View } from 'react-native';
 
-export default function Logo() {
-  const navigation = useNavigation();
-
+export default function InitialScreen({ navigation }) {
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate('In boarding one');
@@ -17,12 +16,9 @@ export default function Logo() {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('../assets/logo-no-background.png')}
-        style={styles.logo}
-      />
+      <Logo width={300} height={250} />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -31,12 +27,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    padding:20
-  },
-  logo: {
-    width: 250,
-    height: 250,
-    alignSelf: 'center',
-    resizeMode: 'contain', 
   },
 });

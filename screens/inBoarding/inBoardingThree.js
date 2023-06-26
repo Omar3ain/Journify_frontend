@@ -1,4 +1,3 @@
-// import React, { useEffect } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { Button } from '@react-native-material/core';
 
@@ -19,7 +18,7 @@ export default function InBoardingThree({ navigation }) {
         titleStyle={{
           color: '#fff', 
         }}
-        onPress={() => navigation.navigate('Logo')}
+        onPress={() => navigation.navigate('Auth')}
       />
     </View>
   );
