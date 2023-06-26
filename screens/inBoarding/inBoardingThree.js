@@ -2,16 +2,16 @@
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { Button } from '@react-native-material/core';
 
-export default function InBoardingOne({ navigation }) {
+export default function InBoardingThree({ navigation }) {
 
   return (
     <View style={styles.container}>
       <Image
-        source={require('../../assets/4056364.png')}
+        source={require('../../assets/4012176.png')}
         style={styles.imageStyle}
       />
-      <Text style={styles.heading}>Plan a Trip</Text>
-      <Text style={styles.text}>Plan a trip to your favorite location. Do a bit of online research to choose from the various beautiful locations.</Text>
+      <Text style={styles.heading}>Enjoy your trip with us</Text>
+      <Text style={styles.text}>Hope you a safe and smooth trip. Enjoy an amazing vacation thats fulfills your mind and soul.</Text>
       <Button
         style={styles.buttonStyle}
         title="Next"
@@ -19,7 +19,7 @@ export default function InBoardingOne({ navigation }) {
         titleStyle={{
           color: '#fff', 
         }}
-        onPress={() => navigation.navigate('In boarding two')}
+        onPress={() => navigation.navigate('Logo')}
       />
     </View>
   );
