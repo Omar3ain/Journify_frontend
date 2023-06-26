@@ -1,19 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
-import { Button } from '@react-native-material/core';
+import { login } from '../../services/reducers/auth/authSlice';
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (username === 'admin' && password === 'password') {
-      navigation.navigate('Home');
-    } else {
-      alert('Invalid username or password');
+  const dispatch = useDispatch();
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      setTimeout(() => {
+        navigation.navigate("In boarding one");
+      }, 1000);
     }
+    if (user && !isSuccess) {
+      navigation.navigate("InitialScreen");
+    }
+  }, [dispatch, user, isSuccess, isError]);
+
+  const handleLogin = () => {
+    dispatch(login({username,password}));
   };
+
 
   return (
     <View style={styles.container}>
@@ -46,16 +60,9 @@ export default function Login({ navigation }) {
           />
         </View>
       </View>
-        <Button
-          style={styles.button}
-          title="Log in"
-          color='#2cb8e5'
-          titleStyle={{
-            color: '#fff', 
-            textTransform: 'capitalize',
-          }}
-          onPress={handleLogin}
-        />
+        <TouchableOpacity style={styles.button} onPress={handleLogin}>
+          <Text style={styles.createAccountButtonText}>Log in</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
@@ -116,8 +123,10 @@ container: {
   },
   button: {
     width: '100%',
-    paddingTop: 5,
-    paddingBottom: 5,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor:'#2cb8e5',
+    borderRadius: 5
   },
   dividerContainer: {
     flexDirection: 'row',
