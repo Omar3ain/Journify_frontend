@@ -69,7 +69,7 @@ export default function Login({ navigation }) {
         <Text style={styles.dividerText}>OR</Text>
         <View style={styles.divider} />
       </View>
-      <TouchableOpacity style={styles.createAccountButton}>
+      <TouchableOpacity style={styles.createAccountButton} onPress={() => navigation.navigate('Register')}>
         <Text style={styles.createAccountButtonText}>Create New Account</Text>
       </TouchableOpacity>
     </View>
