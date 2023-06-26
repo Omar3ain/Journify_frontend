@@ -31,10 +31,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff'
+    padding:20
   },
   logo: {
     width: 250,
-    height: 200,
+    height: 250,
     alignSelf: 'center',
+    resizeMode: 'contain', 
   },
 });
