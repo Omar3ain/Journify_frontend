@@ -14,12 +14,12 @@ export default function Main() {
   return (
     <NavigationContainer>
       <Stack.Navigator >
-        <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
         <Stack.Screen name="InitialScreen" component={InitialScreen} options={{ headerShown: false }} />
         <Stack.Screen name="In boarding one" component={InBoardingOne} options={{ headerShown: false }} />
         <Stack.Screen name="In boarding two" component={InBoardingTwo} options={{ headerShown: false }} />
         <Stack.Screen name="In boarding three" component={InBoardingThree} options={{ headerShown: false }} />
         
+        <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
         {/* Expert Advice Screens */}
         <Stack.Screen name="ExpertMain" component={ExpertMain} options={{ headerShown: false, title: 'Expert Advisor' }} />
       </Stack.Navigator>
