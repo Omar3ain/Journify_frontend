@@ -39,7 +39,7 @@ const ExpertMain = () => {
                 <Text style={styles.iconText}>Journy Plans</Text>
             </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Logo')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Recommendations')}>
             <View style={[styles.icon, { marginLeft: 35 }]}>
             <Image source={require('../../../assets/Expert_Advice/places.png')} style={styles.iconImage} />
             <Text style={styles.iconText}>Place Suggestions</Text>
@@ -47,7 +47,7 @@ const ExpertMain = () => {
         </TouchableOpacity>
       </View>
       <Animated.View style={[styles.animated, { transform: [{ translateX: planeAnimation }] }]}>
-            <Icon name="plane" size={30} color="#008EC4" />
+            <Icon name="plane" size={30} color="#2cb8e5" />
     </Animated.View>
     </View>
   );
