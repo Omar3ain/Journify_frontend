@@ -12,7 +12,7 @@ const Recommendations = () => {
       <TouchableOpacity style={[styles.button, styles.firstButton]}  onPress={() => navigation.navigate('MadeForYou')}>
         <Text style={styles.buttonText}>Made for you</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={[styles.button, styles.secondButton]}  onPress={() => console.log('Button 2 pressed')}>
+      <TouchableOpacity style={[styles.button, styles.secondButton]}  onPress={() => navigation.navigate('Custom')}>
         <Text style={[styles.buttonText, styles.secondButtonText]}>Custom</Text>
       </TouchableOpacity>
     </View>
