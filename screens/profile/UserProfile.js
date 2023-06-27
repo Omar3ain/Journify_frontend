@@ -36,7 +36,7 @@ export default function UserProfile({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('UpdateUserData')}
+        onPress={() => navigation.navigate('UserUpdate')}
       >
         <View style={styles.right}>
           <View style={styles.beforeTitle}>
@@ -46,6 +46,19 @@ export default function UserProfile({ navigation }) {
         </View>
         <Icon name="chevron-right" size={28} color="grey"/>
       </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('UserUpdate')}
+      >
+        <View style={styles.right}>
+          <View style={styles.beforeTitle}>
+            <Icon name="account-key-outline" size={28} color="#28aad2"/>
+          </View>
+          <Text style={styles.buttonText}>Change Password</Text>
+        </View>
+        <Icon name="chevron-right" size={28} color="grey"/>
+      </TouchableOpacity>
+      
       
       <TouchableOpacity
         style={styles.button}

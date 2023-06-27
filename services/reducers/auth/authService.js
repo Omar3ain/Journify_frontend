@@ -50,7 +50,7 @@ const updateUserInfo = async (userData, token, id) => {
     },
   };
   const response = await axios.patch(
-    URL + `profile / ${ id } /`,
+    URL + `update/${ id }/`,
     userData,
     config
   );
