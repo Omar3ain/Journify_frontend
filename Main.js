@@ -14,7 +14,6 @@ export default function Main() {
         <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
         <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
         <Stack.Screen name="ExpertAdvice" component={ExpertAdvice} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>

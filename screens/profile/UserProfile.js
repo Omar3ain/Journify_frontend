@@ -24,7 +24,7 @@ export default function UserProfile({ navigation }) {
       <Text style={styles.name}>{user?.user.first_name} {user?.user.last_name}</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('UserData')}
+        onPress={() => navigation.navigate('User Data')}
       >
         <View style={styles.right}>
           <View style={styles.beforeTitle}>
@@ -36,7 +36,7 @@ export default function UserProfile({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('UserUpdate')}
+        onPress={() => navigation.navigate('User Update')}
       >
         <View style={styles.right}>
           <View style={styles.beforeTitle}>
@@ -48,7 +48,7 @@ export default function UserProfile({ navigation }) {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('UserUpdate')}
+        onPress={() => navigation.navigate('Password Update')}
       >
         <View style={styles.right}>
           <View style={styles.beforeTitle}>

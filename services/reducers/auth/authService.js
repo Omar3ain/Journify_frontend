@@ -61,11 +61,27 @@ const updateUserInfo = async (userData, token, id) => {
   return response.data;
 };
 
+const updatePassword = async (userData, token, id) => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `token ${ token }`
+    },
+  };
+  const response = await axios.post(
+    URL + `${ id }/change-password/`,
+    userData,
+    config
+  );
+  return response.data;
+};
+
 const authService = {
   login,
   register,
   logout,
   updateUserInfo,
+  updatePassword
 };
 
 export default authService;
