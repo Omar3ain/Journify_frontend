@@ -14,9 +14,9 @@ export default function Login({ navigation }) {
   );
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess && user) {
       setTimeout(() => {
-        navigation.navigate("In boarding one");
+        navigation.navigate("Profile");
       }, 1000);
     }
     if (user && !isSuccess) {
