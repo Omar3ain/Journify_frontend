@@ -35,13 +35,13 @@ const ExpertMain = () => {
         <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('Logo')}>
             <View style={styles.icon}>
-                <Image source={require('../../../assets/Expert_Advice/pngwing.com.png')} style={styles.iconImage} />
+                <Image source={require('../../../assets/Expert_Advice/3959402.jpg')} style={styles.iconImage} />
                 <Text style={styles.iconText}>Journy Plans</Text>
             </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Recommendations')}>
             <View style={[styles.icon, { marginLeft: 35 }]}>
-            <Image source={require('../../../assets/Expert_Advice/places.png')} style={styles.iconImage} />
+            <Image source={require('../../../assets/Expert_Advice/3457522.jpg')} style={styles.iconImage} />
             <Text style={styles.iconText}>Place Suggestions</Text>
             </View>
         </TouchableOpacity>
