@@ -4,11 +4,12 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
 import {styles} from './Style'
 const Recommendations = () => {
+    const navigation = useNavigation();
   return (
     <View style={styles.container}>
     <Text style={styles.text}>Discover the top-rated nearby locations that come highly recommended and are in close proximity to your hotel</Text>
     <View style={styles.buttonContainer}>
-      <TouchableOpacity style={[styles.button, styles.firstButton]}  onPress={() => console.log('Button 1 pressed')}>
+      <TouchableOpacity style={[styles.button, styles.firstButton]}  onPress={() => navigation.navigate('MadeForYou')}>
         <Text style={styles.buttonText}>Made for you</Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.button, styles.secondButton]}  onPress={() => console.log('Button 2 pressed')}>
