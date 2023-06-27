@@ -12,7 +12,7 @@ const MadeForYou = ({ places, count, status, error, fetchAllRecs }) => {
   }, [fetchAllRecs]);
 
   if (status === 'loading') {
-    return <Text>Loading...</Text>;
+    return <Loader/>;
   }
 
   if (status === 'failed') {
