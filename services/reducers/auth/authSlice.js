@@ -94,9 +94,9 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.user = action.payload;
                 Toast.show({
-                  type: 'success',
-                  text1: 'Login Status',
-                  text2: 'Logged in successfully'
+                    type: 'success',
+                    text1: 'Login Status',
+                    text2: 'Logged in successfully'
                 });
             })
             .addCase(login.rejected, (state, action) => {
@@ -106,9 +106,9 @@ const authSlice = createSlice({
                 state.message = action.payload;
                 state.user = null;
                 Toast.show({
-                  type: 'error',
-                  text1: 'Login Status',
-                  text2: state.message
+                    type: 'error',
+                    text1: 'Login Status',
+                    text2: state.message
                 });
             })
             .addCase(register.pending, (state) => {
@@ -120,9 +120,9 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.isRegisterSuccess = true;
                 Toast.show({
-                  type: 'success',
-                  text1: 'Registration Status',
-                  text2: 'Registered successfully'
+                    type: 'success',
+                    text1: 'Registration Status',
+                    text2: 'Registered successfully'
                 });
             })
             .addCase(register.rejected, (state, action) => {
@@ -131,10 +131,16 @@ const authSlice = createSlice({
                 state.message = action.payload;
                 state.isRegisterSuccess = false;
                 Toast.show({
-                  type: 'error',
-                  text1: 'Registration Status',
-                  text2: state.message
+                    type: 'error',
+                    text1: 'Registration Status',
+                    text2: state.message
                 });
+            })
+            .addCase(logout.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.message = action.payload;
+                state.user = null;
             })
             .addCase(updateUserInfo.pending, (state) => {
                 state.isLoading = true;
@@ -145,9 +151,9 @@ const authSlice = createSlice({
                 state.isError = false;
                 state.user = { ...state.user, ...action.payload };
                 Toast.show({
-                  type: 'success',
-                  text1: 'Update Status',
-                  text2: 'Updated successfully'
+                    type: 'success',
+                    text1: 'Update Status',
+                    text2: 'Updated successfully'
                 });
             })
             .addCase(updateUserInfo.rejected, (state, action) => {
@@ -155,9 +161,9 @@ const authSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload;
                 Toast.show({
-                  type: 'error',
-                  text1: 'Update Status',
-                  text2: state.message
+                    type: 'error',
+                    text1: 'Update Status',
+                    text2: state.message
                 });
             });
     },
