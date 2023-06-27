@@ -47,8 +47,8 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
   return (
     <View style={styles.container}>
       <View style={styles.textFieldsContainer}>
-        <TextInput onChangeText={handleNumberChange} keyboardType="numeric" style={styles.textField} value={radius} placeholder="Radius" placeholderTextColor="#666"/>
-        <TextInput style={styles.textField} value={name} onChangeText={setName} placeholder="Place Name" placeholderTextColor="#666" />
+        <TextInput maxLength={4} onChangeText={handleNumberChange} keyboardType="numeric" style={styles.textField} value={radius} placeholder="Radius" placeholderTextColor="#666"/>
+        <TextInput maxLength={255} style={styles.textField} value={name} onChangeText={setName} placeholder="Place Name" placeholderTextColor="#666" />
       </View>
       <View style={styles.textFieldsContainer}>
           <Picker
