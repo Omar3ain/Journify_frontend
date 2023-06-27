@@ -41,7 +41,7 @@ export default function UserData({ navigation }) {
 
         <View style={styles.fieldData}>
           <Text style={styles.userDataText}>Zipcode:</Text>
-          <Text style={styles.userDataValue}>{user.zipcode}</Text>
+          <Text style={styles.userDataValue}>{user.zip_code}</Text>
         </View>
 
         <View style={styles.fieldData}>

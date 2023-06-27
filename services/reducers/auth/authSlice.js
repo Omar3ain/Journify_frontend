@@ -51,7 +51,7 @@ export const logout = createAsyncThunk("/logout", async () => {
 export const updateUserInfo = createAsyncThunk("/updateUserInfo", async (user, thunkAPI) => {
     try {
         const token = thunkAPI.getState().auth.user.token;
-        const id = thunkAPI.getState().auth.user.id;
+        const id = thunkAPI.getState().auth.user.user.id;
         return await authService.updateUserInfo(user, token, id);
     } catch (error) {
         let message = "";
@@ -149,7 +149,7 @@ const authSlice = createSlice({
                 state.isLoading = false;
                 state.isSuccess = true;
                 state.isError = false;
-                state.user = { ...state.user, ...action.payload };
+                state.user = { token: state.user.token, user: {...action.payload} };
                 Toast.show({
                     type: 'success',
                     text1: 'Update Status',
