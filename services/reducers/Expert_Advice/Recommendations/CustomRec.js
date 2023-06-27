@@ -1,9 +1,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchAllRecs = createAsyncThunk('customRec/fetchAllRecs', async ({radius,kinds,name}) => {
   try {
-    const response = await axios.get(`http://localhost:8000/recommendation/data/?radius=${radius}&kinds=${kinds}&name=${name}`);
+    const user = await AsyncStorage.getItem('user');
+    const userId = JSON.parse(user);
+    const response = await axios.get(`http://localhost:8000/recommendation/data/?radius=${radius}&kinds=${kinds}&name=${name}`, {
+        headers: {
+            userId: userId.id,
+          },
+    });
     return response.data;
   } catch (error) {
     throw new Error(error.message);

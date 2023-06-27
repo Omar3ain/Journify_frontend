@@ -7,7 +7,7 @@ const Recommendations = () => {
     const navigation = useNavigation();
   return (
     <View style={styles.container}>
-    <Text style={styles.text}>Discover the top-rated nearby locations that come highly recommended and are in close proximity to your hotel</Text>
+    <Text style={styles.text}>Discover the top-rated nearby locations that come highly recommended and are in close proximity to your current stay</Text>
     <View style={styles.buttonContainer}>
       <TouchableOpacity style={[styles.button, styles.firstButton]}  onPress={() => navigation.navigate('MadeForYou')}>
         <Text style={styles.buttonText}>Made for you</Text>
