@@ -13,7 +13,7 @@ const Stack = createStackNavigator();
 export default function Main() {
   return (
     <NavigationContainer>
-      <Stack.Navigator >
+      <Stack.Navigator>
         {/* <Stack.Screen name="InitialScreen" component={InitialScreen} options={{ headerShown: false }} />
         <Stack.Screen name="In boarding one" component={InBoardingOne} options={{ headerShown: false }} />
         <Stack.Screen name="In boarding two" component={InBoardingTwo} options={{ headerShown: false }} />
