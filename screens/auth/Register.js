@@ -253,6 +253,13 @@ export default function Register({ navigation }) {
           <Text style={styles.createAccountButtonText}>Sign up</Text>
         </TouchableOpacity>
       </View>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' , marginTop: 20}}>
+          <Text style={{ fontSize: 16 }}>Have an account?{' '}
+            <TouchableOpacity onPress={()=> navigation.navigate('Login')}>
+              <Text style={{ color: 'blue', textDecorationLine: 'underline' }}>Login</Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
       </View>
 );
 }
