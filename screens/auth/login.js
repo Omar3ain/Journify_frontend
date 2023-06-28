@@ -16,7 +16,7 @@ export default function Login({ navigation }) {
   useEffect(() => {
     if (isSuccess && user) {
       setTimeout(() => {
-        navigation.navigate("Profile");
+        navigation.navigate("App");
       }, 1000);
     }
     if (user && !isSuccess) {
