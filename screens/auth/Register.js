@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
@@ -69,6 +69,7 @@ export default function Register({ navigation }) {
 
   return (
     <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
       <View style={styles.logoContainer}>
         <Logo width={150} height={150}/>
       </View>
@@ -260,17 +261,21 @@ export default function Register({ navigation }) {
             </TouchableOpacity>
           </Text>
         </View>
+        </ScrollView>
       </View>
 );
+
 }
 const styles = StyleSheet.create({
-  container: {
+    container: {
       flex: 1,
-      alignItems: 'center',
-      justifyContent: 'flex-start',
       backgroundColor: '#fff',
       padding: 20,
-      flexDirection: 'column',
+    },
+    scrollContainer: {
+      flexGrow: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     logoContainer: {
       alignItems: 'center',
@@ -283,12 +288,10 @@ const styles = StyleSheet.create({
       width: '100%',
     },
     inputContainer: {
-      flexDirection: 'column',
       marginBottom: 16,
       width: '100%',
     },
     inputWrapper: {
-      flex: 1,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
@@ -297,7 +300,6 @@ const styles = StyleSheet.create({
       flex: 1,
       height: 40,
       backgroundColor: '#e8e8e8',
-      border: 'none',
       borderWidth: 1,
       borderRadius: 5,
       paddingLeft: 10,
