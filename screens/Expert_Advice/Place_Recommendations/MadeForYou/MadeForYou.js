@@ -16,7 +16,10 @@ const MadeForYou = ({ places, count, status, error, fetchAllRecs }) => {
   }
 
   if (status === 'failed') {
-    return <Text>Error: {error}</Text>;
+    return <View style={styles.container_error}>
+          <Text style={{textAlign: 'center'}}>Something went wrong, please try again later!</Text>
+    
+    </View>;
   }
 
   // Rate Converting
@@ -40,7 +43,8 @@ const MadeForYou = ({ places, count, status, error, fetchAllRecs }) => {
   }
   return (
     <View style={styles.container}>
-      {places.map((place) => {
+      {(!Array.isArray(places) || places.length === 0)&& <Text style={{textAlign: 'center', color: '#666'}}>Places not found!</Text>}
+      {Array.isArray(places) && places.map((place) => {
           if(place.image && place.name){
             return <View key={place.xid} style={styles.card}>
               <Image source={place.preview.source} style={styles.image} />
