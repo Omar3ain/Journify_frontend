@@ -7,6 +7,13 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         overflow: 'hidden'
       },
+    container_error: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 10,
+        backgroundColor: '#fff',
+        overflow: 'hidden'
+      },
     button: {
         width: 200,
         height: 40,

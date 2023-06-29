@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRecs } from '../../../../services/reducers/Expert_Advice/Recommendations/CustomRec';
-import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, Picker } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { styles } from './Style';
@@ -16,7 +17,10 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
   }
 
   if (status === 'failed') {
-    return <Text>Error: {error}</Text>;
+    return <View style={styles.container_error}>
+        <Text style={{textAlign: 'center'}}>Something went wrong, please try again later!</Text>
+        
+        </View>;
   }
 
   const handleNumberChange = (text) => {
@@ -43,7 +47,6 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
         return 0;
     }
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.textFieldsContainer}>
@@ -70,7 +73,7 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
       <TouchableOpacity style={styles.button} onPress={() => fetchAllRecs({radius, name, kinds})}>
         <Text style={styles.buttonText}>Get</Text>
       </TouchableOpacity>
-      {places.map((place) => {
+      {Array.isArray(places) && places.map((place) => {
         if (place.image && place.name) {
           return (
             <View key={place.xid} style={styles.card}>

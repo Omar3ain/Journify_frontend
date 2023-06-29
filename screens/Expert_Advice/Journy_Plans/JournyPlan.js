@@ -41,12 +41,19 @@ const JourneyPlan = () => {
   }
 
   if (status === 'failed') {
-    return <Text>Error: {error}</Text>;
+    return <View style={styles.container_error}>
+    <Text style={{textAlign: 'center'}}>Something went wrong, please try again later!</Text>
+    
+    </View>;
   }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>We have created customized plans for your recent reservation in <Text style={{color: '#2cb8e5', fontWeight: 'bold'}}>{plans.key && (plans.key.split("-")[1].split(",")[0])}</Text>. Enjoy your vacation!</Text>
+      {(!Array.isArray(plans.plan) || plans.plan.length === 0) && <View style={styles.container_error}>
+        <Text style={{textAlign: 'center', color: '#666'}}>Plans not found!</Text>
+      </View>}
+
+      {plans.plan && <Text style={styles.header}>We have created customized plans for your recent reservation in <Text style={{color: '#2cb8e5', fontWeight: 'bold'}}>{plans.key && (plans.key.split("-")[1].split(",")[0])}</Text>. Enjoy your vacation!</Text>}
        {plans.plan &&
         plans.plan.map((plan, index) => (
           <View key={plan.day + Date.now().toString()}>
