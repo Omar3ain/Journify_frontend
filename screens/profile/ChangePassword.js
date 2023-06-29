@@ -31,7 +31,7 @@ export default function ChangePassword({ navigation }) {
 
         <View style={styles.fieldData}>
           <Text style={styles.label}>New Password:</Text>
-          <PasswordInput value={newPassword} onChangeText={setNewPassword} />
+          <PasswordInput value={newPassword} onChangeText={setNewPassword}/>
         </View>
 
         <View style={styles.fieldData}>
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    width: '75%'
   },
   userDataContainer: {
     width: '100%',

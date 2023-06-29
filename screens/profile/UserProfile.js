@@ -10,7 +10,7 @@ export default function UserProfile({ navigation }) {
 
   const handleLogout = () => {
     dispatch(logout());
-    return navigation.navigate('Login');
+    return navigation.navigate('Auth');
   };
 
   const { user } = useSelector((state) => state.auth);

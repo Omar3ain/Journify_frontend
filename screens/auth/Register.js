@@ -84,7 +84,6 @@ export default function Register({ navigation }) {
       phone: phone,
       image: image,
     };
-    console.log(data);
     dispatch(register(data));
   };
 

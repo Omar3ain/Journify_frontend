@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-nativ
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
 import { login } from '../../services/reducers/auth/authSlice';
+import PasswordInput from '../profile/PasswordInput';
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState('');
@@ -41,7 +42,6 @@ export default function Login({ navigation }) {
             <TextInput
               style={styles.input}
               placeholder="Enter your username..."
-              placeholderTextColor="gray"
               value={username}
               onChangeText={setUsername}
             />
@@ -50,14 +50,7 @@ export default function Login({ navigation }) {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Password</Text>
           <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your password..."
-              placeholderTextColor="gray"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={setPassword}
-            />
+            <PasswordInput value={password} onChangeText={setPassword} placeholder={"Enter your password..."}/>
           </View>
         </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
@@ -106,8 +99,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 40,
-    backgroundColor: '#e8e8e8',
+    paddingVertical: 8,
+    borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
