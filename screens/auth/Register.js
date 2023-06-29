@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView, Button } from 'react-native';
 import {Picker} from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
 import { register } from '../../services/reducers/auth/authSlice';
 import * as ImagePicker from 'expo-image-picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function Register({ navigation }) {
   const pickerRef = useRef();
@@ -13,7 +14,7 @@ export default function Register({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  const [dob, setDob] = useState('');
+  const [dob, setDob] = useState(new Date());
   const [gender, setGender] = useState('');
   const [zipcode, setZipcode] = useState('');
   const [country, setCountry] = useState('');
@@ -22,6 +23,22 @@ export default function Register({ navigation }) {
   const [buildingNo, setBuildingNo] = useState('');
   const [phone, setPhone] = useState('');
   const [image, setImage] = useState(null);
+
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDob(currentDate);
+  };
+    const showMode = (currentMode) => {
+      setShow(true);
+      setMode(currentMode);
+    };
+
+    const showDatepicker = () => {
+      showMode('date');
+    };
 
   const dispatch = useDispatch();
   const { isRegisterSuccess, isLoading, isError, isSuccess, message } = useSelector(
@@ -47,13 +64,17 @@ export default function Register({ navigation }) {
   };
 
   const handleSignUp = () => {
+    const year = dob.getFullYear();
+    const month = String(dob.getMonth() + 1).padStart(2, "0");
+    const day = String(dob.getDate()).padStart(2, "0");
+
     const data = {
       first_name: firstName,
       last_name: lastName,
       email: email,
       password: password,
       username: username,
-      dob: dob,
+      dob: `${year}-${month}-${day}`,
       gender: gender,
       zipcode: zipcode,
       country: country,
@@ -138,13 +159,17 @@ export default function Register({ navigation }) {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Date of Birth</Text>
           <View style={styles.inputWrapper}>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter your date of birth..."
-              placeholderTextColor="gray"
-              value={dob}
-              onChangeText={setDob}
-            />
+          <Button onPress={showDatepicker} title="Select date" color="#2cb8e5" />
+          <Text>selected: {dob.toLocaleString()}</Text>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={dob}
+                    mode={mode}
+                    is24Hour={true}
+                    onChange={onChange}
+                  />
+                )}
           </View>
         </View>
         <View style={styles.inputContainer}>
