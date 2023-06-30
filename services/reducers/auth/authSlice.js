@@ -22,6 +22,15 @@ export const login = createAsyncThunk("/login", async (user, thunkAPI) => {
     }
 });
 
+export const loginOAuth = createAsyncThunk("/loginOAuth", async (token, thunkAPI) => {
+    try {
+        return await authService.loginOAuth(token);
+    } catch (error) {
+        const message = error.response.data.error
+        return thunkAPI.rejectWithValue(message);
+    }
+});
+
 export const register = createAsyncThunk("/register", async (user, thunkAPI) => {
     try {
         return await authService.register(user);
@@ -124,6 +133,32 @@ const authSlice = createSlice({
                 });
             })
             .addCase(login.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.isSuccess = false;
+                state.message = action.payload;
+                state.user = null;
+                Toast.show({
+                    type: 'error',
+                    text1: 'Login Status',
+                    text2: state.message
+                });
+            })
+            .addCase(loginOAuth.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(loginOAuth.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isSuccess = true;
+                state.isError = false;
+                state.user = action.payload;
+                Toast.show({
+                    type: 'success',
+                    text1: 'Login Status',
+                    text2: 'Logged in successfully'
+                });
+            })
+            .addCase(loginOAuth.rejected, (state, action) => {
                 state.isLoading = false;
                 state.isError = true;
                 state.isSuccess = false;
