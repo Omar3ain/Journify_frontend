@@ -39,24 +39,19 @@ export const register = createAsyncThunk(
     try {
       return await authService.register(user);
     } catch (error) {
-      let message = "";
-      const data = error.response.data;
-      if (Object.keys(data).length > 0) {
-        for (const field in data) {
-          const errorMessages = data[field];
-          for (const errorMessage of errorMessages) {
-            message += `${errorMessage}`;
-          }
+        let message = "";
+        const data = error.response.data;
+        if (Object.keys(data).length > 0) {
+            for (const key in data) {
+                const value = data[key];
+                message += `${key}: ${value} `;
+            }
         }
-      } else {
-        message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-      return thunkAPI.rejectWithValue(message);
+        else {
+            message = (error.response && error.response.data && error.response.data.message) ||
+                error.message || error.toString();
+        }
+        return thunkAPI.rejectWithValue(message);
     }
   }
 );

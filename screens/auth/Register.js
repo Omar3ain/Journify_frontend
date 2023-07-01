@@ -4,11 +4,13 @@ import {Picker} from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
 import { register } from '../../services/reducers/auth/authSlice';
-import * as ImagePicker from 'expo-image-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+// import * as ImagePicker from 'expo-image-picker';
 
 export default function Register({ navigation }) {
-  const pickerRef = useRef();
+  // const [selectedImage, setSelectedImage] = useState(null);
+
+
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -22,7 +24,7 @@ export default function Register({ navigation }) {
   const [streetName, setStreetName] = useState('');
   const [buildingNo, setBuildingNo] = useState('');
   const [phone, setPhone] = useState('');
-  const [image, setImage] = useState(null);
+
 
   const [show, setShow] = useState(false);
   const [mode, setMode] = useState('date');
@@ -45,46 +47,65 @@ export default function Register({ navigation }) {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if(isRegisterSuccess){
-      navigation.navigate('Login');
-    }
-  }, [dispatch, isRegisterSuccess]);
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  // useEffect(() => {
+  //   if(isRegisterSuccess){
+  //     navigation.navigate('Login');
+  //   }
+  // }, [dispatch, isRegisterSuccess]);
   
-    if (!result.cancelled) {
-      setImage(result.uri);
+
+  const pickImage = async () => {
+    try {
+      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission not granted');
+        return;
+      }
+
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        setSelectedImage(result);
+      }
+    } catch (error) {
+      console.log('Error picking image:', error);
     }
   };
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const year = dob.getFullYear();
-    const month = String(dob.getMonth() + 1).padStart(2, "0");
-    const day = String(dob.getDate()).padStart(2, "0");
+    const month = String(dob.getMonth() + 1).padStart(2, '0');
+    const day = String(dob.getDate()).padStart(2, '0');
 
-    const data = {
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      password: password,
-      username: username,
-      dob: `${year}-${month}-${day}`,
-      gender: gender,
-      zipcode: zipcode,
-      country: country,
-      city: city,
-      street_name: streetName,
-      building_no: buildingNo,
-      phone: phone,
-      image: image,
-    };
-    dispatch(register(data));
+    const data = new FormData();
+    data.append('first_name', firstName);
+    data.append('last_name', lastName);
+    data.append('email', email);
+    data.append('password', password);
+    data.append('username', username);
+    data.append('dob', `${year}-${month}-${day}`);
+    data.append('gender', gender);
+    data.append('zip_code', zipcode);
+    data.append('country', country);
+    data.append('city', city);
+    data.append('street_name', streetName);
+    data.append('building_no', buildingNo);
+    data.append('phone', phone);
+    // data.append('image', {
+    //   uri: selectedImage.assets[0].uri,
+    //   name: 'image.jpg',
+    //   type: 'image/jpeg',
+    // });
+
+    await dispatch(register(data));
+    if (isRegisterSuccess) {
+      navigation.navigate('Login');
+    }
   };
 
   return (
@@ -194,6 +215,7 @@ export default function Register({ navigation }) {
               placeholderTextColor="gray"
               value={zipcode}
               onChangeText={setZipcode}
+              keyboardType="numeric"
             />
           </View>
         </View>
@@ -245,6 +267,7 @@ export default function Register({ navigation }) {
               placeholderTextColor="gray"
               value={buildingNo}
               onChangeText={setBuildingNo}
+              keyboardType="numeric"
             />
           </View>
         </View>
@@ -261,19 +284,19 @@ export default function Register({ navigation }) {
           </View>
         </View>
         {/* <View style={styles.inputContainer}>
-          <Text style={styles.label}>Image</Text>
-          <View style={styles.inputWrapper}>
-            <TouchableOpacity onPress={pickImage}>
-              { image ? (
-                <Image source={{ uri: image }} style={styles.image} />
-              ) : (
-                <View style={styles.imagePlaceholder}>
-                  <Text style={styles.imagePlaceholderText}>Pick an image</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          </View>
-        </View> */}
+        <Text style={styles.label}>Image</Text>
+        <View style={styles.inputWrapper}>
+          <TouchableOpacity onPress={pickImage}>
+            {selectedImage ? (
+              <Text style={styles.imagePlaceholderText}>Image selected</Text>
+            ) : (
+              <View style={styles.imagePlaceholder}>
+                <Text style={styles.imagePlaceholderText}>Pick an image</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
+      </View> */}
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.createAccountButtonText}>Sign up</Text>
         </TouchableOpacity>
