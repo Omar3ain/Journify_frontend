@@ -3,6 +3,8 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-nativ
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
 import { login } from '../../services/reducers/auth/authSlice';
+import OAuth from '../../components/OAuth';
+import PasswordInput from '../profile/PasswordInput';
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState('');
@@ -16,7 +18,7 @@ export default function Login({ navigation }) {
   useEffect(() => {
     if (isSuccess && user) {
       setTimeout(() => {
-        navigation.navigate("Profile");
+        navigation.navigate("App");
       }, 1000);
     }
     if (user && !isSuccess) {
@@ -25,44 +27,38 @@ export default function Login({ navigation }) {
   }, [dispatch, user, isSuccess, isError]);
 
   const handleLogin = () => {
-    dispatch(login({username,password}));
+    dispatch(login({ username, password }));
   };
 
 
   return (
     <View style={styles.container}>
+      
       <View style={styles.logoContainer}>
-        <Logo width={150} height={150}/>
+        <Logo width={150} height={150} />
       </View>
       <View style={styles.formContainer}>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Username</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your username..."
-            placeholderTextColor="gray"
-            value={username}
-            onChangeText={setUsername}
-          />
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Username</Text>
+          <View style={styles.inputWrapper}>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter your username..."
+              value={username}
+              onChangeText={setUsername}
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.label}>Password</Text>
-        <View style={styles.inputWrapper}>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter your password..."
-            placeholderTextColor="gray"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={setPassword}
-          />
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Password</Text>
+          <View style={styles.inputWrapper}>
+            <PasswordInput value={password} onChangeText={setPassword} placeholder={"Enter your password..."}/>
+          </View>
         </View>
-      </View>
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.createAccountButtonText}>Log in</Text>
         </TouchableOpacity>
+        <OAuth/>
       </View>
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
@@ -77,7 +73,7 @@ export default function Login({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -96,21 +92,18 @@ container: {
     width: '100%',
   },
   inputContainer: {
-    flexDirection: 'column',
     marginBottom: 16,
     width: '100%',
   },
   inputWrapper: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   input: {
     flex: 1,
-    height: 40,
-    backgroundColor: '#e8e8e8',
-    border: 'none',
+    paddingVertical: 8,
+    borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
@@ -125,7 +118,7 @@ container: {
     width: '100%',
     paddingTop: 10,
     paddingBottom: 10,
-    backgroundColor:'#2cb8e5',
+    backgroundColor: '#2cb8e5',
     borderRadius: 5
   },
   dividerContainer: {

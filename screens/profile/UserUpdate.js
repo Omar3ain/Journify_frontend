@@ -1,41 +1,65 @@
 import React, { useState, useEffect} from 'react';
-import { View, StyleSheet, Text, SafeAreaView, TextInput, Button, Picker, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, TextInput, Button,  TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserInfo } from '../../services/reducers/auth/authSlice';
+import {Picker} from '@react-native-picker/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function UserUpdate({ navigation }) {
-  const { user: { user } } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const {  user  } = useSelector((state) => state.auth);
 
-  const [firstName, setFirstName] = useState(user.first_name);
-  const [lastName, setLastName] = useState(user.last_name);
-  const [dob, setDob] = useState(user.dob);
-  const [gender, setGender] = useState(user.gender);
-  const [zip_code, setZipcode] = useState(user.zip_code);
-  const [country, setCountry] = useState(user.country);
-  const [city, setCity] = useState(user.city);
-  const [streetName, setStreetName] = useState(user.street_name);
-  const [buildingNo, setBuildingNo] = useState(user.building_no);
-  const [phone, setPhone] = useState(user.phone);
+  const dispatch = useDispatch();
+  const [firstName, setFirstName] = useState(user?.user.first_name);
+  const [lastName, setLastName] = useState(user?.user.last_name);
+  const [dob, setDob] = useState(new Date());
+  const [gender, setGender] = useState(user?.user.gender);
+  const [zip_code, setZipcode] = useState(user?.user.zip_code);
+  const [country, setCountry] = useState(user?.user.country);
+  const [city, setCity] = useState(user?.user.city);
+  const [streetName, setStreetName] = useState(user?.user.street_name);
+  const [buildingNo, setBuildingNo] = useState(user?.user.building_no);
+  const [phone, setPhone] = useState(user?.user.phone);
+
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDob(currentDate);
+  };
+    const showMode = (currentMode) => {
+      setShow(true);
+      setMode(currentMode);
+    };
+
+    const showDatepicker = () => {
+      showMode('date');
+    };
 
   useEffect(() => {
-    setFirstName(user.first_name);
-    setLastName(user.last_name);
-    setDob(user.dob);
-    setGender(user.gender);
-    setZipcode(user.zip_code);
-    setCountry(user.country);
-    setCity(user.city);
-    setStreetName(user.street_name);
-    setBuildingNo(user.building_no);
-    setPhone(user.phone);
+    if(user) {
+      setFirstName(user?.user.first_name);
+      setLastName(user?.user.last_name);
+      setDob(user?.user.dob);
+      setGender(user?.user.gender);
+      setZipcode(user?.user.zip_code);
+      setCountry(user?.user.country);
+      setCity(user?.user.city);
+      setStreetName(user?.user.street_name);
+      setBuildingNo(user?.user.building_no);
+      setPhone(user?.user.phone);
+    }
   }, [user]);
 
   const handleSubmit = () => {
+    const year = dob.getFullYear();
+    const month = String(dob.getMonth() + 1).padStart(2, "0");
+    const day = String(dob.getDate()).padStart(2, "0");
+
     const updatedUser = {
       first_name: firstName,
       last_name: lastName,
-      dob,
+      dob: `${year}-${month}-${day}`,
       gender,
       zip_code,
       country,
@@ -71,11 +95,17 @@ export default function UserUpdate({ navigation }) {
 
         <View style={styles.fieldData}>
           <Text style={styles.label}>Date of Birth:</Text>
-          <TextInput
-            style={styles.userDataValue}
-            value={dob}
-            onChangeText={setDob}
-          />
+          <Button onPress={showDatepicker} title="Select date" color="#2cb8e5" />
+          <Text>selected: {dob.toLocaleString()}</Text>
+                {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={dob}
+                    mode={mode}
+                    is24Hour={true}
+                    onChange={onChange}
+                  />
+                )}
         </View>
 
         <View style={styles.fieldData}>

@@ -33,10 +33,10 @@ const ExpertMain = () => {
         <Text style={styles.header}>Expert Advisor</Text>
       </View>
         <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Logo')}>
+        <TouchableOpacity onPress={() => navigation.navigate('JournyPlan')}>
             <View style={styles.icon}>
                 <Image source={require('../../../assets/Expert_Advice/3959402.jpg')} style={styles.iconImage} />
-                <Text style={styles.iconText}>Journy Plans</Text>
+                <Text style={styles.iconText}>Journey Plans</Text>
             </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Recommendations')}>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const PasswordInput = ({ value, onChangeText }) => {
+const PasswordInput = ({ value, onChangeText , placeholder}) => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -16,6 +16,7 @@ const PasswordInput = ({ value, onChangeText }) => {
         value={value}
         onChangeText={onChangeText}
         secureTextEntry={!isPasswordVisible}
+        placeholder={placeholder}
       />
       <TouchableOpacity style={styles.toggleButton} onPress={togglePasswordVisibility}>
         <Ionicons name={isPasswordVisible ? 'eye-off' : 'eye'} size={24} color="gray" />
@@ -32,6 +33,7 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     borderRadius: 4,
     paddingHorizontal: 12,
+    width: '100%',
   },
   input: {
     flex: 1,

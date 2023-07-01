@@ -4,6 +4,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from './reducers/auth/authSlice';
 import RecommendationsReducer from './reducers/Expert_Advice/Recommendations/RecommendationSlice'
 import customReducer from './reducers/Expert_Advice/Recommendations/CustomRec'
+import journeyPlansReducer from './reducers/Expert_Advice/JourneyPlans/JourneyPlans'
+
 
 const store = configureStore({
     reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
         // Expert Advisor
         recommendations: RecommendationsReducer,
         customReducer: customReducer,
+        journeyPlans: journeyPlansReducer,
+
     },
 });
 
