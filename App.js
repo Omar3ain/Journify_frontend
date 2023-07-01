@@ -6,6 +6,7 @@ import { IconComponentProvider } from "@react-native-material/core";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function App() {
+  
   return (
     <Provider store={store}>
       <IconComponentProvider IconComponent={MaterialCommunityIcons}>

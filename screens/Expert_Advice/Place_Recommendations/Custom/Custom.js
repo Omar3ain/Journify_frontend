@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { fetchAllRecs } from '../../../../services/reducers/Expert_Advice/Recommendations/CustomRec';
-import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput} from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, TextInput, TouchableWithoutFeedback} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { styles } from './Style';
 import Loader from '../../../../components/Loader';
 
-const Custom = ({ places, count, status, error, fetchAllRecs }) => {
+const Custom = ({ places, count, status, error, fetchAllRecs, navigation }) => {
   const [radius, setRadius] = useState('');
   const [name, setName] = useState('');
   const [kinds, setKinds] = useState('');
@@ -28,6 +28,12 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
     const numericValue = text.replace(/[^0-9]/g, '');
     setRadius(numericValue);
   };
+
+
+  const handleButtonPress = (xid) => {
+    navigation.navigate('PlaceInfo', { xid });
+};
+
   // Rate Converting
   function convertRating(originalRating) {
     switch (originalRating) {
@@ -76,7 +82,8 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
       {Array.isArray(places) && places.map((place) => {
         if (place.image && place.name) {
           return (
-            <View key={place.xid} style={styles.card}>
+            <TouchableWithoutFeedback key={place.xid} style={styles.card} onPress={() => handleButtonPress(place.xid)}>
+            <View>
               <Image source={place.preview.source} style={styles.image} />
               <View style={styles.details}>
                 <Text style={styles.name}>{place.name}</Text>
@@ -96,6 +103,7 @@ const Custom = ({ places, count, status, error, fetchAllRecs }) => {
                 </View>
               </View>
             </View>
+          </TouchableWithoutFeedback>
           );
         }
       })}

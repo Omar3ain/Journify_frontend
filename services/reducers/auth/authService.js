@@ -21,6 +21,31 @@ const login = async (userData) => {
   return response.data;
 };
 
+
+const loginOAuth = async (access_token) => {
+  try {
+    const response = await fetch(URL + "protected/", {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data) {
+        await AsyncStorage.setItem("user", JSON.stringify(data.user));
+      }
+      return data;
+    } else {
+      throw new Error('Request failed with status ' + response.status);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 const register = async (userData) => {
   const config = {
     headers: {
@@ -78,6 +103,7 @@ const updatePassword = async (userData, token, id) => {
 
 const authService = {
   login,
+  loginOAuth,
   register,
   logout,
   updateUserInfo,

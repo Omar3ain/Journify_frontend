@@ -3,6 +3,7 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-nativ
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
 import { login } from '../../services/reducers/auth/authSlice';
+import OAuth from '../../components/OAuth';
 import PasswordInput from '../profile/PasswordInput';
 
 export default function Login({ navigation }) {
@@ -32,6 +33,7 @@ export default function Login({ navigation }) {
 
   return (
     <View style={styles.container}>
+      
       <View style={styles.logoContainer}>
         <Logo width={150} height={150} />
       </View>
@@ -56,6 +58,7 @@ export default function Login({ navigation }) {
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.createAccountButtonText}>Log in</Text>
         </TouchableOpacity>
+        <OAuth/>
       </View>
       <View style={styles.dividerContainer}>
         <View style={styles.divider} />
