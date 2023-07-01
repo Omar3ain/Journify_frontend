@@ -124,7 +124,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loader from '../../components/Loader';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { useDispatch } from 'react-redux';
+import { createHotelReview } from '../../services/reducers/Hotels/Reviews';
 
 const HotelDetails = ({ route }) => {
 
@@ -143,27 +144,36 @@ const HotelDetails = ({ route }) => {
   const [reviewComment, setReviewComment] = useState('');
   const [reviewRating, setReviewRating] = useState('');
   // const [user, setUser] = useState('');
+  const dispatch = useDispatch();
+
+    useEffect(()=>{
+      const fetchHotelsReviews = async () => {
+        try {
+          const response = await fetch(`http://127.0.0.1:8000/hotel-review/${hotelId}`);
+          const data = await response.json();
+          setReviews(data);
+        } catch (error) {
+          console.error('Error fetching hotelsReviews:', error);
+        }
+      };
+  
+      fetchHotelsReviews();
+    },[])
 
   const addReview = async () => {
     const user = JSON.parse(await AsyncStorage.getItem("user"));
-    console.log(user);
+    console.log(reviews);
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/hotel-review/create/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user: user.id, 
-          hotel: hotelId,
-          title: reviewTitle,
-          comment: reviewComment,
-          rating: reviewRating,
-        }),
-      });
-
-      if (response.ok) {
+      await dispatch(createHotelReview({
+        user: user.id,
+        hotel: hotelId,
+        title: reviewTitle,
+        comment: reviewComment,
+        rating: reviewRating
+      }))
+      
+      // if (response.ok) {
         const newReviewItem = {
           id: Date.now(),
           user: user.id, 
@@ -173,14 +183,14 @@ const HotelDetails = ({ route }) => {
           rating: reviewRating,
         };
         setReviews([...reviews, newReviewItem]);
-        setReviews(data);
+        // setReviews(data);
         setReviewTitle('');
         setReviewComment('');
         setReviewRating('');
         setUser('')
-      } else {
-        Alert.alert('Error', 'Unable to add review. Please try again later.');
-      }
+      // } else {
+      //   Alert.alert('Error', 'Unable to add review. Please try again later.');
+      // }
     } catch (error) {
       Alert.alert('Error', 'Unable to add review. Please try again later.');
     }
