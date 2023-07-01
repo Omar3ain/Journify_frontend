@@ -6,6 +6,8 @@ import Profile from './Profile';
 import Logo from '../components/Logo';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
 import InBoardingTwo from '../screens/inBoarding/inBoardingTwo';
+import Home from '../screens/Home/Home';
+import FlgihtsTab from "../screens/Flights/FlightsBoarding";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,7 +21,7 @@ export default function AppTabs() {
     >
       <Tab.Screen
         name="Home" // Here the name...
-        component={Logo} // navigator
+        component={Home} // navigator
         options={{
           tabBarLabel: 'Home', // tab name
           tabBarIcon: ({ color, size }) => (
@@ -41,7 +43,7 @@ export default function AppTabs() {
       />
       <Tab.Screen
         name="Flights"
-        component={InBoardingTwo}
+        component={FlgihtsTab}
         options={{
           tabBarLabel: 'Flights',
           tabBarIcon: ({ color, size }) => (
