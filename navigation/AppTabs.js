@@ -2,10 +2,7 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Profile from './Profile';
-// For testing purposes replace these navigators with yours...
-import Logo from '../components/Logo';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
-import InBoardingTwo from '../screens/inBoarding/inBoardingTwo';
 import Home from '../screens/Home/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
 
