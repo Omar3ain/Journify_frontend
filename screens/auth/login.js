@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
 import { login } from '../../services/reducers/auth/authSlice';
@@ -7,8 +13,8 @@ import OAuth from '../../components/OAuth';
 import PasswordInput from '../profile/PasswordInput';
 
 export default function Login({ navigation }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -29,7 +35,6 @@ export default function Login({ navigation }) {
   const handleLogin = () => {
     dispatch(login({ username, password }));
   };
-
 
   return (
     <View style={styles.container}>
@@ -65,7 +70,10 @@ export default function Login({ navigation }) {
         <Text style={styles.dividerText}>OR</Text>
         <View style={styles.divider} />
       </View>
-      <TouchableOpacity style={styles.createAccountButton} onPress={() => navigation.navigate('Register')}>
+      <TouchableOpacity
+        style={styles.createAccountButton}
+        onPress={() => navigation.navigate("Register")}
+      >
         <Text style={styles.createAccountButtonText}>Create New Account</Text>
       </TouchableOpacity>
     </View>
@@ -75,25 +83,25 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: '#fff',
+    alignItems: "center",
+    justifyContent: "flex-start",
+    backgroundColor: "#fff",
     padding: 20,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   logoContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     marginBottom: 15,
   },
   formContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   inputContainer: {
     marginBottom: 16,
-    width: '100%',
+    width: "100%",
   },
   inputWrapper: {
     flexDirection: 'row',
@@ -109,44 +117,44 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   label: {
-    color: '#727171',
-    fontWeight: 'bold',
+    color: "#727171",
+    fontWeight: "bold",
     marginBottom: 8,
-    textAlign: 'left',
+    textAlign: "left",
   },
   button: {
-    width: '100%',
+    width: "100%",
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#2cb8e5',
     borderRadius: 5
   },
   dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: 32,
     marginBottom: 32,
   },
   divider: {
     flex: 1,
     borderBottomWidth: 1,
-    borderColor: '#727171',
+    borderColor: "#727171",
     width: 150,
   },
   dividerText: {
     marginHorizontal: 8,
-    color: '#727171',
-    fontWeight: 'bold',
+    color: "#727171",
+    fontWeight: "bold",
   },
   createAccountButton: {
-    backgroundColor: '#4caf50',
+    backgroundColor: "#4caf50",
     padding: 15,
-    width: '65%',
+    width: "65%",
   },
   createAccountButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-    textAlign: 'center',
+    color: "#fff",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
