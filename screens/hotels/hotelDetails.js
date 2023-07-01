@@ -158,9 +158,12 @@ const HotelDetails = ({ route }) => {
           rating: reviewRating,
         };
         setReviews([...reviews, newReviewItem]);
+        setReviews(data);
+        console.log(data);
         setReviewTitle('');
         setReviewComment('');
         setReviewRating('');
+        setUser('')
       } else {
         Alert.alert('Error', 'Unable to add review. Please try again later.');
       }
@@ -215,6 +218,13 @@ const HotelDetails = ({ route }) => {
         </View>
         <Text>Rate: {hotel.avg_rating}</Text>
         <Text>Add Review:</Text>
+        <Text>{reviews.title}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="User"
+          value={user}
+          onChangeText={setUser}
+        />
         <TextInput
           style={styles.input}
           placeholder="Title"
