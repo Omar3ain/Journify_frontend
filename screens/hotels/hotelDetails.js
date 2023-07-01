@@ -123,6 +123,7 @@ import Icon2 from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loader from '../../components/Loader';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const HotelDetails = ({ route }) => {
@@ -141,9 +142,12 @@ const HotelDetails = ({ route }) => {
   const [reviewTitle, setReviewTitle] = useState('');
   const [reviewComment, setReviewComment] = useState('');
   const [reviewRating, setReviewRating] = useState('');
-  const [user, setUser] = useState('');
+  // const [user, setUser] = useState('');
 
   const addReview = async () => {
+    const user = JSON.parse(await AsyncStorage.getItem("user"));
+    console.log(user);
+
     try {
       const response = await fetch(`http://127.0.0.1:8000/hotel-review/create/`, {
         method: 'POST',
@@ -151,7 +155,7 @@ const HotelDetails = ({ route }) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          user: user, 
+          user: user.id, 
           hotel: hotelId,
           title: reviewTitle,
           comment: reviewComment,
@@ -162,7 +166,7 @@ const HotelDetails = ({ route }) => {
       if (response.ok) {
         const newReviewItem = {
           id: Date.now(),
-          user: user, 
+          user: user.id, 
           hotel: hotelId,
           title: reviewTitle,
           comment: reviewComment,
@@ -203,7 +207,7 @@ const HotelDetails = ({ route }) => {
   const renderReview = ({ item }) => {
     return (
       <View>
-        <Text>User: {item.user}</Text>
+        {/* <Text>User: {item.user}</Text> */}
         <Text>Title: {item.title}</Text>
         <Text>Comment: {item.comment}</Text>
         <Text>Rating: {item.rating}</Text>
@@ -232,12 +236,12 @@ const HotelDetails = ({ route }) => {
         <Text>Rate: {hotel.avg_rating}</Text>
         <Text>Add Review:</Text>
         <Text>{reviews.title}</Text>
-        <TextInput
+        {/* <TextInput
           style={styles.input}
           placeholder="User"
           value={user}
           onChangeText={setUser}
-        />
+        /> */}
         <TextInput
           style={styles.input}
           placeholder="Title"
