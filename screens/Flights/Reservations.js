@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Picker } from "@react-native-picker/picker";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +54,7 @@ const Reservations = () => {
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View
         style={{
           display: "flex",
@@ -95,7 +95,7 @@ const Reservations = () => {
               </Text>
               <Text
                 style={{
-                  color: active(reservation.traveling_date[0])
+                  color: active(reservation.flight.traveling_date)
                     ? "#2cb8e5"
                     : "#666",
                 }}
@@ -109,7 +109,7 @@ const Reservations = () => {
                   }
                 />
                 {"   "}
-                {reservation.traveling_date[0]}
+                {reservation.flight.traveling_date.split("T")[0]}
               </Text>
             </View>
             <View style={{ ...cardStyle.info2, marginTop: 30 }}>
@@ -193,7 +193,7 @@ const Reservations = () => {
           </View>
         </View>
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

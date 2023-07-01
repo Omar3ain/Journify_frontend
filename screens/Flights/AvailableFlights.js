@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
   View,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -30,8 +31,6 @@ export default function Flights({ navigation }) {
     kidsError: "",
     adultsError: "",
   });
-
-  // const [disableFlyOut, setDisableFlyOut] = useState(true);
 
   const dispatch = useDispatch();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
@@ -131,225 +130,235 @@ export default function Flights({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Logo width={100} height={100} />
-      </View>
-      <View style={styles.flightsDates}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => getAvailableFlights()}
-          // disabled={
-          //   !(error.destinationError.length && error.originError.length)
-          // }
-          activeOpacity={0.5}
-        >
-          <Text style={styles.flighDateButtonText}>Fly out</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("select date")}
-        >
-          <Text style={styles.flighDateButtonText}>Fly back</Text>
-        </TouchableOpacity>
-      </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Logo width={100} height={100} />
+        </View>
+        <View style={styles.flightsDates}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => getAvailableFlights()}
+            // disabled={
+            //   !(error.destinationError.length && error.originError.length)
+            // }
+            activeOpacity={0.5}
+          >
+            <Text style={styles.flighDateButtonText}>Fly out</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("select date")}
+          >
+            <Text style={styles.flighDateButtonText}>Fly back</Text>
+          </TouchableOpacity>
+        </View>
 
-      <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>
-            <Icon name="plane-departure" size={14} color="#666" /> {"  "}
-            Departure
-          </Text>
-          <View style={styles.inputWrapper}>
-            <Picker
-              selectedValue={origin}
-              onValueChange={(itemValue) =>
-                updateInputs("Departure", itemValue)
-              }
-              style={styles.input}
-            >
-              <Picker.Item label="Please choose value..." value="" />
-              <Picker.Item label="Egypt" value="EG" />
-              <Picker.Item label="France" value="FR" />
-            </Picker>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>
+              <Icon name="plane-departure" size={14} color="#666" /> {"  "}
+              Departure
+            </Text>
+            <View style={styles.inputWrapper}>
+              <Picker
+                selectedValue={origin}
+                onValueChange={(itemValue) =>
+                  updateInputs("Departure", itemValue)
+                }
+                style={styles.input}
+              >
+                <Picker.Item label="Please choose value..." value="" />
+                <Picker.Item label="Egypt" value="EG" />
+                <Picker.Item label="France" value="FR" />
+              </Picker>
+            </View>
+            {error.originError.length && (
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: "red", fontSize: 14 }}>
+                  {error.originError}
+                </Text>
+              </View>
+            )}
           </View>
-          {error.originError.length && (
-            <View style={{ padding: 10 }}>
-              <Text style={{ color: "red", fontSize: 14 }}>
-                {error.originError}
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>
+              {" "}
+              <Icon name="plane-arrival" size={14} color="#666" /> {"  "}
+              Destination
+            </Text>
+            <View style={styles.inputWrapper}>
+              <Picker
+                selectedValue={destination}
+                onValueChange={(itemValue) =>
+                  updateInputs("Destination", itemValue)
+                }
+                style={styles.input}
+              >
+                <Picker.Item label="Please choose value..." value="" />
+                <Picker.Item label="Belgium" value="BE" />
+                <Picker.Item label="France" value="FR" />
+              </Picker>
+            </View>
+            {error.destinationError.length && (
+              <View style={{ padding: 10 }}>
+                <Text style={{ color: "red", fontSize: 14 }}>
+                  {error.destinationError}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+        {selectedFlight && (
+          <View style={styles.fieldSet}>
+            <Text style={styles.legend}>Flight Information</Text>
+            <View>
+              <Text>
+                Traveling Date : {selectedFlight.traveling_date.split("T")[0]}
               </Text>
             </View>
-          )}
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>
-            {" "}
-            <Icon name="plane-arrival" size={14} color="#666" /> {"  "}
-            Destination
-          </Text>
-          <View style={styles.inputWrapper}>
-            <Picker
-              selectedValue={destination}
-              onValueChange={(itemValue) =>
-                updateInputs("Destination", itemValue)
-              }
-              style={styles.input}
-            >
-              <Picker.Item label="Please choose value..." value="" />
-              <Picker.Item label="Belgium" value="BE" />
-              <Picker.Item label="France" value="FR" />
-            </Picker>
-          </View>
-          {error.destinationError.length && (
-            <View style={{ padding: 10 }}>
-              <Text style={{ color: "red", fontSize: 14 }}>
-                {error.destinationError}
+            <View>
+              <Text>
+                <Icon
+                  name="clock"
+                  size={20}
+                  color="#666"
+                  style={{ paddingBottom: 15 }}
+                />
+                {"  "}
+                {new Date(selectedFlight.traveling_date).getUTCHours() +
+                  " : " +
+                  new Date(selectedFlight.traveling_date).getMinutes()}
               </Text>
             </View>
-          )}
-        </View>
-      </View>
-      {selectedFlight && (
-        <View style={styles.fieldSet}>
-          <Text style={styles.legend}>Flight Information</Text>
-          <View>
-            <Text>
-              Traveling Date : {selectedFlight.traveling_date.split("T")[0]}
-            </Text>
           </View>
-          <View>
-            <Text>
-              <Icon
-                name="clock"
-                size={20}
-                color="#666"
-                style={{ paddingBottom: 15 }}
-              />
-              {"  "}
-              {new Date(selectedFlight.traveling_date).getUTCHours() +
-                " : " +
-                new Date(selectedFlight.traveling_date).getMinutes()}
-            </Text>
-          </View>
+        )}
+        <View style={styles.dividerContainer}>
+          <View style={styles.divider} />
+          <Text style={styles.dividerText}>Seats Number</Text>
+          <View style={styles.divider} />
         </View>
-      )}
-      <View style={styles.dividerContainer}>
-        <View style={styles.divider} />
-        <Text style={styles.dividerText}>Seats Number</Text>
-        <View style={styles.divider} />
-      </View>
-      <View>
         <View>
-          <View style={styles.inputContainer}>
-            <View>
-              <Text style={styles.label}>Adults </Text>
-              <View style={styles.inputWrapper}>
-                <TouchableOpacity
-                  disabled={adultsNum >= 15 || kidsNum + adultsNum >= 15}
-                  onPress={() => increasSeats("adults")}
-                >
-                  <Text>
-                    <Icon
-                      name="plus"
-                      size={20}
-                      color={adultsNum >= 15 || kidsNum + adultsNum >= 15 ? "#000" : "#2cb8e5"}
-                    />
-                  </Text>
-                </TouchableOpacity>
-                <TextInput
-                  style={{ ...styles.numberInput }}
-                  value={adultsNum}
-                  onChangeText={setAdults}
-                  keyboardType="numeric"
-                  maxLength={15}
-                />
-                <TouchableOpacity
-                  disabled={adultsNum <= 0}
-                  onPress={() => decreasSeats("adults")}
-                >
-                  <Text>
-                    <Icon
-                      name="minus"
-                      size={20}
-                      color={adultsNum > 0 ? "#2cb8e5" : "#000"}
-                    />
-                  </Text>
-                </TouchableOpacity>
+          <View>
+            <View style={styles.inputContainer}>
+              <View>
+                <Text style={styles.label}>Adults </Text>
+                <View style={styles.inputWrapper}>
+                  <TouchableOpacity
+                    disabled={adultsNum >= 15 || kidsNum + adultsNum >= 15}
+                    onPress={() => increasSeats("adults")}
+                  >
+                    <Text>
+                      <Icon
+                        name="plus"
+                        size={20}
+                        color={
+                          adultsNum >= 15 || kidsNum + adultsNum >= 15
+                            ? "#000"
+                            : "#2cb8e5"
+                        }
+                      />
+                    </Text>
+                  </TouchableOpacity>
+                  <TextInput
+                    style={{ ...styles.numberInput }}
+                    value={adultsNum}
+                    onChangeText={setAdults}
+                    keyboardType="numeric"
+                    maxLength={15}
+                  />
+                  <TouchableOpacity
+                    disabled={adultsNum <= 0}
+                    onPress={() => decreasSeats("adults")}
+                  >
+                    <Text>
+                      <Icon
+                        name="minus"
+                        size={20}
+                        color={adultsNum > 0 ? "#2cb8e5" : "#000"}
+                      />
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            <View style={styles.inputContainer}>
+              <View>
+                <Text style={styles.label}>Children </Text>
+                <View style={styles.inputWrapper}>
+                  <TouchableOpacity
+                    disabled={kidsNum >= 15 || kidsNum + adultsNum >= 15}
+                    onPress={() => increasSeats("kids")}
+                  >
+                    <Text>
+                      <Icon
+                        name="plus"
+                        size={20}
+                        color={
+                          kidsNum >= 15 || kidsNum + adultsNum >= 15
+                            ? "#000"
+                            : "#2cb8e5"
+                        }
+                      />
+                    </Text>
+                  </TouchableOpacity>
+                  <TextInput
+                    style={{ ...styles.numberInput }}
+                    value={kidsNum}
+                    onChangeText={setKids}
+                    keyboardType="numeric"
+                    maxLength={2}
+                  />
+                  <TouchableOpacity
+                    disabled={kidsNum <= 0}
+                    onPress={() => decreasSeats("kids")}
+                  >
+                    <Text>
+                      <Icon
+                        name="minus"
+                        size={20}
+                        color={kidsNum > 0 ? "#2cb8e5" : "#000"}
+                      />
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-          <View style={styles.inputContainer}>
-            <View>
-              <Text style={styles.label}>Children </Text>
-              <View style={styles.inputWrapper}>
-                <TouchableOpacity
-                  disabled={kidsNum >= 15 || kidsNum + adultsNum >= 15}
-                  onPress={() => increasSeats("kids")}
-                >
-                  <Text>
-                    <Icon
-                      name="plus"
-                      size={20}
-                      color={kidsNum >= 15 || kidsNum + adultsNum >= 15 ? "#000" : "#2cb8e5"}
-                    />
-                  </Text>
-                </TouchableOpacity>
-                <TextInput
-                  style={{ ...styles.numberInput }}
-                  value={kidsNum}
-                  onChangeText={setKids}
-                  keyboardType="numeric"
-                  maxLength={2}
-                />
-                <TouchableOpacity
-                  disabled={kidsNum <= 0}
-                  onPress={() => decreasSeats("kids")}
-                >
-                  <Text>
-                    <Icon
-                      name="minus"
-                      size={20}
-                      color={kidsNum > 0 ? "#2cb8e5" : "#000"}
-                    />
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+        </View>
+        {reservedFlight && (
+          <View style={{ width: "100%" }}>
+            <Text style={{ color: "#2cb8e5", fontWeight: "bold" }}>
+              Total Price:{" "}
+              <span style={{ color: "black", fontWeight: "bold" }}>
+                {" " + reservedFlight.total_price + " EGP"}
+              </span>
+            </Text>
           </View>
+        )}
+
+        {kidsNum + adultsNum > 15 && (
+          <View style={{ width: "100%", padding: 10 }}>
+            <Text style={{ color: "red", fontWeight: "bold", fontSize: 16 }}>
+              Total Seats must be less than 15
+            </Text>
+          </View>
+        )}
+
+        <View style={{ width: "100%", alignItems: "center" }}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              bookFlight("edit");
+            }}
+            // disabled={true}
+            activeOpacity={0.5}
+          >
+            <Text style={styles.flighDateButtonText}>Book Now</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      {reservedFlight && (
-        <View style={{ width: "100%" }}>
-          <Text style={{ color: "#2cb8e5", fontWeight: "bold" }}>
-            Total Price:{" "}
-            <span style={{ color: "black", fontWeight: "bold" }}>
-              {" " + reservedFlight.total_price + " EGP"}
-            </span>
-          </Text>
-        </View>
-      )}
-
-      {kidsNum + adultsNum > 15 && (
-        <View style={{ width: "100%", padding: 10 }}>
-          <Text style={{ color: "red", fontWeight: "bold", fontSize: 16 }}>
-            Total Seats must be less than 15
-          </Text>
-        </View>
-      )}
-
-      <View style={{ width: "100%", alignItems: "center" }}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            bookFlight("edit");
-          }}
-          // disabled={true}
-          activeOpacity={0.5}
-        >
-          <Text style={styles.flighDateButtonText}>Book Now</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </ScrollView>
   );
 }
 
