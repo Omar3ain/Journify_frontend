@@ -122,8 +122,19 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Loader from '../../components/Loader';
+import { useNavigation } from '@react-navigation/native';
+
 
 const HotelDetails = ({ route }) => {
+
+  const navigation = useNavigation();
+
+    const navigateToOtherPage = (itemId) => {
+        console.log('itemId:', itemId);
+      navigation.navigate('HotelReservation', { hotelId: itemId });
+    };
+
+
   const { hotelId } = route.params;
   const [hotel, setHotel] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -159,7 +170,6 @@ const HotelDetails = ({ route }) => {
         };
         setReviews([...reviews, newReviewItem]);
         setReviews(data);
-        console.log(data);
         setReviewTitle('');
         setReviewComment('');
         setReviewRating('');
@@ -216,6 +226,9 @@ const HotelDetails = ({ route }) => {
           </Text>
           <Text style={styles.text}>Available Rooms: {hotel.available_rooms}</Text>
         </View>
+        <TouchableOpacity
+                     style={styles.button}
+                     onPress={() => navigateToOtherPage()}><Text style={{color:'white'}}>Book Now</Text></TouchableOpacity>
         <Text>Rate: {hotel.avg_rating}</Text>
         <Text>Add Review:</Text>
         <Text>{reviews.title}</Text>
