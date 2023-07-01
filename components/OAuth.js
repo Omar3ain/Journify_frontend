@@ -56,8 +56,8 @@ export default function OAuth() {
         token: accessToken,
         backend: 'google-oauth2',
         grant_type: 'convert_token',
-        client_id: 'dRFdnhQCxFc15TpPsE1nYpw98iDxsJQaVz3mQ6KB',
-        client_secret: 'QlI8O0NQnGnEBG4L8xOBsaonLCMTveMu0Nsdo0U5TPKJpmDYvR09hAblQF0C4nnIBSveddEbv6nAFZot3plk2GLdAofvKKmEsMDF1MD9BY8LgPOuPJZNLqdWOeycexCp',
+        client_id: 'OT2C5W6Ku7mTtNwsARl8Wjdin7MTlN1KhOtP2Ml0',
+        client_secret: '7bT8UZAbrSLwAsunKtAvd5DiOzVn8IzhquP55EWIVtJwv34rZo7OLsuXoxJ7oFXCHuhG86Cb6hCDWEuqfqKoFMcplodBwpiqbWxSDAEV8qocitV0dPRrm7l32eBzWsdb',
       });
 
       const { access_token, refresh_token } = responsee.data;

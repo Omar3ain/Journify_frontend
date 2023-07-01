@@ -4,7 +4,7 @@ import Recommendations from '../screens/Expert_Advice/Place_Recommendations/Reco
 import MadeForYou from '../screens/Expert_Advice/Place_Recommendations/MadeForYou/MadeForYou'
 import Custom from '../screens/Expert_Advice/Place_Recommendations/Custom/Custom'
 import JournyPlan from '../screens/Expert_Advice/Journy_Plans/JournyPlan'
-
+import PlaceInfo from '../screens/Place/PlaceInfo'
 
 
 const Stack = createStackNavigator();
@@ -17,6 +17,7 @@ export default function ExpertAdvice() {
             <Stack.Screen name="MadeForYou" component={MadeForYou} options={{ headerShown: true, title: 'Made For You' }} />
             <Stack.Screen name="Custom" component={Custom} options={{ headerShown: true, title: 'Custom' }} />
             <Stack.Screen name="JournyPlan" component={JournyPlan} options={{ headerShown: true, title: 'Journey Plans' }} />
+            <Stack.Screen name="PlaceInfo" component={PlaceInfo} options={{ headerShown: true, title: 'Place Details' }} />
       </Stack.Navigator>
   );
 }   

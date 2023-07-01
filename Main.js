@@ -6,6 +6,8 @@ import Profile from './navigation/Profile';
 import InBoarding from './navigation/InBoarding';
 import AppTabs from './navigation/AppTabs';
 
+
+
 const Stack = createStackNavigator();
 
 export default function Main() {
