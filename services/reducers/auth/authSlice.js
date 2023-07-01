@@ -29,11 +29,9 @@ export const register = createAsyncThunk("/register", async (user, thunkAPI) => 
         let message = "";
         const data = error.response.data;
         if (Object.keys(data).length > 0) {
-            for (const field in data) {
-              const errorMessages = data[field];
-              for (const errorMessage of errorMessages) {
-                message += `${errorMessage}`;
-              }
+            for (const key in data) {
+                const value = data[key];
+                message += `${key}: ${value} `;
             }
         }
         else {
