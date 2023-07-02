@@ -18,9 +18,26 @@ const createReviews = async (createData, token) => {
   
     return response.data;
   };
+
+  const createHotelReservation = async (createData, token) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `token ${token}`,
+      },
+    };
+    const response = await axios.post(
+      URL + "stayreservation/create/",
+      createData,
+      config,
+    );
+  
+    return response.data;
+  };
   
   const hotelService = {
-    createReviews
+    createReviews,
+    createHotelReservation
   };
   
   export default hotelService;

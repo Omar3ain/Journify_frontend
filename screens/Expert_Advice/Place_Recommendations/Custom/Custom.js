@@ -28,7 +28,7 @@ const Custom = ({ places, count, status, error, fetchAllRecs, navigation }) => {
     const numericValue = text.replace(/[^0-9]/g, '');
     setRadius(numericValue);
   };
-
+  
 
   const handleButtonPress = (xid) => {
     navigation.navigate('PlaceInfo', { xid });

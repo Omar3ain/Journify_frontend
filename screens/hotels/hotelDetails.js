@@ -131,12 +131,6 @@ const HotelDetails = ({ route }) => {
 
   const navigation = useNavigation();
 
-    const navigateToOtherPage = (itemId) => {
-        console.log('itemId:', itemId);
-      navigation.navigate('HotelReservation', { hotelId: itemId });
-    };
-
-
   const { hotelId } = route.params;
   const [hotel, setHotel] = useState(null);
   const [reviews, setReviews] = useState([]);
@@ -145,6 +139,11 @@ const HotelDetails = ({ route }) => {
   const [reviewRating, setReviewRating] = useState('');
   // const [user, setUser] = useState('');
   const dispatch = useDispatch();
+
+  const navigateToOtherPage = (itemId) => {
+    console.log('itemId:', hotelId);
+  navigation.navigate('HotelReservation', { hotelId: hotelId });
+};
 
     useEffect(()=>{
       const fetchHotelsReviews = async () => {
