@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import Logo from "../../components/Logo";
 import CalendarPicker from "../../components/CalenderPicker";
@@ -22,8 +29,6 @@ export default function DateSelector({ navigation }) {
       (flight) => flight.traveling_date
     );
     setAvailableDates(newAvailableDates);
-    console.log(availableFlights);
-    console.log(selectedFlights);
   }, [availableFlights]);
 
   useEffect(() => {
@@ -33,7 +38,8 @@ export default function DateSelector({ navigation }) {
     );
     setSelectedFlights([...filtered_flights]);
     setLoadFlights(false);
-    console.log(selectedFlights);
+    console.log("fff",selectedFlights);
+    console.log("dd",selectedDate);
   }, [selectedDate]);
 
   const reserveFlight = (flight) => {
@@ -42,16 +48,20 @@ export default function DateSelector({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Logo width={100} height={100} />
-      </View>
-      <View>
-        <CalendarPicker availableDates={availableDates}></CalendarPicker>
-      </View>
-      <View style={{ width: "100%" }}>
-        {/* { !isLoading ? */}
-         {/* ( */}
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../assets/plan.jpg")}
+            style={{ ...styles.image, width: "100%", height: "100%" }}
+          />
+        </View>
+        <View>
+          <CalendarPicker availableDates={availableDates}></CalendarPicker>
+        </View>
+        <View style={{ width: "100%" }}>
+          {/* { !isLoading ? */}
+          {/* ( */}
           <View style={cardStyle.container}>
             {selectedFlights.map((flight) => (
               <View key={flight.id} style={cardStyle.card}>
@@ -84,12 +94,11 @@ export default function DateSelector({ navigation }) {
                           " : " +
                           new Date(flight.traveling_date).getMinutes()}
                       </Text>
-                      <Text style={cardStyle.name}>
+                      <Text style={{...cardStyle.name, marginTop:30}}>
                         <Icon
                           name="money-check-alt"
                           size={20}
                           color="#666"
-                          style={{ paddingTop: 15 }}
                         />
                         {"   "}
                         {flight.ticket_price}
@@ -131,27 +140,18 @@ export default function DateSelector({ navigation }) {
                   >
                     <Text style={cardStyle.buttonText}>Select Flight</Text>
                   </TouchableOpacity>
-                  <Text style={cardStyle.text}>
-                    <Icon
-                      name="money-check-alt"
-                      size={20}
-                      color="#666"
-                      style={{ paddingBottom: 15 }}
-                    />
-                    {"   "}
-                    {flight.ticket_price}
-                  </Text>
                 </View>
               </View>
             ))}
           </View>
-        {/* )  */}
-        {/* : ( */}
+          {/* )  */}
+          {/* : ( */}
           {/* <Loader /> */}
-        {/* ) */}
-        {/* } */}
+          {/* ) */}
+          {/* } */}
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -252,5 +252,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     margin: 10,
+  },
+  image: {
+    alignSelf: "center",
+    resizeMode: "contain",
   },
 });
