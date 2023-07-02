@@ -6,7 +6,7 @@ import Profile from './Profile';
 import Logo from '../components/Logo';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
 import InBoardingTwo from '../screens/inBoarding/inBoardingTwo';
-import Home from '../screens/Home/Home';
+import Home from '../navigation/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
 
 const Tab = createBottomTabNavigator();
@@ -14,7 +14,7 @@ const Tab = createBottomTabNavigator();
 export default function AppTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Home Screen"
       screenOptions={{
         tabBarActiveTintColor: '#00a7d5',
       }}

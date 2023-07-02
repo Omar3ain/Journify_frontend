@@ -6,8 +6,8 @@ export default function InitialScreen({ navigation }) {
   
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.navigate('In boarding one');
-    }, 2500);
+      navigation.navigate('App');
+    }, 1);
 
     return () => {
       clearTimeout(timer);

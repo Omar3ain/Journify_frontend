@@ -6,6 +6,7 @@ import Profile from "./navigation/Profile";
 import InBoarding from "./navigation/InBoarding";
 import Hotels from "./navigation/Hotels";
 import AppTabs from "./navigation/AppTabs";
+import Home from "./navigation/Home";
 import FlgihtsTab from "./screens/Flights/FlightsBoarding";
 
 const Stack = createStackNavigator();
@@ -14,10 +15,11 @@ export default function Main() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        {/* <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
+        <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
+        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
-        <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} /> */}
-        {/* <Stack.Screen name="ExpertAdvice" component={ExpertAdvice} options={{ headerShown: false }} /> */}
+        <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="ExpertAdvice" component={ExpertAdvice} options={{ headerShown: false }} />
 
         <Stack.Screen
           name="App"
