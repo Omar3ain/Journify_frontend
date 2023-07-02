@@ -12,7 +12,7 @@ import SearchBar from "../../components/SearchBar";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen({ navigation }) {
+export default function Home({ navigation }) {
   return (
     <ScrollView style={styles.scrollView}>
       <SafeAreaView>

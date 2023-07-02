@@ -6,7 +6,6 @@ import Profile from "./navigation/Profile";
 import InBoarding from "./navigation/InBoarding";
 import Hotels from "./navigation/Hotels";
 import AppTabs from "./navigation/AppTabs";
-import Home from "./navigation/Home";
 import FlgihtsTab from "./screens/Flights/FlightsBoarding";
 
 const Stack = createStackNavigator();
