@@ -14,10 +14,10 @@ export default function Main() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
         <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name="App" component={AppTabs} options={{ headerShown: false }}/>
+        <Stack.Screen name="App" component={AppTabs} options={{ headerShown: false }}/> */}
         
 
         {/* this should be in AppTabs navigation not here */}

@@ -239,7 +239,7 @@ const HotelDetails = ({ route }) => {
               </View>
         
       </View>
-        <TouchableOpacity style={styles.bookbutton} onPress={addReview} disabled={!reviewTitle || !reviewComment || !reviewRating}>
+        <TouchableOpacity style={{...styles.bookbutton, backgroundColor: reviewTitle.length < 3 || reviewTitle.length && reviewComment.length < 3 || reviewComment.length > 100 > 100? "gray" : "#2cb8e5"}} onPress={addReview} disabled={!reviewTitle || !reviewComment || !reviewRating} >
           <Text style={styles.buttonText}>Add Review</Text>
         </TouchableOpacity>
         <View>

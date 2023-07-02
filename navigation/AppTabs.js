@@ -5,6 +5,7 @@ import Profile from './Profile';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
 import Home from '../screens/Home/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
+import HotelList from '../screens/hotels/hotelsList';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +30,7 @@ export default function AppTabs() {
       />
       <Tab.Screen
         name="Hotels"
-        component={InBoardingOne}
+        component={HotelList}
         options={{
           tabBarLabel: 'Hotels',
           tabBarIcon: ({ color, size }) => (
