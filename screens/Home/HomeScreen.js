@@ -84,9 +84,6 @@ export default function HomeScreen({ navigation }) {
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate("Countries")}>
-          <Text>Go To Countries</Text>
-        </TouchableOpacity>
       </SafeAreaView>
     </ScrollView>
   );
