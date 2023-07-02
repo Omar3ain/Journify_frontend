@@ -6,6 +6,9 @@ import Loader from '../../components/Loader';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from "../../baseUrl";
+
+const URL = `${API_BASE_URL}`;
 
 export default function PlaceInfo() {
   const route = useRoute();
@@ -15,7 +18,7 @@ export default function PlaceInfo() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/place/${xid}/`);
+        const response = await axios.get(`${URL}place/${xid}/`);
         setResponseData(response.data);
       } catch (error) {
         console.error(error);

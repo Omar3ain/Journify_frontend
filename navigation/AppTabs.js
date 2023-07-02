@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons'; 
 import Profile from './Profile';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
 import InBoardingTwo from '../screens/inBoarding/inBoardingTwo';
 import Home from '../screens/home/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
 import HotelList from '../screens/hotels/hotelsList';
-
+import ExpertAdvice from "../navigation/Expert_Advice";
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
@@ -36,6 +37,17 @@ export default function AppTabs() {
           tabBarLabel: 'Hotels',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="home-modern" color={color} size={size} />
+          ),
+          headerShown: false
+        }}
+      />
+        <Tab.Screen
+        name="ExpertAdvice"
+        component={ExpertAdvice}
+        options={{
+          tabBarLabel: 'Advisor',
+          tabBarIcon: ({ color, size }) => (
+            <FontAwesome5 name="tripadvisor" color={"#2cb8e5"} size={size} />
           ),
           headerShown: false
         }}
