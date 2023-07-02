@@ -134,7 +134,9 @@ export default function Flights({ navigation }) {
       });
       return;
     }
-    dispatch(reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass  }));
+    dispatch(
+      reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
+    );
   };
 
   return (
@@ -259,14 +261,18 @@ export default function Flights({ navigation }) {
                   Traveling Date : {selectedFlight.traveling_date.split("T")[0]}
                 </Text>
               </View>
-              <View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
                 <Text>
-                  <Icon
-                    name="clock"
-                    size={20}
-                    color="#666"
-                    style={{ paddingBottom: 15 }}
-                  />
+                  <Icon name="clock" size={20} color="#666" />
+                </Text>
+                <Text>
                   {"  "}
                   {new Date(selectedFlight.traveling_date).getUTCHours() +
                     " : " +

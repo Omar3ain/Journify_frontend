@@ -12,7 +12,8 @@ import { selectDate } from "../services/reducers/Flights/availableSlice";
 // };
 
 const CalendarPicker = ({ availableDates }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const initialDate = useSelector(state => state.flights.selectedDate.length ? state.flights.selectedDate.length : null)
+  const [selectedDate, setSelectedDate] = useState(initialDate);
   const [markedDates, setMarkedDates] = useState({});
   const dispatch = useDispatch();
 
@@ -24,11 +25,46 @@ const CalendarPicker = ({ availableDates }) => {
     setMarkedDates({ ...newMarkedDates });
   }, [availableDates]);
 
-  useEffect(() => {
-    console.log(markedDates);
-  }, [markedDates]);
+
+  // const showFlights = (day) => {
+  //   setSelectedDate(day.dateString);
+  //   dispatch(selectDate(day.dateString));
+  //   setMarkedDates({
+  //     ...markedDates,
+  //     [day.dateString]: {
+  //       ...markedDates[day.dateString],
+  //       selected: true,
+  //       selectedColor: "#2cb8e5",
+  //     },
+  //   });
+  // };
+
 
   const showFlights = (day) => {
+    if (selectedDate) {
+      setMarkedDates({
+        ...markedDates,
+        [selectedDate]: {
+          ...markedDates[selectedDate],
+          selected: false,
+          selectedColor: undefined,
+        },
+        [day.dateString]: {
+          ...markedDates[day.dateString],
+          selected: true,
+          selectedColor: "#2cb8e5",
+        },
+      });
+    } else {
+      setMarkedDates({
+        ...markedDates,
+        [day.dateString]: {
+          ...markedDates[day.dateString],
+          selected: true,
+          selectedColor: "#2cb8e5",
+        },
+      });
+    }
     setSelectedDate(day.dateString);
     dispatch(selectDate(day.dateString));
   };
@@ -38,11 +74,11 @@ const CalendarPicker = ({ availableDates }) => {
       <Calendar
         markedDates={markedDates}
         onDayPress={(day) => showFlights(day)}
-        markedDatesStyle={{ backgroundColor: "blue" }}
+        markedDatesStyle={{ backgroundColor: "#2cb8e5" }}
         markingType="simple"
         current={selectedDate || availableDates[0]}
-        minDate={availableDates[0]}
-        maxDate={availableDates[availableDates.length - 1]}
+        // minDate={availableDates[0]}
+        // maxDate={availableDates[availableDates.length - 1]}
         // theme={theme}
       />
     </View>

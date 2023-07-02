@@ -38,8 +38,6 @@ export default function DateSelector({ navigation }) {
     );
     setSelectedFlights([...filtered_flights]);
     setLoadFlights(false);
-    console.log("fff",selectedFlights);
-    console.log("dd",selectedDate);
   }, [selectedDate]);
 
   const reserveFlight = (flight) => {

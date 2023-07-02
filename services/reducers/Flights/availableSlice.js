@@ -76,7 +76,7 @@ const flightsSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.availableFlights = action.payload.results;
-        state.selectedDate = state.availableFlights[0].traveling_date;
+        state.selectedDate = state.availableFlights[0] ? state.availableFlights[0].traveling_date.split("T")[0] : "";
       })
       .addCase(getFlights.rejected, (state, action) => {
         state.isLoading = false;
