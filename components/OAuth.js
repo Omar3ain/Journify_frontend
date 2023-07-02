@@ -8,11 +8,12 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, Image,TouchableOpacity } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { loginOAuth } from '../services/reducers/auth/authSlice';
+import { API_BASE_URL } from "../baseUrl";
 
+const URL = `${API_BASE_URL}`;
 WebBrowser.maybeCompleteAuthSession();
 
 export default function OAuth() {
@@ -41,8 +42,8 @@ export default function OAuth() {
         navigation.navigate("App");
       }, 1000);
     }
-    if (user && !isSuccess) {
-      navigation.navigate("InitialScreen");
+    if (!user && !isSuccess) {
+      navigation.navigate("Auth");
     }
   }, [dispatch, user, isSuccess, isError]);
 
@@ -52,7 +53,7 @@ export default function OAuth() {
       const { accessToken, idToken } = authentication;
 
       // Send token and email to backend
-      const responsee = await axios.post(`http://127.0.0.1:8000/user/auth/convert-token`, {
+      const responsee = await axios.post(`${URL}user/auth/convert-token`, {
         token: accessToken,
         backend: 'google-oauth2',
         grant_type: 'convert_token',
@@ -68,31 +69,39 @@ export default function OAuth() {
 }
   return (
     <View style={styles.container}>
-    <TouchableOpacity onPress={() => promptAsync()} style={styles.button}>
-      <Text style={styles.buttonText}>Sign in with Google</Text>
-    </TouchableOpacity>
-  </View>
+      <TouchableOpacity onPress={() => promptAsync()} style={styles.button}>
+        <View style={styles.buttonContent}>
+          <Image style={styles.image} source={require('../assets/google.png')} />
+          <Text style={styles.buttonText}>Sign in with Google</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        marginVertical: 5
-    },
-    button: {
-    marginVertical: 5,
-      paddingVertical: 10,
-      paddingHorizontal: 24,
-      borderRadius: 8,
-      borderColor: '#666',
-      borderWidth: 1,
-    },
-    buttonText: {
-      color: '#000',
-      fontSize: 16,
-      fontWeight: 'bold',
-    },
-  });
+  button: {
+    backgroundColor: '#f2f2f2',
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 8
+  },
+  buttonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  image: {
+    width: 25,
+    height: 25,
+    marginRight: 10,
+  },
+  buttonText: {
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+});
+
 
 // const googleClientId = '476260552224-n36k1mbs3aa5ipm5v3qe63np3b6180aa.apps.googleusercontent.com';
 // const drfClientId = 'GUBv9bMsYg9cQ7j7Ibo95ROKO4XJjPyQgXh9t00Q';
