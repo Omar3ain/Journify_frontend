@@ -28,7 +28,7 @@ const Custom = ({ places, count, status, error, fetchAllRecs, navigation }) => {
     const numericValue = text.replace(/[^0-9]/g, '');
     setRadius(numericValue);
   };
-  
+
 
   const handleButtonPress = (xid) => {
     navigation.navigate('PlaceInfo', { xid });
@@ -65,7 +65,7 @@ const Custom = ({ places, count, status, error, fetchAllRecs, navigation }) => {
             selectedValue={kinds}
             onValueChange={(itemValue) => setKinds(itemValue)}
           >
-            <Picker.Item label="Select Place Kind" value="" />
+            <Picker.Item label="Select Place Classification" value="" />
             <Picker.Item label="Cultural" value="cultural" />
             <Picker.Item label="Historic" value="historic" />
             <Picker.Item label="Beaches" value="beaches" />
