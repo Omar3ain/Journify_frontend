@@ -4,6 +4,7 @@ import Toast from "react-native-toast-message";
 
 const initialState = {
   flightReservations: [],
+  reservedFlight: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -68,6 +69,43 @@ export const cancelReservedFlights = createAsyncThunk(
   }
 );
 
+export const reserveFlight = createAsyncThunk(
+  "flightReservations/reserveFlight",
+  async ({ seatsNumber, action, flighClass }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      const flight = thunkAPI.getState().flights.selectedFlight;
+      return await flightsService.reserveFlight(
+        flight,
+        seatsNumber,
+        action,
+        flighClass,
+        token
+      );
+    } catch (error) {
+      let message = "";
+      const data = error.response.data;
+      if (Object.keys(data).length > 0) {
+        for (const field in data) {
+          const errorMessages = data[field];
+          for (const errorMessage of errorMessages) {
+            message += `${errorMessage}`;
+          }
+        }
+      } else {
+        message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+
 const reservationsSlice = createSlice({
   name: "flightReservations",
   initialState,
@@ -102,6 +140,31 @@ const reservationsSlice = createSlice({
         });
       })
 
+      .addCase(reserveFlight.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(reserveFlight.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.isError = false;
+        state.reservedFlight = action.payload;
+        state.flightReservations.push(action.payload);
+        Toast.show({
+          type: "success",
+          text1: "Flight Reservation",
+          text2: "Reserved successfully",
+        });
+      })
+      .addCase(reserveFlight.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        Toast.show({
+          type: "error",
+          text1: "Flight Reservation",
+          text2: state.message,
+        });
+      })
       .addCase(cancelReservedFlights.pending, (state) => {
         state.isLoading = true;
       })
@@ -109,11 +172,9 @@ const reservationsSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
-        console.log(action.meta.arg);
         state.flightReservations = state.flightReservations.filter(
           (reservedFlight) => reservedFlight.id !== action.meta.arg.id
         );
-        console.log(state.flightReservations);
       })
       .addCase(cancelReservedFlights.rejected, (state, action) => {
         state.isLoading = false;

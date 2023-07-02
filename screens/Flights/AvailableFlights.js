@@ -13,10 +13,8 @@ import Logo from "../../components/Logo";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { API_BASE_URL } from "../../baseUrl";
 import Toast from "react-native-toast-message";
-import {
-  getFlights,
-  reserveFlight,
-} from "../../services/reducers/Flights/availableSlice";
+import { getFlights } from "../../services/reducers/Flights/availableSlice";
+import { reserveFlight } from "../../services/reducers/Flights/reservationsSlice";
 
 const URL = `${API_BASE_URL}flights/`;
 
@@ -25,6 +23,7 @@ export default function Flights({ navigation }) {
   const [destination, setDestination] = useState("");
   const [adultsNum, setAdults] = useState(1);
   const [kidsNum, setKids] = useState(0);
+  const [flightClass, setClass] = useState("Business");
   const [error, setError] = useState({
     originError: "",
     destinationError: "",
@@ -40,6 +39,17 @@ export default function Flights({ navigation }) {
   const { selectedFlight, reservedFlight } = useSelector(
     (state) => state.flights
   );
+
+  const disableBooking = () => {
+    return (
+      !origin.length ||
+      !destination.length ||
+      kidsNum + adultsNum > 15 ||
+      kidsNum + adultsNum <= 0 ||
+      !selectedFlight
+    );
+  };
+
   useEffect(() => {
     // if (isSuccess) {
     //   setTimeout(() => {
@@ -49,8 +59,6 @@ export default function Flights({ navigation }) {
     if (user && !isSuccess) {
       navigation.navigate("InitialScreen");
     }
-    console.log("origin", origin);
-    console.log(reservedFlight);
   }, [
     dispatch,
     user,
@@ -66,12 +74,13 @@ export default function Flights({ navigation }) {
       dispatch(getFlights({ origin, destination }));
       navigation.navigate("Select Date");
     } else {
-      if (!origin.length)
+      if (!origin.length) {
         setError({ ...error, originError: "select departure first" });
-      if (!destination.length)
-        setError({ ...error, destinationError: "select destination first " });
+      }
+      if (!destination.length) {
+        setError({ ...error, destinationError: "select destination first" });
+      }
     }
-    console.log(error);
   };
 
   const updateInputs = (name, value) => {
@@ -95,7 +104,6 @@ export default function Flights({ navigation }) {
       default:
         break;
     }
-    console.log(error);
   };
 
   const increasSeats = (seatsType) => {
@@ -126,7 +134,9 @@ export default function Flights({ navigation }) {
       });
       return;
     }
-    dispatch(reserveFlight({ seatsNumber: adultsNum + kidsNum, action }));
+    dispatch(
+      reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
+    );
   };
 
   return (
@@ -137,21 +147,23 @@ export default function Flights({ navigation }) {
         </View>
         <View style={styles.flightsDates}>
           <TouchableOpacity
-            style={styles.button}
+            style={{
+              ...styles.button,
+              backgroundColor:
+                !origin.length || !destination.length ? "gray" : "#2cb8e5",
+            }}
             onPress={() => getAvailableFlights()}
-            // disabled={
-            //   !(error.destinationError.length && error.originError.length)
-            // }
+            disabled={!origin.length || !destination.length}
             activeOpacity={0.5}
           >
             <Text style={styles.flighDateButtonText}>Fly out</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.button}
             onPress={() => navigation.navigate("select date")}
           >
             <Text style={styles.flighDateButtonText}>Fly back</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         <View style={styles.formContainer}>
@@ -168,18 +180,20 @@ export default function Flights({ navigation }) {
                 }
                 style={styles.input}
               >
-                <Picker.Item label="Please choose value..." value="" />
+                <Picker.Item
+                  label="Please choose departure..."
+                  value=""
+                  enabled={false}
+                />
                 <Picker.Item label="Egypt" value="EG" />
                 <Picker.Item label="France" value="FR" />
               </Picker>
             </View>
-            {error.originError.length && (
-              <View style={{ padding: 10 }}>
-                <Text style={{ color: "red", fontSize: 14 }}>
-                  {error.originError}
-                </Text>
-              </View>
-            )}
+            <View style={{ padding: 10 }}>
+              <Text style={{ color: "red", fontSize: 14 }}>
+                {error.originError.length ? error.originError : ""}
+              </Text>
+            </View>
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>
@@ -195,41 +209,76 @@ export default function Flights({ navigation }) {
                 }
                 style={styles.input}
               >
-                <Picker.Item label="Please choose value..." value="" />
+                <Picker.Item
+                  label="Please choose destination..."
+                  value=""
+                  enabled={false}
+                />
                 <Picker.Item label="Belgium" value="BE" />
                 <Picker.Item label="France" value="FR" />
               </Picker>
             </View>
-            {error.destinationError.length && (
-              <View style={{ padding: 10 }}>
-                <Text style={{ color: "red", fontSize: 14 }}>
-                  {error.destinationError}
-                </Text>
-              </View>
-            )}
+
+            <View style={{ padding: 10 }}>
+              <Text style={{ color: "red", fontSize: 14 }}>
+                {error.destinationError.length ? error.destinationError : ""}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.label}>Class</Text>
+            <View style={{ ...styles.inputWrapper, width: "30%" }}>
+              <Picker
+                selectedValue={flightClass}
+                onValueChange={(itemValue) => setClass(itemValue)}
+                style={styles.input}
+              >
+                <Picker.Item label="Economy" value="Economy" />
+                <Picker.Item label="Business" value="Business" />
+              </Picker>
+            </View>
+
+            <View style={{ padding: 10 }}>
+              <Text style={{ color: "red", fontSize: 14 }}>
+                {error.destinationError.length ? error.destinationError : ""}
+              </Text>
+            </View>
           </View>
         </View>
         {selectedFlight && (
           <View style={styles.fieldSet}>
             <Text style={styles.legend}>Flight Information</Text>
-            <View>
-              <Text>
-                Traveling Date : {selectedFlight.traveling_date.split("T")[0]}
-              </Text>
-            </View>
-            <View>
-              <Text>
-                <Icon
-                  name="clock"
-                  size={20}
-                  color="#666"
-                  style={{ paddingBottom: 15 }}
-                />
-                {"  "}
-                {new Date(selectedFlight.traveling_date).getUTCHours() +
-                  " : " +
-                  new Date(selectedFlight.traveling_date).getMinutes()}
-              </Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <View>
+                <Text>
+                  Traveling Date : {selectedFlight.traveling_date.split("T")[0]}
+                </Text>
+              </View>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Text>
+                  <Icon name="clock" size={20} color="#666" />
+                </Text>
+                <Text>
+                  {"  "}
+                  {new Date(selectedFlight.traveling_date).getUTCHours() +
+                    " : " +
+                    new Date(selectedFlight.traveling_date).getMinutes()}
+                </Text>
+              </View>
             </View>
           </View>
         )}
@@ -254,7 +303,7 @@ export default function Flights({ navigation }) {
                         size={20}
                         color={
                           adultsNum >= 15 || kidsNum + adultsNum >= 15
-                            ? "#000"
+                            ? "gray"
                             : "#2cb8e5"
                         }
                       />
@@ -275,7 +324,7 @@ export default function Flights({ navigation }) {
                       <Icon
                         name="minus"
                         size={20}
-                        color={adultsNum > 0 ? "#2cb8e5" : "#000"}
+                        color={adultsNum > 0 ? "#2cb8e5" : "gray"}
                       />
                     </Text>
                   </TouchableOpacity>
@@ -296,7 +345,7 @@ export default function Flights({ navigation }) {
                         size={20}
                         color={
                           kidsNum >= 15 || kidsNum + adultsNum >= 15
-                            ? "#000"
+                            ? "gray"
                             : "#2cb8e5"
                         }
                       />
@@ -317,7 +366,7 @@ export default function Flights({ navigation }) {
                       <Icon
                         name="minus"
                         size={20}
-                        color={kidsNum > 0 ? "#2cb8e5" : "#000"}
+                        color={kidsNum > 0 ? "#2cb8e5" : "gray"}
                       />
                     </Text>
                   </TouchableOpacity>
@@ -326,12 +375,16 @@ export default function Flights({ navigation }) {
             </View>
           </View>
         </View>
-        {reservedFlight && (
+        {!disableBooking() && (
           <View style={{ width: "100%" }}>
             <Text style={{ color: "#2cb8e5", fontWeight: "bold" }}>
               Total Price:{" "}
               <span style={{ color: "black", fontWeight: "bold" }}>
-                {" " + reservedFlight.total_price + " EGP"}
+                {" " +
+                  selectedFlight.ticket_price *
+                    (kidsNum + adultsNum) *
+                    (flightClass === "Business" ? 2 : 1) +
+                  " EGP"}
               </span>
             </Text>
           </View>
@@ -347,11 +400,14 @@ export default function Flights({ navigation }) {
 
         <View style={{ width: "100%", alignItems: "center" }}>
           <TouchableOpacity
-            style={styles.button}
+            style={{
+              ...styles.button,
+              backgroundColor: disableBooking() ? "gray" : "#2cb8e5",
+            }}
             onPress={() => {
               bookFlight("edit");
             }}
-            // disabled={true}
+            disabled={disableBooking()}
             activeOpacity={0.5}
           >
             <Text style={styles.flighDateButtonText}>Book Now</Text>

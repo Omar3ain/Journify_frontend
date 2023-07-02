@@ -18,23 +18,7 @@ const getFlights = async (from, to, token) => {
   return response.data;
 };
 
-// const reserveFlight = async (flight, number_seats, token) => {
-//   const config = {
-//     headers: {
-//       "Content-Type": "application/json",
-//       Authorization: `token ${token}`,
-//     },
-//   };
-//   const response = await axios.post(
-//     URL + `/${flight.id}reserve/add`,
-//     { number_seats },
-//     config
-//   );
-
-//   return response.data;
-// };
-
-const reserveFlight = async (flight, number_seats, action, token) => {
+const reserveFlight = async (flight, number_seats, action, flighClass, token) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +27,7 @@ const reserveFlight = async (flight, number_seats, action, token) => {
   };
   const response = await axios.patch(
     URL + "flights/" + `${flight.id}/reserve/${action}`,
-    { number_seats },
+    { number_seats, flighClass },
     config
   );
 
@@ -69,12 +53,10 @@ const cancelReservation = async (reservation, token) => {
       Authorization: `token ${token}`,
     },
   };
-  console.log(reservation.flight.id);
   const response = await axios.delete(
     URL + "flights/" + `${reservation.flight.id}` + "/reserve/remove",
     config
   );
-  console.log(response);
   return response.data;
 };
 
