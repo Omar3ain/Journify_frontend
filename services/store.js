@@ -9,7 +9,8 @@ import flightsReducers from "./reducers/Flights/availableSlice";
 import reservationReducers from "./reducers/Flights/reservationsSlice";
 import hotelReviewsReducer from "./reducers/Hotels/Reviews";
 import hotelReservReducer from "./reducers/Hotels/HotelReservation";
-
+import placeReducer from "./reducers/Places/placeSlice";
+import restaurantReducer from "./reducers/Restaurants/restaurantSlice";
 
 
 const store = configureStore({
@@ -25,6 +26,12 @@ const store = configureStore({
     recommendations: RecommendationsReducer,
     customReducer: customReducer,
     journeyPlans: journeyPlansReducer,
+
+    // Places
+    places: placeReducer,
+
+    // Restaurants
+    restaurants: restaurantReducer,
   },
 });
 
