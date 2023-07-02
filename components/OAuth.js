@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Button, Image,TouchableOpacity } from "react-native";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { loginOAuth } from '../services/reducers/auth/authSlice';
@@ -45,7 +44,7 @@ export default function OAuth() {
       }, 1000);
     }
     if (!user && !isSuccess) {
-      navigation.navigate("auth");
+      navigation.navigate("Auth");
     }
   }, [dispatch, user, isSuccess, isError]);
 
@@ -92,6 +91,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f2f2f2',
     padding: 10,
     borderRadius: 5,
+    marginTop: 8
   },
   buttonContent: {
     flexDirection: 'row',
@@ -103,8 +103,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   buttonText: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 
