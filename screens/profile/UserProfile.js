@@ -30,7 +30,7 @@ export default function UserProfile({ navigation }) {
           <View style={styles.beforeTitle}>
             <Icon name="account-outline" size={28} color="#28aad2"/>
           </View>
-          <Text style={styles.buttonText}>View User Data</Text>
+          <Text style={styles.buttonText}>Profile info</Text>
         </View>
         <Icon name="chevron-right" size={28} color="grey"/>
       </TouchableOpacity>
@@ -42,7 +42,7 @@ export default function UserProfile({ navigation }) {
           <View style={styles.beforeTitle}>
             <Icon name="account-edit" size={28} color="#28aad2"/>
           </View>
-          <Text style={styles.buttonText}>Update User Data</Text>
+          <Text style={styles.buttonText}>Update Profile</Text>
         </View>
         <Icon name="chevron-right" size={28} color="grey"/>
       </TouchableOpacity>

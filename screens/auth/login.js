@@ -22,13 +22,11 @@ export default function Login({ navigation }) {
   );
 
   useEffect(() => {
-    if (isSuccess && user) {
-      setTimeout(() => {
+    if (user) {
         navigation.navigate("App");
-      }, 1000);
     }
-    if (user && !isSuccess) {
-      navigation.navigate("InitialScreen");
+    if (!user && !isSuccess) {
+      navigation.navigate("auth");
     }
   }, [dispatch, user, isSuccess, isError]);
 

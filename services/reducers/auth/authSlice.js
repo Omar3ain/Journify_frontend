@@ -1,9 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+async function getUser() {
+  const storedUser = await AsyncStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  return user;
+}
 
 const initialState = {
-  user: null,
+  user: await getUser(),
   isError: false,
   isSuccess: false,
   isRegisterSuccess: false,
