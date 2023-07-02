@@ -20,11 +20,7 @@ export default function Main() {
         <Stack.Screen name="App" component={AppTabs} options={{ headerShown: false }}/>
         
 
-        {/* this should be in AppTabs navigation not here */}
-        
-        <Stack.Screen name="ExpertAdvice" component={ExpertAdvice} options={{ headerShown: false }} />
-
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Hotels"
           component={Hotels}
           options={{ headerShown: false }}
@@ -34,7 +30,7 @@ export default function Main() {
           name="Flights"
           component={FlgihtsTab}
           options={{ headerShown: true }}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );
