@@ -3,15 +3,20 @@ import { View, Text, Image, TextInput, FlatList, Alert, StyleSheet } from 'react
 import { styles } from './Style';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import Loader from '../../components/Loader';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { createHotelReview } from '../../services/reducers/Hotels/Reviews';
+import StarRating from './Ratings';
 
 const HotelDetails = ({ route }) => {
 
+  const handleRate = (rating) => {
+    console.log('Selected rating:', rating);
+    // You can perform any further logic with the selected rating here
+  };
   const navigation = useNavigation();
 
   const { hotelId } = route.params;
@@ -132,11 +137,13 @@ const HotelDetails = ({ route }) => {
 
   const renderReview = ({ item }) => {
     return (
+    
       <View style={{backgroundColor: '#eee', borderColor: 'black', borderStyle: 'solid', borderWidth: 3, borderRadius: 5, marginTop: 4}}>
         {/* <Text>User: {item.user}</Text> */}
         <Text style={{ fontWeight: 'bold' }}> {item.title}</Text> 
         <Text> {item.comment}</Text>
         <Text> {item.rating}</Text>
+
         {/* <TouchableOpacity onPress={() => deleteReview(item.id)}>
         <Text>Delete</Text>
       </TouchableOpacity> */}
@@ -153,6 +160,8 @@ const HotelDetails = ({ route }) => {
     setReviewRating(prevRating => Math.max(prevRating - 1, 0));
   };
   return (
+
+  <ScrollView>
     <View style={styles.container}>
       <Image source={require('../../assets/Expert_Advice/3959402.jpg')} style={styles.image} />
       <View style={styles.details}>
@@ -160,14 +169,16 @@ const HotelDetails = ({ route }) => {
         <Text style={styles.desc}>{hotel.description}</Text>
         <View style={styles.info}>
           <Text style={styles.text}>
-            <Icon2 name="location-pin" size={16} color="#666" /> Country: {hotel.countryId}
-          </Text>
-          <Text style={styles.text}>
-            <Icon name="city" size={16} color="#666" /> Price: {hotel.room_price}
+            <Icon2 name="location-pin" size={16} color="red" /> {hotel.countryId}
           </Text>
           <Text style={styles.text}>Available Rooms: {hotel.available_rooms}</Text>
         </View>
-        <Text>Rate: {hotel.avg_rating}</Text>
+        <View style={styles.info}>
+          <Text style={styles.text}>
+            <Icon name="dollar-sign" size={16} color="#666" /> Price: {hotel.room_price}
+          </Text>
+        <Text><Icon2 name="star" size={16} color="gold" /> {hotel.avg_rating}</Text>
+        </View>
         <TouchableOpacity
                      style={styles.button}
                      onPress={() => navigateToOtherPage()}><Text style={{color:'white'}}>Book Now</Text></TouchableOpacity>
@@ -202,7 +213,7 @@ const HotelDetails = ({ route }) => {
         {commentError ? (
           <Text style={styless.error}>{commentError}</Text>
         ) : null}
-        <View>
+        {/* <View>
                 <View style={styless.inputWrapper}>
                   <TouchableOpacity
                     onPress={increaseRating}
@@ -236,9 +247,14 @@ const HotelDetails = ({ route }) => {
                     </Text>
                   </TouchableOpacity>
                 </View>
-              </View>
+                
+              </View> */}
         
+      <StarRating style={{margin: 'auto'}} defaultRating={0} starSize={24} onRate={setReviewRating} />
       </View>
+      <View>
+      {!reviewTitle || !reviewComment || !reviewRating ? <Text style={{color: 'red'}}>You have to fill all this fields</Text> : null}
+    </View>
         <TouchableOpacity style={{...styles.bookbutton, backgroundColor: reviewTitle.length < 3 || reviewTitle.length && reviewComment.length < 3 || reviewComment.length > 100 > 100? "gray" : "#2cb8e5"}} onPress={addReview} disabled={!reviewTitle || !reviewComment || !reviewRating} >
           <Text style={styles.buttonText}>Add Review</Text>
         </TouchableOpacity>
@@ -256,7 +272,7 @@ const HotelDetails = ({ route }) => {
         
       </View>
 
-
+      </ScrollView>
 
 
 
