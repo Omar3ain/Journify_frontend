@@ -19,7 +19,7 @@ const Reservations = () => {
     ...reservations,
   ]);
 
-  const [display, setDisplay] = useState("latest");
+  const [display, setDisplay] = useState("earliest");
 
   const canCancel = (date) => {
     const now = new Date();
@@ -80,8 +80,8 @@ const Reservations = () => {
           style={styles.input}
           key={display}
         >
-          <Picker.Item label="Recent" value="latest" />
-          <Picker.Item label="Earliest" value="earliest" />
+          <Picker.Item label="Recent" value="earliest" />
+          <Picker.Item label="Earliest" value="latest" />
         </Picker>
       </View>
       {displayedReservations.map((reservation) => (
@@ -173,7 +173,7 @@ const Reservations = () => {
                     {reservation.number_seats}
                   </Text>
                 </View>
-                {canCancel(reservation.flight.traveling_date[0]) && (
+                {canCancel(reservation.flight.traveling_date) && (
                   <View style={{ paddingTop: 20 }}>
                     <TouchableOpacity
                       style={{

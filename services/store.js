@@ -8,6 +8,8 @@ import journeyPlansReducer from "./reducers/Expert_Advice/JourneyPlans/JourneyPl
 import flightsReducers from "./reducers/Flights/availableSlice";
 import reservationReducers from "./reducers/Flights/reservationsSlice";
 import hotelReviewsReducer from "./reducers/Hotels/Reviews";
+import hotelReservReducer from "./reducers/Hotels/HotelReservation";
+
 
 
 const store = configureStore({
@@ -15,7 +17,10 @@ const store = configureStore({
     auth: authReducer,
     flights: flightsReducers,
     reservations: reservationReducers,
+
+    // Hotels
     hotels: hotelReviewsReducer,
+    hotelsReservations: hotelReservReducer,
     // Expert Advisor
     recommendations: RecommendationsReducer,
     customReducer: customReducer,
