@@ -38,7 +38,10 @@ const HotelList = () => {
                 <Text style={styles.name}>{item.name}</Text>
                 <Text style={styles.desc}>{item.description}</Text>
                 <View style={styles.info}>
+                  <View>
                   <Text style={styles.text}><Icon2 name="location-pin" size={16} color="#666" /> Country: {item.countryId}</Text>
+                  <Text style={styles.text}><Icon2 name="location-pin" size={16} color="#666" /> City: {item.city}</Text>
+                  </View>
                   <Text style={styles.text}><Icon name="city" size={16} color="#666" /> Price: {item.room_price}</Text>
                   <Text style={styles.text}>Available Rooms: {item.room_price}</Text>
                   <Text style={styles.text}>rate: {item.avg_rating}</Text>
