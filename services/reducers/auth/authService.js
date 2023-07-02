@@ -16,7 +16,7 @@ const login = async (userData) => {
   );
 
   if (response.data) {
-    await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
+    await AsyncStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
 };

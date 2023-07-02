@@ -46,12 +46,23 @@ export const styles = StyleSheet.create({
         paddingBottom: 30,
       },
       button: {
+        marginTop: 30,
         backgroundColor: '#007bff',
         borderRadius: 5,
         padding: 7,
         alignItems: 'center',
         justifyContent: 'center',
         color: 'black'
+      },
+      bookbutton: {
+        backgroundColor: '#007bff',
+        borderRadius: 5,
+        padding: 7,
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'black',
+        width: '50%',
+        marginBottom: 30,
       },
 
   });

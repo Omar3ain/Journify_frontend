@@ -16,26 +16,26 @@ export default function Main() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="In boarding" component={InBoarding} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
         <Stack.Screen name="Auth" component={Auth} options={{ headerShown: false }} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="App" component={AppTabs} options={{ headerShown: false }}/>
+        
+
+        {/* this should be in AppTabs navigation not here */}
+        
         <Stack.Screen name="ExpertAdvice" component={ExpertAdvice} options={{ headerShown: false }} />
 
-        <Stack.Screen
-          name="App"
-          component={AppTabs}
-          options={{ headerShown: false }}
-        />
         <Stack.Screen
           name="Hotels"
           component={Hotels}
           options={{ headerShown: false }}
         />
-        {/* <Stack.Screen
+        
+        <Stack.Screen
           name="Flights"
           component={FlgihtsTab}
           options={{ headerShown: true }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -7,6 +7,10 @@ import customReducer from "./reducers/Expert_Advice/Recommendations/CustomRec";
 import journeyPlansReducer from "./reducers/Expert_Advice/JourneyPlans/JourneyPlans";
 import flightsReducers from "./reducers/Flights/availableSlice";
 import reservationReducers from "./reducers/Flights/reservationsSlice";
+import hotelReviewsReducer from "./reducers/Hotels/Reviews";
+import hotelReservReducer from "./reducers/Hotels/HotelReservation";
+
+
 
 const store = configureStore({
   reducer: {
@@ -14,6 +18,9 @@ const store = configureStore({
     flights: flightsReducers,
     reservations: reservationReducers,
 
+    // Hotels
+    hotels: hotelReviewsReducer,
+    hotelsReservations: hotelReservReducer,
     // Expert Advisor
     recommendations: RecommendationsReducer,
     customReducer: customReducer,

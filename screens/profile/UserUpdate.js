@@ -52,14 +52,15 @@ export default function UserUpdate({ navigation }) {
   }, [user]);
 
   const handleSubmit = () => {
-    const year = dob.getFullYear();
-    const month = String(dob.getMonth() + 1).padStart(2, "0");
-    const day = String(dob.getDate()).padStart(2, "0");
+    
+    const year = dob instanceof Date ? dob.getFullYear() : null;
+    const month = dob instanceof Date ? String(dob.getMonth() + 1).padStart(2, "0") : null;
+    const day = dob instanceof Date ? String(dob.getDate()).padStart(2, "0") : null;
 
     const updatedUser = {
       first_name: firstName,
       last_name: lastName,
-      dob: `${year}-${month}-${day}`,
+      dob: dob instanceof Date ? `${year}-${month}-${day}` : dob,
       gender,
       zip_code,
       country,

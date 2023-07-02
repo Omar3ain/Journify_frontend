@@ -1,9 +1,16 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "./authService";
 import Toast from "react-native-toast-message";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+async function getUser() {
+  const storedUser = await AsyncStorage.getItem("user");
+  const user = storedUser ? JSON.parse(storedUser) : null;
+  return user;
+}
 
 const initialState = {
-  user: null,
+  user: await getUser(),
   isError: false,
   isSuccess: false,
   isRegisterSuccess: false,
@@ -39,24 +46,19 @@ export const register = createAsyncThunk(
     try {
       return await authService.register(user);
     } catch (error) {
-      let message = "";
-      const data = error.response.data;
-      if (Object.keys(data).length > 0) {
-        for (const field in data) {
-          const errorMessages = data[field];
-          for (const errorMessage of errorMessages) {
-            message += `${errorMessage}`;
-          }
+        let message = "";
+        const data = error.response.data;
+        if (Object.keys(data).length > 0) {
+            for (const key in data) {
+                const value = data[key];
+                message += `${key}: ${value} `;
+            }
         }
-      } else {
-        message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-      }
-      return thunkAPI.rejectWithValue(message);
+        else {
+            message = (error.response && error.response.data && error.response.data.message) ||
+                error.message || error.toString();
+        }
+        return thunkAPI.rejectWithValue(message);
     }
   }
 );

@@ -2,19 +2,18 @@ import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Profile from './Profile';
-// For testing purposes replace these navigators with yours...
-import Logo from '../components/Logo';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
 import InBoardingTwo from '../screens/inBoarding/inBoardingTwo';
-import Home from '../navigation/Home';
+import Home from '../screens/home/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
+import HotelList from '../screens/hotels/hotelsList';
 
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="Home Screen"
+      initialRouteName="Home"
       screenOptions={{
         tabBarActiveTintColor: '#00a7d5',
       }}
@@ -32,7 +31,7 @@ export default function AppTabs() {
       />
       <Tab.Screen
         name="Hotels"
-        component={InBoardingOne}
+        component={HotelList}
         options={{
           tabBarLabel: 'Hotels',
           tabBarIcon: ({ color, size }) => (
