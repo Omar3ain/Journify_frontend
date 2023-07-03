@@ -16,7 +16,7 @@ export default function UserProfile({ navigation }) {
   const { user } = useSelector((state) => state.auth);
   
   
-  const imageUrl = 'http://127.0.0.1:8000' + user?.user.image;
+  const imageUrl = 'https://journify-backend.onrender.com/' + user?.user.image;
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Profile</Text>

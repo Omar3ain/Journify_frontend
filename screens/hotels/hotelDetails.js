@@ -10,7 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch } from 'react-redux';
 import { createHotelReview } from '../../services/reducers/Hotels/Reviews';
 import StarRating from './Ratings';
-
+import { API_BASE_URL } from "../../baseUrl";
+const URL = `${API_BASE_URL}`;
 const HotelDetails = ({ route }) => {
 
   const handleRate = (rating) => {
@@ -57,7 +58,7 @@ const HotelDetails = ({ route }) => {
     useEffect(()=>{
       const fetchHotelsReviews = async () => {
         try {
-          const response = await fetch(`http://127.0.0.1:8000/hotel-review/${hotelId}`);
+          const response = await fetch(`${URL}hotel-review/${hotelId}`);
           const data = await response.json();
           setReviews(data);
         } catch (error) {
@@ -120,7 +121,7 @@ const HotelDetails = ({ route }) => {
   useEffect(() => {
     const fetchHotelDetails = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/hotel/${hotelId}`);
+        const response = await fetch(`${URL}hotel/${hotelId}`);
         const data = await response.json();
         setHotel(data);
       } catch (error) {
