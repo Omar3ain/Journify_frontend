@@ -42,7 +42,7 @@ export default function OAuth() {
       }, 1000);
     }
     if (!user && !isSuccess) {
-      navigation.navigate("auth");
+      navigation.navigate("Auth");
     }
   }, [dispatch, user, isSuccess, isError]);
 

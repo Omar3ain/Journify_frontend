@@ -26,7 +26,7 @@ export default function Login({ navigation }) {
         navigation.navigate("App");
     }
     if (!user && !isSuccess) {
-      navigation.navigate("auth");
+      navigation.navigate("Auth");
     }
   }, [dispatch, user, isSuccess, isError]);
 
