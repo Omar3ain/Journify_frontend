@@ -5,7 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { API_BASE_URL } from "../../baseUrl";
+const URL = `${API_BASE_URL}`;
 const HotelList = () => {
     const navigation = useNavigation();
 
@@ -19,7 +20,7 @@ const HotelList = () => {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/hotel');
+        const response = await fetch(`${URL}hotel`);
         const data = await response.json();
         setHotels(data);
       } catch (error) {

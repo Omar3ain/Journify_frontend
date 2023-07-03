@@ -11,9 +11,8 @@ import * as Google from "expo-auth-session/providers/google";
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { loginOAuth } from '../services/reducers/auth/authSlice';
-import { API_BASE_URL } from "../baseUrl";
 import { FontAwesome5 } from '@expo/vector-icons'; 
-
+import { API_BASE_URL } from "../baseUrl";
 const URL = `${API_BASE_URL}`;
 WebBrowser.maybeCompleteAuthSession();
 
@@ -58,8 +57,8 @@ export default function OAuth() {
         token: accessToken,
         backend: 'google-oauth2',
         grant_type: 'convert_token',
-        client_id: 'OT2C5W6Ku7mTtNwsARl8Wjdin7MTlN1KhOtP2Ml0',
-        client_secret: '7bT8UZAbrSLwAsunKtAvd5DiOzVn8IzhquP55EWIVtJwv34rZo7OLsuXoxJ7oFXCHuhG86Cb6hCDWEuqfqKoFMcplodBwpiqbWxSDAEV8qocitV0dPRrm7l32eBzWsdb',
+        client_id: 'Q7YutXPhVaYYTQcpDcuwMsiybrVNzaMtRGewwYpE',
+        client_secret: 'ZJ376GHB4JfDDI9rjrwwYrjKlvznBguiBDGANQ8DmJIYlT5r1eqyrn2wTgR0uWJdyRAo2kYHoYfy7VyYiK1yHReddjBIvelicOYeCOzTNdcfYHk79BwzgMienPbHlRed',
       });
 
       const { access_token, refresh_token } = responsee.data;
