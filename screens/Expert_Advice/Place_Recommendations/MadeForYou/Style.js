@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         padding: 10,
         backgroundColor: '#fff',
-        overflow: 'hidden'
+        overflow: 'hidden',
       },
       card: {
         backgroundColor: '#ffffff',

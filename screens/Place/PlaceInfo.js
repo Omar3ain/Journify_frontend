@@ -1,4 +1,4 @@
-import { View, Image, Text, StyleSheet } from 'react-native';
+import { View, Image, Text, StyleSheet, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { styles } from './Styles';
@@ -51,9 +51,10 @@ export default function PlaceInfo() {
   }
 
   if (!responseData) {
-    return <Loader />;
+    return <View style={styles.container_error}><Loader /></View>;
   }
   return (
+    <ScrollView style={{backgroundColor: '#fff'}}>
     <View style={styles.container}>
       <View style={styles.card}>
         <Image source={{ uri: responseData.preview.source || '' }} style={styles.image} />
@@ -95,5 +96,6 @@ export default function PlaceInfo() {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
   }  
