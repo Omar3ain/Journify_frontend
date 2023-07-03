@@ -1,18 +1,30 @@
-// 5ae2e3f221c38a28845f05b6d5e98746c0872d8aa355d2b6398141a6
-import React from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity,
-  Button,
-} from "react-native";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { View, Text, Image, TouchableWithoutFeedback } from "react-native";
+import { styles } from "./styles";
 import SearchBar from "../../components/SearchBar";
 import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { getPopularPlaces } from "../../services/reducers/Places/placeSlice";
+import Loader from "../../components/Loader";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Home({ navigation }) {
+export default function Home() {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const { popularPlaces, isLoading, isSuccess } = useSelector(
+    (state) => state.places
+  );
+
+  useEffect(() => {
+    dispatch(getPopularPlaces());
+  }, [dispatch]);
+
+  const handleButtonPress = (xid) => {
+    navigation.navigate("PlaceInfo", { xid });
+  };
+
   return (
     <ScrollView style={styles.scrollView}>
       <SafeAreaView>
@@ -58,104 +70,39 @@ export default function Home({ navigation }) {
           </ScrollView>
 
           <Text style={styles.heading}>Most Popular Places</Text>
-          <View style={styles.popularContainer}>
-            <View style={styles.singlePopularContainer}>
-              <Image
-                style={styles.popularImageStyle}
-                source={require("../../assets/4085561.png")}
-              />
-              <Text style={styles.popularImageText}>
-                {" "}
-                Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua.{" "}
-              </Text>
-            </View>
 
-            <View style={styles.singlePopularContainer}>
-              <Image
-                style={styles.popularImageStyle}
-                source={require("../../assets/4085561.png")}
-              />
-              <Text style={styles.popularImageText}>
-                {" "}
-                Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua.{" "}
-              </Text>
+          {isLoading || !isSuccess ? (
+            <Loader />
+          ) : (
+            // map through popular places
+            <View style={styles.popularContainer}>
+              {popularPlaces.map((place) => {
+                return (
+                  <TouchableWithoutFeedback
+                    key={place.xid}
+                    onPress={() => handleButtonPress(place.xid)}
+                  >
+                    <View style={styles.singlePopularContainer}>
+                      <Image
+                        style={styles.popularImageStyle}
+                        source={place.preview.source}
+                      />
+                      <View style={styles.popularImageTextContainer}>
+                        <Text style={styles.popularImageTitle}>
+                          {place.name}
+                        </Text>
+                        <Text style={styles.popularImageText}>
+                          {place.kinds.split(",").slice(0, 2).join(" - ")}
+                        </Text>
+                      </View>
+                    </View>
+                  </TouchableWithoutFeedback>
+                );
+              })}
             </View>
-          </View>
+          )}
         </View>
       </SafeAreaView>
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  exploreContainer: {
-    flexDirection: "row",
-  },
-  heading: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#000",
-    marginVertical: 15,
-    marginStart: 5,
-  },
-  seeAll: {
-    fontSize: 16,
-    color: "#000",
-    paddingTop: 5,
-    marginVertical: 15,
-    marginLeft: "auto",
-  },
-  imagesContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-  },
-  singleImgContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: 10,
-  },
-  imageStyle: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    backgroundColor: "lightgray",
-  },
-  imageText: {
-    fontSize: 16,
-    padding: 5,
-    color: "#000",
-  },
-  popularContainer: {
-    flexDirection: "column",
-    paddingVertical: 10,
-  },
-  singlePopularContainer: {
-    flexDirection: "row",
-    marginHorizontal: 10,
-  },
-  popularImageStyle: {
-    height: 100,
-    width: 100,
-    borderRadius: 10,
-    backgroundColor: "lightgray",
-    margin: 10,
-  },
-  popularImageText: {
-    fontSize: 16,
-    padding: 10,
-    margin: 10,
-    color: "#000",
-  },
-});

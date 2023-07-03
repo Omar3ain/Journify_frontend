@@ -11,13 +11,13 @@ const getPopular = async (city_name) => {
   };
   const response = await axios.get(URL + "popular/", {
     params: {
-      city_name: city_name,
+      city_name,
     },
     ...config,
   });
 
   if (response.data) {
-    await AsyncStorage.setItem("city", JSON.stringify(city_name));
+    await AsyncStorage.setItem("city", city_name);
   }
   return response.data;
 };

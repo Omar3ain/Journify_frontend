@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 async function getCity() {
   const storedCity = await AsyncStorage.getItem("city");
-  const city = storedCity ? JSON.parse(storedCity) : "Paris";
+  const city = storedCity === "undefined" ? "Paris" : storedCity;
   return city;
 }
 
