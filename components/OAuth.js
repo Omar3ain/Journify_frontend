@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from "react-redux";
 import { loginOAuth } from '../services/reducers/auth/authSlice';
 import { API_BASE_URL } from "../baseUrl";
+import { FontAwesome5 } from '@expo/vector-icons'; 
 
 const URL = `${API_BASE_URL}`;
 WebBrowser.maybeCompleteAuthSession();
@@ -80,6 +81,12 @@ export default function OAuth() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   button: {
     backgroundColor: '#f2f2f2',
     padding: 10,

@@ -9,6 +9,7 @@ import Home from '../screens/home/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
 import HotelList from '../screens/hotels/hotelsList';
 import ExpertAdvice from "../navigation/Expert_Advice";
+import Hotels from '../navigation/Hotels'
 const Tab = createBottomTabNavigator();
 
 export default function AppTabs() {
@@ -32,7 +33,7 @@ export default function AppTabs() {
       />
       <Tab.Screen
         name="Hotels"
-        component={HotelList}
+        component={Hotels}
         options={{
           tabBarLabel: 'Hotels',
           tabBarIcon: ({ color, size }) => (
