@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from "../../../../baseUrl";
 
+const URL = `${API_BASE_URL}`;
 export const fetchAllRecs = createAsyncThunk('allRecs/fetchAllRecs', async () => {
   try {
     // Retrieve the token from AsyncStorage
     const user = await AsyncStorage.getItem('user');
     const userId = JSON.parse(user);
-    const response = await axios.get('http://localhost:8000/recommendation/data/', {
+    const response = await axios.get(`${URL}recommendation/data/`, {
       headers: {
         userId: userId.id,
       },
