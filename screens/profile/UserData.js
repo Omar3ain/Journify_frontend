@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   userDataContainer: {
-    width: '100%',
+    flex: 1,
     paddingHorizontal: 20,
     marginTop: 10,
   },

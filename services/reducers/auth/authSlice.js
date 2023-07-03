@@ -3,47 +3,25 @@ import authService from "./authService";
 import Toast from "react-native-toast-message";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// const initialState = {
-//   user: null,
-//   isError: false,
-//   isSuccess: false,
-//   isRegisterSuccess: false,
-//   isLoading: false,
-//   message: "",
-//   isLoggedIn: false,
-// };
-
-
 const getUser = async () => {
-  try {
-    const storedUser = await AsyncStorage.getItem('user');
+    const storedUser = await AsyncStorage.getItem("user");
     const user = storedUser ? JSON.parse(storedUser) : null;
     return user;
-  } catch (error) {
-    console.log('Error retrieving user from AsyncStorage:', error);
-    return null;
-  }
 };
 
-// Initial state with the user fetched from AsyncStorage
+export const fetchUser = createAsyncThunk("/fetchUser", async (_, thunkAPI) => {
+  return await getUser();
+});
+
 const initialState = {
   user: null,
   isError: false,
   isSuccess: false,
   isRegisterSuccess: false,
   isLoading: false,
-  message: '',
+  message: "",
   isLoggedIn: false,
 };
-
-// Async function to fetch the user and set it in the initial state
-const initializeState = async () => {
-  const user = await getUser();
-  initialState.user = user;
-};
-
-initializeState();
-
 
 export const login = createAsyncThunk("/login", async (user, thunkAPI) => {
   try {
@@ -163,6 +141,9 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.message = "";
     },
+    resetRegister: (state) => {
+      state.isRegisterSuccess = false;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -230,6 +211,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isError = false;
         state.isRegisterSuccess = true;
+        
         Toast.show({
           type: "success",
           text1: "Registration Status",
@@ -300,9 +282,17 @@ const authSlice = createSlice({
           text1: "Update Status",
           text2: state.message,
         });
+      }) 
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.isLoggedIn = !!action.payload; // Set isLoggedIn based on the presence of user data
+      })
+      .addCase(fetchUser.rejected, (state) => {
+        state.user = null;
+        state.isLoggedIn = false;
       });
   },
 });
 
-export const { reset } = authSlice.actions;
+export const { reset, resetRegister } = authSlice.actions;
 export default authSlice.reducer;

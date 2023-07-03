@@ -21,14 +21,7 @@ export default function Login({ navigation }) {
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (user) {
-        navigation.navigate("App");
-    }
-    if (!user && !isSuccess) {
-      navigation.navigate("Auth");
-    }
-  }, [dispatch, user, isSuccess, isError]);
+
 
   const handleLogin = () => {
     dispatch(login({ username, password }));

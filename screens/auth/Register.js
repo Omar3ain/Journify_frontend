@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TextInput, TouchableOpacity, Image, ScrollView,
 import {Picker} from '@react-native-picker/picker';
 import { useDispatch, useSelector } from "react-redux";
 import Logo from '../../components/Logo';
-import { register } from '../../services/reducers/auth/authSlice';
+import { register, resetRegister } from '../../services/reducers/auth/authSlice';
 import DateTimePicker from '@react-native-community/datetimepicker';
 // import * as ImagePicker from 'expo-image-picker';
 
@@ -43,15 +43,16 @@ export default function Register({ navigation }) {
     };
 
   const dispatch = useDispatch();
-  const { isRegisterSuccess, isLoading, isError, isSuccess, message } = useSelector(
+  const { isRegisterSuccess  } = useSelector(
     (state) => state.auth
   );
 
-  // useEffect(() => {
-  //   if(isRegisterSuccess){
-  //     navigation.navigate('Login');
-  //   }
-  // }, [dispatch, isRegisterSuccess]);
+  useEffect(() => {
+    if(isRegisterSuccess){
+      navigation.navigate('Login');
+      dispatch(resetRegister())
+    }
+  }, [dispatch, isRegisterSuccess]);
   
 
   const pickImage = async () => {

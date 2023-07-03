@@ -1,18 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import { Button } from '@react-native-material/core';
-import { useSelector } from 'react-redux';
 
 export default function InBoardingOne({ navigation }) {
-  const { user } = useSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    if (user) {
-        navigation.navigate("App");
-    }
-  }, [user]);
+  
   return (
     <View style={styles.container}>
       <Image
