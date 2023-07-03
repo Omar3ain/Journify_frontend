@@ -11,7 +11,7 @@ const getPopular = async (city_name) => {
   const response = await axios.get(URL + "popular/", {
     params: {
       city_name: city_name,
-      kinds: "foods,restaurants",
+      kinds: "foods",
     },
     ...config,
   });

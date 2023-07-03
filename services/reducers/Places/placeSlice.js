@@ -12,15 +12,16 @@ const initialState = {
   city: await getCity(),
   popularPlaces: null,
   searchPlaces: null,
+  allPlaces: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: "",
 };
 
-export const getPopularPlaces = createAsyncThunk("/popular-places", async (city, thunkAPI) => {
+export const getPopularPlaces = createAsyncThunk("/popular-places", async (city_name, thunkAPI) => {
   try {
-    return await placeService.getPopular(city);
+    return await placeService.getPopular(city_name);
   } catch (error) {
     const message = error.response.data.error;
     return thunkAPI.rejectWithValue(message);
@@ -49,6 +50,7 @@ const placeSlice = createSlice({
       state.isLoading = false;
       state.popularPlaces = null;
       state.searchPlaces = null;
+      state.allPlaces = null;
       state.message = "";
     },
   },
@@ -62,6 +64,7 @@ const placeSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.popularPlaces = action.payload;
+        state.allPlaces = action.payload;
       })
       .addCase(getPopularPlaces.rejected, (state, action) => {
         state.isLoading = false;
@@ -69,6 +72,7 @@ const placeSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload;
         state.popularPlaces = null;
+        state.allPlaces = null;
       })
       .addCase(SearchPlaces.pending, (state) => {
         state.isLoading = true;
@@ -78,6 +82,7 @@ const placeSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.searchPlaces = action.payload;
+        state.allPlaces = action.payload;
       })
       .addCase(SearchPlaces.rejected, (state, action) => {
         state.isLoading = false;
@@ -85,6 +90,7 @@ const placeSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload;
         state.searchPlaces = null;
+        state.allPlaces = null;
       });
   },
 });
