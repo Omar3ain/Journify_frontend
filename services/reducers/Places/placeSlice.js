@@ -9,7 +9,7 @@ async function getCity() {
 }
 
 const initialState = {
-  city: await getCity(),
+  city: '',
   popularPlaces: null,
   searchPlaces: null,
   allPlaces: null,
@@ -19,7 +19,7 @@ const initialState = {
   message: "",
 };
 
-export const getPopularPlaces = createAsyncThunk("/popular-places", async (city_name, thunkAPI) => {
+export const getPopularPlaces = createAsyncThunk("places/getPopularPlaces", async (city_name, thunkAPI) => {
   try {
     return await placeService.getPopular(city_name);
   } catch (error) {
@@ -29,7 +29,7 @@ export const getPopularPlaces = createAsyncThunk("/popular-places", async (city_
 });
 
 export const SearchPlaces = createAsyncThunk(
-  "/search-places",
+  "places/SearchPlaces",
   async (data, thunkAPI) => { // data = {city_name, name (search_term)}
     try {
       return await placeService.SearchPlaces(data);

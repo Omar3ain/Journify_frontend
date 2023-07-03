@@ -5,7 +5,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Profile from './Profile';
 import InBoardingOne from '../screens/inBoarding/InBoardingOne';
 import InBoardingTwo from '../screens/inBoarding/inBoardingTwo';
-import Home from '../screens/home/Home';
+import Home from '../screens/Home/Home';
 import FlgihtsTab from "../screens/Flights/FlightsBoarding";
 import HotelList from '../screens/hotels/hotelsList';
 import ExpertAdvice from "../navigation/Expert_Advice";

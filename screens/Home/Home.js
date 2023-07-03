@@ -28,7 +28,7 @@ export default function Home() {
   let searchTerm = search.replace(/\s+/g, " ").trim();
 
   const { popularPlaces, searchPlaces, isLoading, isSuccess, allPlaces } =
-    useSelector((state) => state.places);
+    useSelector((state) => state.homePlaces);
 
   useEffect(() => {
     dispatch(getPopularPlaces(cityName));
@@ -88,7 +88,7 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source="https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQ1oS-DeKDIgvicoSyoD8KKoIAinTTDeC6VO7erBHEsAggFjaZYZ6YP1HkFahtlKTb_"
+                      source={{ uri: "https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQ1oS-DeKDIgvicoSyoD8KKoIAinTTDeC6VO7erBHEsAggFjaZYZ6YP1HkFahtlKTb_"}}
                     />
                   </View>
                   <Text style={styles.imageText}> Paris </Text>
@@ -107,7 +107,7 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source="http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTF9OtLxnbxSpLFzyhzXERKiAbnHlG25WfRzxRTNcRiTk0lHvsOXNKH9KNAOvTWi_sS"
+                      source={{ uri: "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTF9OtLxnbxSpLFzyhzXERKiAbnHlG25WfRzxRTNcRiTk0lHvsOXNKH9KNAOvTWi_sS"}}
                     />
                   </View>
                   <Text style={styles.imageText}> London </Text>
@@ -127,7 +127,7 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source="https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcRSUt8r4QBplLPw0rG44f2yNQzwz0utUq5ty0lHJLWow-2SFhSIoV5KeEx_SdCPfgpc"
+                      source={{ uri: "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcRSUt8r4QBplLPw0rG44f2yNQzwz0utUq5ty0lHJLWow-2SFhSIoV5KeEx_SdCPfgpc"}}
                     />
                   </View>
                   <Text style={styles.imageText}> Amsterdam </Text>
@@ -145,8 +145,8 @@ export default function Home() {
                     ]}
                   >
                     <Image
-                      style={styles.imageStyle}
-                      source="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSGLOr6Jtn3_cJTMBckutKDZpaxy7ZVLXwP5lQE0ZTHiBAqnmvEG6jotHmgHVuObRls"
+                        style={styles.imageStyle}
+                        source={{ uri: "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSGLOr6Jtn3_cJTMBckutKDZpaxy7ZVLXwP5lQE0ZTHiBAqnmvEG6jotHmgHVuObRls" }}
                     />
                   </View>
                   <Text style={styles.imageText}> Moscow </Text>
@@ -164,7 +164,7 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source="https://cdn.britannica.com/72/132272-050-E4877C4C/Madrid-Spain.jpg"
+                      source={{ uri: "https://cdn.britannica.com/72/132272-050-E4877C4C/Madrid-Spain.jpg"}}
                     />
                   </View>
                   <Text style={styles.imageText}> Madrid </Text>
@@ -191,14 +191,15 @@ export default function Home() {
                       onPress={() => handleButtonPress(place.xid)}
                     >
                       <View style={styles.singlePopularContainer}>
-                        <Image
-                          style={styles.popularImageStyle}
-                          source={
-                            place.preview
-                              ? place.preview.source
-                              : "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="
-                          }
-                        />
+                      <Image
+                        style={styles.popularImageStyle}
+                        source={{
+                          uri: place.preview
+                            ? place.preview.source
+                            : "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=",
+                        }}
+                      />
+
                         <View style={styles.popularImageTextContainer}>
                           <Text style={styles.popularImageTitle}>
                             {place.name}
