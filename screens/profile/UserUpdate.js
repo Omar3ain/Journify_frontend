@@ -1,5 +1,5 @@
 import React, { useState, useEffect} from 'react';
-import { View, StyleSheet, Text, SafeAreaView, TextInput, Button,  TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, SafeAreaView, TextInput, Button,  TouchableOpacity, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserInfo } from '../../services/reducers/auth/authSlice';
 import {Picker} from '@react-native-picker/picker';
@@ -74,7 +74,7 @@ export default function UserUpdate({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.userDataContainer}>
         <View style={styles.fieldData}>
           <Text style={styles.label}>First Name:</Text>
@@ -127,7 +127,7 @@ export default function UserUpdate({ navigation }) {
           <Text style={styles.label}>Zipcode:</Text>
           <TextInput
             style={styles.userDataValue}
-            value={zip_code}
+            value={zip_code.toString()}
             onChangeText={setZipcode}
           />
         </View>
@@ -167,7 +167,7 @@ export default function UserUpdate({ navigation }) {
           <Text style={styles.label}>Building No:</Text>
           <TextInput
             style={styles.userDataValue}
-            value={buildingNo}
+            value={buildingNo.toString()}
             onChangeText={setBuildingNo}
           />
         </View>
@@ -185,15 +185,14 @@ export default function UserUpdate({ navigation }) {
           <Text style={styles.createAccountButtonText}>Update</Text>
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
+
     backgroundColor: '#fff',
     padding: 20,
     flexDirection: 'column',
