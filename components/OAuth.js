@@ -81,10 +81,10 @@ export default function OAuth() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    // marginTop: 10,
+    // flex: 1,
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   button: {
     backgroundColor: '#f2f2f2',

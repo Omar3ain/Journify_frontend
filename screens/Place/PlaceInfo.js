@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { styles } from './Styles';
 import Loader from '../../components/Loader';
+import { Linking } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -28,7 +29,7 @@ export default function PlaceInfo() {
     fetchData();
   }, [xid]);
 
-  console.log(responseData);
+
   // Rate Converting
   function convertRating(originalRating) {
     switch (originalRating) {
@@ -52,55 +53,47 @@ export default function PlaceInfo() {
   if (!responseData) {
     return <Loader />;
   }
-
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Image source={responseData.preview.source} style={styles.image} />
+        <Image source={{ uri: responseData.preview.source || '' }} style={styles.image} />
         <View style={styles.details}>
-      <Text style={styles.name}>{responseData.name}</Text>
+          <Text style={styles.name}>{responseData.name}</Text>
   
-    <View style={styles.info}>
-      <Text style={styles.text}>
-        Address:
-      </Text>
-      <View style={styles.addressFields}>
-        <Text style={styles.text}>{responseData.address.city},</Text>
-        <Text style={styles.text}>{responseData.address.state},</Text>
-        <Text style={styles.text}>{responseData.address.country}</Text>
-
-      </View>
-    </View>
-
-    <View style={styles.info}>
-      <Text style={styles.text}>
-      Rating:
-      </Text>
-      <View style={styles.addressFields}>
-          <Text style={styles.text}>{convertRating(responseData.rate).toFixed(1)}/5.0</Text>
-      </View>
-    </View>
-    
-    <View style={styles.info}>
-      <Text style={styles.text}>
-         Extra Info:
-      </Text>
-      <View style={styles.extraInfoFields}>
-        <Text style={styles.text}>{responseData.info.url}</Text>
-        <Text style={styles.text}>{responseData.info.src}</Text>
-      </View>
-    </View>
-    
-    <View style={styles.info}>
-      <Text style={styles.text}>
-        Google Map:
-      </Text>
-      <Text style={styles.text}>
-        <a href={`https://maps.google.com/?q=${responseData.point.lat},${responseData.point.lon}`}>Open Map</a>
-      </Text>
-    </View>
-  </View>
+          <View style={styles.info}>
+            <Text style={styles.text}>Address:</Text>
+            <View style={styles.addressFields}>
+              <Text style={styles.text}>{responseData.address && responseData.address.city},</Text>
+              <Text style={styles.text}>{responseData.address && responseData.address.state},</Text>
+              <Text style={styles.text}>{responseData.address && responseData.address.country}</Text>
+            </View>
+          </View>
+  
+          <View style={styles.info}>
+            <Text style={styles.text}>Rating:</Text>
+            <View style={styles.addressFields}>
+              <Text style={styles.text}>{convertRating(responseData.rate).toFixed(1)}/5.0</Text>
+            </View>
+          </View>
+  
+          <View style={styles.info}>
+            <Text style={styles.text}>Extra Info:</Text>
+            <View style={styles.extraInfoFields}>
+              <Text style={styles.text}>{responseData.info && responseData.info.url}</Text>
+              <Text style={styles.text}>{responseData.info && responseData.info.src}</Text>
+            </View>
+          </View>
+  
+          <View style={styles.info}>
+            <Text style={styles.text}>Google Map:</Text>
+            <Text style={styles.text}>
+              <Text style={{color: 'blue'}} onPress={() => Linking.openURL(`https://maps.google.com/?q=${responseData.point.lat},${responseData.point.lon}`)}>
+                Open Map
+              </Text>
+            </Text>
+          </View>
+        </View>
       </View>
     </View>
   );
-}
+  }  
