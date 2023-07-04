@@ -15,13 +15,6 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
     overflow: 'hidden'
   },
-  container_error: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 10,
-    backgroundColor: '#fff',
-    overflow: 'hidden'
-  },
   header:{
     fontSize: 16,
     marginVertical: 20,

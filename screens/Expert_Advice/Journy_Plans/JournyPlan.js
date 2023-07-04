@@ -6,6 +6,7 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { styles } from './Style';
 import Loader from '../../../components/Loader';
 import { Icon } from "@react-native-material/core";
+import { ScrollView } from 'react-native-gesture-handler';
 
 const JourneyPlan = () => {
   const dispatch = useDispatch();
@@ -46,8 +47,8 @@ const JourneyPlan = () => {
     
     </View>;
   }
-
   return (
+    <ScrollView>
     <View style={styles.container}>
       {(!Array.isArray(plans.plan) || plans.plan.length === 0) && <View style={styles.container_error}>
         <Text style={{textAlign: 'center', color: '#666'}}>Plans not found!</Text>
@@ -82,15 +83,17 @@ const JourneyPlan = () => {
           {expandedIndex === index && (
             <View style={styles.subtextContainer}>
               <Text style={[styles.subtext, {flexBasis: '100%'}]}>Activities: </Text>
-              {plan.activities.map((activity, index)=> 
-                    <Text key={index + 36 + Date.now().toString} style={{flexBasis: '100%', margin: 10}}>At {activity.time} --- {activity.description}</Text>
-              
-              )}
+              {plan.activities.map((activity, index) => (
+  <Text key={`${index}-${activity.time}`} style={{ flexBasis: '100%', margin: 10 }}>
+    At {activity.time} --- {activity.description}
+  </Text>
+))}
             </View>
           )}
         </View>
       ))} 
     </View>
+    </ScrollView>
   );
 };
 

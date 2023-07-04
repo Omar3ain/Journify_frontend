@@ -72,9 +72,10 @@ export default function PlaceInfo() {
   }
 
   if (!responseData) {
-    return <Loader />;
+    return <View style={styles.container_error}><Loader /></View>;
   }
   return (
+    <ScrollView style={{backgroundColor: '#fff'}}>
     <View style={styles.container}>
       <View style={styles.card}>
         <Image source={{
@@ -120,5 +121,6 @@ export default function PlaceInfo() {
         </View>
       </View>
     </View>
+    </ScrollView>
   );
   }  
