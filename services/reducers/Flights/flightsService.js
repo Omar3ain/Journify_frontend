@@ -73,6 +73,7 @@ const cancelReservation = async (reservation, token) => {
     URL + "flights/" + `${reservation.flight.id}` + "/reserve/remove",
     config
   );
+  console.log(response.data);
   return response.data;
 };
 
