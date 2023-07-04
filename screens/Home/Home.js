@@ -180,11 +180,11 @@ export default function Home() {
             <Loader />
           ) : (
             <View style={styles.popularContainer}>
-              {(!allPlaces.length || !allPlaces) && (
+              {(!allPlaces?.length || !allPlaces) && (
                 <Text style={styles.noPlacesContainer}>No Places Found!</Text>
               )}
 
-              {(allPlaces.length || allPlaces) &&
+              {(allPlaces?.length || allPlaces) &&
                 allPlaces.map((place) => {
                   return (
                     <TouchableWithoutFeedback
