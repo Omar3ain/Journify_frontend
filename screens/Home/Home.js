@@ -25,6 +25,7 @@ export default function Home() {
 
   const [search, setSearch] = useState("");
   const [cityName, setCityName] = useState("Paris");
+  const [heading, setHeading] = useState("");
 
   let searchTerm = search.replace(/\s+/g, " ").trim();
 
@@ -33,6 +34,7 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(getPopularPlaces(cityName));
+    setHeading("Most Popular Places");
     setSearch("");
   }, [dispatch, cityName]);
 
@@ -45,8 +47,10 @@ export default function Home() {
     const timer = setTimeout(() => {
       if (searchTerm.length) {
         dispatch(SearchPlaces({ city_name: cityName, name: searchTerm }));
+        setHeading(`Search results for "${searchTerm}"`);
       } else {
         dispatch(setAllPlaces());
+        setHeading("Most Popular Places");
       }
     }, 2500);
     return () => clearTimeout(timer);
@@ -70,11 +74,9 @@ export default function Home() {
               onChangeText={setSearch}
             />
           </View>
-
           <View style={styles.exploreContainer}>
             <Text style={styles.heading}>Explore</Text>
           </View>
-
           <ScrollView horizontal={true} style={styles.container}>
             <View style={styles.imagesContainer}>
               <TouchableWithoutFeedback onPress={() => setCityName("Paris")}>
@@ -89,29 +91,33 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source={{ uri: "https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQ1oS-DeKDIgvicoSyoD8KKoIAinTTDeC6VO7erBHEsAggFjaZYZ6YP1HkFahtlKTb_"}}
+                      source={{
+                        uri: "https://t3.gstatic.com/licensed-image?q=tbn:ANd9GcQ1oS-DeKDIgvicoSyoD8KKoIAinTTDeC6VO7erBHEsAggFjaZYZ6YP1HkFahtlKTb_",
+                      }}
                     />
                   </View>
                   <Text style={styles.imageText}> Paris </Text>
                 </View>
               </TouchableWithoutFeedback>
 
-              <TouchableWithoutFeedback onPress={() => setCityName("London")}>
+              <TouchableWithoutFeedback onPress={() => setCityName("Brussels")}>
                 <View style={styles.singleImgContainer}>
                   <View
                     style={[
                       styles.innerImgContainer,
-                      cityName === "London"
+                      cityName === "Brussels"
                         ? styles.clickedImg
                         : styles.unclickedImg,
                     ]}
                   >
                     <Image
                       style={styles.imageStyle}
-                      source={{ uri: "http://t0.gstatic.com/licensed-image?q=tbn:ANd9GcTF9OtLxnbxSpLFzyhzXERKiAbnHlG25WfRzxRTNcRiTk0lHvsOXNKH9KNAOvTWi_sS"}}
+                      source={{
+                        uri: "https://images.unsplash.com/photo-1581161424127-30b1f7eee75f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1414&q=80",
+                      }}
                     />
                   </View>
-                  <Text style={styles.imageText}> London </Text>
+                  <Text style={styles.imageText}> Brussels </Text>
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
@@ -128,10 +134,33 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source={{ uri: "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcRSUt8r4QBplLPw0rG44f2yNQzwz0utUq5ty0lHJLWow-2SFhSIoV5KeEx_SdCPfgpc"}}
+                      source={{
+                        uri: "https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcRSUt8r4QBplLPw0rG44f2yNQzwz0utUq5ty0lHJLWow-2SFhSIoV5KeEx_SdCPfgpc",
+                      }}
                     />
                   </View>
                   <Text style={styles.imageText}> Amsterdam </Text>
+                </View>
+              </TouchableWithoutFeedback>
+
+              <TouchableWithoutFeedback onPress={() => setCityName("Luxor")}>
+                <View style={styles.singleImgContainer}>
+                  <View
+                    style={[
+                      styles.innerImgContainer,
+                      cityName === "Luxor"
+                        ? styles.clickedImg
+                        : styles.unclickedImg,
+                    ]}
+                  >
+                    <Image
+                      style={styles.imageStyle}
+                      source={{
+                        uri: "https://plus.unsplash.com/premium_photo-1661963854938-e69a4e65c1e3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1674&q=80",
+                      }}
+                    />
+                  </View>
+                  <Text style={styles.imageText}> Luxor </Text>
                 </View>
               </TouchableWithoutFeedback>
 
@@ -146,8 +175,10 @@ export default function Home() {
                     ]}
                   >
                     <Image
-                        style={styles.imageStyle}
-                        source={{ uri: "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSGLOr6Jtn3_cJTMBckutKDZpaxy7ZVLXwP5lQE0ZTHiBAqnmvEG6jotHmgHVuObRls" }}
+                      style={styles.imageStyle}
+                      source={{
+                        uri: "http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcSGLOr6Jtn3_cJTMBckutKDZpaxy7ZVLXwP5lQE0ZTHiBAqnmvEG6jotHmgHVuObRls",
+                      }}
                     />
                   </View>
                   <Text style={styles.imageText}> Moscow </Text>
@@ -165,7 +196,9 @@ export default function Home() {
                   >
                     <Image
                       style={styles.imageStyle}
-                      source={{ uri: "https://cdn.britannica.com/72/132272-050-E4877C4C/Madrid-Spain.jpg"}}
+                      source={{
+                        uri: "https://cdn.britannica.com/72/132272-050-E4877C4C/Madrid-Spain.jpg",
+                      }}
                     />
                   </View>
                   <Text style={styles.imageText}> Madrid </Text>
@@ -173,18 +206,16 @@ export default function Home() {
               </TouchableWithoutFeedback>
             </View>
           </ScrollView>
-
-          <Text style={styles.heading}>Most Popular Places</Text>
-
+          <Text style={styles.heading}>{heading}</Text>
           {isLoading || !isSuccess ? (
             <Loader />
           ) : (
             <View style={styles.popularContainer}>
-              {(!allPlaces?.length || !allPlaces) && (
+              {!allPlaces && (
                 <Text style={styles.noPlacesContainer}>No Places Found!</Text>
               )}
 
-              {(allPlaces?.length || allPlaces) &&
+              {allPlaces &&
                 allPlaces.map((place) => {
                   return (
                     <TouchableWithoutFeedback
@@ -192,14 +223,14 @@ export default function Home() {
                       onPress={() => handleButtonPress(place.xid)}
                     >
                       <View style={styles.singlePopularContainer}>
-                      <Image
-                        style={styles.popularImageStyle}
-                        source={{
-                          uri: place.preview
-                            ? place.preview.source
-                            : "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=",
-                        }}
-                      />
+                        <Image
+                          style={styles.popularImageStyle}
+                          source={{
+                            uri: place.preview
+                              ? place.preview.source
+                              : "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=",
+                          }}
+                        />
 
                         <View style={styles.popularImageTextContainer}>
                           <Text style={styles.popularImageTitle}>
