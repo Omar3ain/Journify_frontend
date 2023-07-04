@@ -11,9 +11,9 @@ export default function Profile() {
   return (
       <Stack.Navigator>
         <Stack.Screen name="UserProfile" component={UserProfile} options={{ headerShown: false }} />
-        <Stack.Screen name="User Data" component={UserData} />
-        <Stack.Screen name="User Update" component={UserUpdate} />
-        <Stack.Screen name="Password Update" component={ChangePassword} />
+        <Stack.Screen name="Profile info" component={UserData} />
+        <Stack.Screen name="Update Profile" component={UserUpdate} />
+        <Stack.Screen name="Change Password" component={ChangePassword} />
       </Stack.Navigator>
   );
 }
