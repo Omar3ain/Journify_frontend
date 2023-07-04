@@ -57,7 +57,10 @@ const MadeForYou = ({ isSuccess, places, count, status, error, fetchAllRecs, nav
           if(place.image && place.name){
             return <TouchableWithoutFeedback key={place.xid} style={styles.card} onPress={() => handleButtonPress(place.xid)}>
               <View>
-              <Image source={{uri: place.preview.source}} style={styles.image} />
+              <Image source={{uri: place.preview
+              ? place.preview.source
+              : "https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM="
+              }} style={styles.image} />
               <View style={styles.details}>
                 <Text style={styles.name}>{place.name}</Text>
                 <View style={styles.info}>
