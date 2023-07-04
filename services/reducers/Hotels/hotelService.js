@@ -31,6 +31,7 @@ const createReviews = async (createData, token) => {
       createData,
       config,
     );
+  console.log(response.data);
   
     return response.data;
   };
@@ -46,7 +47,7 @@ const createReviews = async (createData, token) => {
       URL + "stayreservation/",
       config
     );
-  
+  console.log(response.data);
     return response.data;
   };
   

@@ -19,6 +19,7 @@ export const createHotelReserv = createAsyncThunk(
       const token = thunkAPI.getState().auth.user.token;
       return await hotelService.createHotelReservation(createData, token);
     } catch (error) {
+      console.log('sdddddddddddddd');
       let message = "";
       const data = error.response.data;
       if (Object.keys(data).length > 0) {

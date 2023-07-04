@@ -60,17 +60,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { createHotelReserv } from '../../services/reducers/Hotels/HotelReservation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const HotelReservation = ({ route }) => {
   const { hotelId } = route.params;
 
   const [numberOfRooms, setNumberOfRooms] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [startDate, setStartDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [mode, setMode] = useState('date');
   const [numberOfDays, setNumberOfDays] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -82,12 +84,7 @@ const HotelReservation = ({ route }) => {
     setError('');
 
     
-    const currentDate = new Date();
-    const selectedDate = new Date(startDate);
-    if (selectedDate < currentDate) {
-      setError('The start date must be today or later.');
-      return false;
-    }
+ 
 
     
     const availableRooms = 10;
@@ -158,8 +155,28 @@ const HotelReservation = ({ route }) => {
   const decreaseNumberPeople = () => {
     setNumberOfPeople(prevRating => Math.max(prevRating - 1, 1));
   };
+  
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    const today = new Date();
+    if (today > currentDate) {
+      setError('The start date must be today or later.');
+      return false;
+    }
+    setShow(false);
+    setStartDate(currentDate);
+  };
+    const showMode = (currentMode) => {
+      setShow(true);
+      setMode(currentMode);
+    };
+
+    const showDatepicker = () => {
+      showMode('date');
+    };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
@@ -222,7 +239,20 @@ const HotelReservation = ({ route }) => {
             </TouchableOpacity>
           </View>
         </View>
-
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Start Date:</Text>
+          <Text>selected: {startDate.toLocaleString()}</Text>
+          <Button onPress={showDatepicker} title="Select date" color="#2cb8e5" />
+            {show && (
+                  <DateTimePicker
+                    testID="dateTimePicker"
+                    value={startDate}
+                    mode={'date'}
+                    is24Hour={true}
+                    onChange={onChange}
+                  />
+                )}
+        </View>
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Room Type:</Text>
           <Picker
@@ -240,6 +270,7 @@ const HotelReservation = ({ route }) => {
         <Button title="Proceed" onPress={handleSubmit} disabled={!numberOfDays || !numberOfPeople || !numberOfRooms} />
       </View>
     </View>
+    </ScrollView>
   );
 };
 
@@ -280,6 +311,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     textAlign: 'center',
     color: '#000'
+  },
+  dateInput: {
+    height: 40,
+    borderWidth: 1,
+    borderColor: '#727171',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginTop: 5,
+    justifyContent: 'center',
   },
   picker: {
     height: 40,
