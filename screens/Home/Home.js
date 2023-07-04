@@ -25,6 +25,8 @@ export default function Home() {
 
   const [search, setSearch] = useState("");
   const [cityName, setCityName] = useState("Paris");
+  const [lat, setLat] = useState("48.8534951");
+  const [lon, setLon] = useState("2.3483915");
   const [heading, setHeading] = useState("");
 
   let searchTerm = search.replace(/\s+/g, " ").trim();
@@ -33,7 +35,7 @@ export default function Home() {
     useSelector((state) => state.homePlaces);
 
   useEffect(() => {
-    dispatch(getPopularPlaces(cityName));
+    dispatch(getPopularPlaces({ city_name: cityName, lat, lon }));
     setHeading("Most Popular Places");
     setSearch("");
   }, [dispatch, cityName]);
@@ -46,7 +48,9 @@ export default function Home() {
   useEffect(() => {
     const timer = setTimeout(() => {
       if (searchTerm.length) {
-        dispatch(SearchPlaces({ city_name: cityName, name: searchTerm }));
+        dispatch(
+          SearchPlaces({ city_name: cityName, lat, lon, name: searchTerm })
+        );
         setHeading(`Search results for "${searchTerm}"`);
       } else {
         dispatch(setAllPlaces());
@@ -79,7 +83,13 @@ export default function Home() {
           </View>
           <ScrollView horizontal={true} style={styles.container}>
             <View style={styles.imagesContainer}>
-              <TouchableWithoutFeedback onPress={() => setCityName("Paris")}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setCityName("Paris");
+                  setLat("48.8534951");
+                  setLon("2.3483915");
+                }}
+              >
                 <View style={styles.singleImgContainer}>
                   <View
                     style={[
@@ -100,7 +110,13 @@ export default function Home() {
                 </View>
               </TouchableWithoutFeedback>
 
-              <TouchableWithoutFeedback onPress={() => setCityName("Brussels")}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setCityName("Brussels");
+                  setLat("50.8465573");
+                  setLon("4.351697");
+                }}
+              >
                 <View style={styles.singleImgContainer}>
                   <View
                     style={[
@@ -121,7 +137,11 @@ export default function Home() {
                 </View>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback
-                onPress={() => setCityName("Amsterdam")}
+                onPress={() => {
+                  setCityName("Amsterdam");
+                  setLat("52.3730796");
+                  setLon("4.8924534");
+                }}
               >
                 <View style={styles.singleImgContainer}>
                   <View
@@ -143,7 +163,13 @@ export default function Home() {
                 </View>
               </TouchableWithoutFeedback>
 
-              <TouchableWithoutFeedback onPress={() => setCityName("Luxor")}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setCityName("Luxor");
+                  setLat("25.695292799999997");
+                  setLon("32.68763493768114");
+                }}
+              >
                 <View style={styles.singleImgContainer}>
                   <View
                     style={[
@@ -164,7 +190,13 @@ export default function Home() {
                 </View>
               </TouchableWithoutFeedback>
 
-              <TouchableWithoutFeedback onPress={() => setCityName("Moscow")}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setCityName("Moscow");
+                  setLat("55.7504461");
+                  setLon("37.6174943");
+                }}
+              >
                 <View style={styles.singleImgContainer}>
                   <View
                     style={[
@@ -184,7 +216,13 @@ export default function Home() {
                   <Text style={styles.imageText}> Moscow </Text>
                 </View>
               </TouchableWithoutFeedback>
-              <TouchableWithoutFeedback onPress={() => setCityName("Madrid")}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  setCityName("Madrid");
+                  setLat("40.4167047");
+                  setLon("-3.7035825");
+                }}
+              >
                 <View style={styles.singleImgContainer}>
                   <View
                     style={[
@@ -211,7 +249,7 @@ export default function Home() {
             <Loader />
           ) : (
             <View style={styles.popularContainer}>
-              {!allPlaces && (
+              {!allPlaces || !allPlaces?.length && (
                 <Text style={styles.noPlacesContainer}>No Places Found!</Text>
               )}
 

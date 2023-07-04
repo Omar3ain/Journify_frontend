@@ -19,9 +19,9 @@ const initialState = {
   message: "",
 };
 
-export const getPopularPlaces = createAsyncThunk("places/getPopularPlaces", async (city_name, thunkAPI) => {
+export const getPopularPlaces = createAsyncThunk("places/getPopularPlaces", async (data, thunkAPI) => {
   try {
-    return await placeService.getPopular(city_name);
+    return await placeService.getPopular(data);
   } catch (error) {
     const message = error.response.data.error;
     return thunkAPI.rejectWithValue(message);
