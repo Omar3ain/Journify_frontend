@@ -38,7 +38,7 @@ const JourneyPlan = () => {
   }, []);
 
   if (status === 'loading') {
-    return <Loader />;
+    return <View style={styles.container}><Loader/></View>;
   }
 
   if (status === 'failed') {
@@ -48,7 +48,7 @@ const JourneyPlan = () => {
     </View>;
   }
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: "#fff"}}>
     <View style={styles.container}>
       {(!Array.isArray(plans.plan) || plans.plan.length === 0) && <View style={styles.container_error}>
         <Text style={{textAlign: 'center', color: '#666'}}>Plans not found!</Text>

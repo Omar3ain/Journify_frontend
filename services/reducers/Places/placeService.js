@@ -3,7 +3,7 @@ import { API_BASE_URL } from "../../../baseUrl";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const URL = `${API_BASE_URL}place/`;
 
-const getPopular = async (city_name) => {
+const getPopular = async (data) => {
   try {
     const config = {
       headers: {
@@ -16,7 +16,7 @@ const getPopular = async (city_name) => {
     if (popularPlaces.length) {
       popularPlaces = JSON.parse(popularPlaces);
 
-      let obj = popularPlaces.find((p) => p.city_name === city_name);
+      let obj = popularPlaces.find((p) => p.city_name === data.city_name);
       if (obj) {
         return obj["places"];
       }
@@ -24,22 +24,24 @@ const getPopular = async (city_name) => {
 
     const response = await axios.get(URL + "popular/", {
       params: {
-        city_name,
+        city_name: data.city_name,
+        lat: data.lat,
+        lon: data.lon,
       },
       ...config,
     });
     if (response.data) {
       if (response.data.length) {
-        let obj = popularPlaces.find((p) => p.city_name === city_name);
+        let obj = popularPlaces.find((p) => p.city_name === data.city_name);
         if (!obj) {
-          popularPlaces.push({ city_name, places: response.data });
+          popularPlaces.push({ city_name: data.city_name, places: response.data });
         }
         await AsyncStorage.setItem(
           "popularPlaces",
           JSON.stringify(popularPlaces)
         );
       }
-      await AsyncStorage.setItem("city", city_name);
+      await AsyncStorage.setItem("city", data.city_name);
       return response.data;
     }
   } catch (err) {
@@ -57,6 +59,8 @@ const SearchPlaces = async (data) => {
     const response = await axios.get(URL + "search/", {
       params: {
         city_name: data.city_name,
+        lat: data.lat,
+        lon: data.lon,
         name: data.name,
       },
       ...config,

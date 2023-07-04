@@ -46,6 +46,7 @@ export const cancelReservedFlights = createAsyncThunk(
   async (reservation, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
+      console.log("dd",reservation);
       return await flightsService.cancelReservation(reservation, token);
     } catch (error) {
       let message = "";
@@ -118,14 +119,13 @@ const reservationsSlice = createSlice({
       state.flightReservations = [];
     },
     reserveFlightAction: (state, action) => {
-      state.reservedFlight = action.payload.flight;
+      state.reservedFlight = action.payload ? action.payload.flight : null;
       if (action.payload && (action.payload.status === "confirmed")) {
         state.flightReservations.push(action.payload);
       }
       console.log(state.reservedFlight);
       console.log(state.flightReservations);
     },
-    setReservedFlgiht: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder
@@ -150,7 +150,7 @@ const reservationsSlice = createSlice({
         state.message = action.payload;
         Toast.show({
           type: "error",
-          text1: "Delete status",
+          text1: "My Reservation ",
           text2: state.message,
         });
       })
@@ -164,7 +164,6 @@ const reservationsSlice = createSlice({
         state.isError = false;
         state.reservedFlight = action.payload;
         state.flightReservations.push(action.payload);
-        console.log(state.reservedFlight);
         Toast.show({
           type: "success",
           text1: "Flight Reservation",
@@ -174,6 +173,7 @@ const reservationsSlice = createSlice({
       .addCase(reserveFlight.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        console.log(action.payload);
         state.message = action.payload;
         Toast.show({
           type: "error",
@@ -188,6 +188,7 @@ const reservationsSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.isError = false;
+        console.log(action.payload);
         state.flightReservations = state.flightReservations.filter(
           (reservedFlight) => reservedFlight.id !== action.meta.arg.id
         );
@@ -196,9 +197,10 @@ const reservationsSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        console.log("aaaaaa",action.payload);
         Toast.show({
           type: "error",
-          text1: "Update Status",
+          text1: "Cancel Reservation",
           text2: state.message,
         });
       });

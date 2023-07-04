@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Image, ScrollView } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
 import {styles} from './Style';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
@@ -31,7 +32,8 @@ const HotelList = () => {
     fetchHotels();
   }, []);
   const renderHotelItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigateToOtherPage(item.id)}>
+    <SafeAreaView>
+      <TouchableOpacity onPress={() => navigateToOtherPage(item.id)}>
         <View style={styles.card}>
               <Image source={{uri: item.image}} style={styles.image} />
               <View style={styles.details}>
@@ -55,7 +57,8 @@ const HotelList = () => {
                 
               </View>
         </View>
-        </TouchableOpacity>
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 
   return (

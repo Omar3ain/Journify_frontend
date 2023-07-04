@@ -21,8 +21,6 @@ const ExpertMain = () => {
   useFocusEffect(
     React.useCallback(() => {
       dispatch(getUserReservations());
-      if(isSuccess && hotelReserv.length > 0){
-      }
     }, [dispatch])
   );
   const startPlaneAnimation = () => {
