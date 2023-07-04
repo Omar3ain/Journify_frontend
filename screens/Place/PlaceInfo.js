@@ -1,4 +1,4 @@
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, ScrollView } from 'react-native';
 import { styles } from './Styles';
 import Loader from '../../components/Loader';
 import { Linking } from 'react-native';
