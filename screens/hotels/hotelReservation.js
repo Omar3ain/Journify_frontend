@@ -64,6 +64,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert
 } from "react-native";
 import { useStripe } from "@stripe/stripe-react-native";
 import { Picker } from "@react-native-picker/picker";
@@ -86,10 +87,10 @@ const HotelReservation = ({ route }) => {
   const [selectedOption, setSelectedOption] = useState("S");
   const [error, setError] = useState("");
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const { hotelReserved, setHotelReserved } = useState({});
+  const [ hotelReserved, setHotelReserved ] = useState({});
 
   const { user } = useSelector((state) => state.auth);
-
+  console.log(user);
   const dispatch = useDispatch();
   const handleValidation = () => {
     setError("");
@@ -106,21 +107,13 @@ const HotelReservation = ({ route }) => {
   const handleSubmit = async () => {
     setIsLoading(true);
     setError("");
-
+  
     if (!handleValidation()) {
       setIsLoading(false);
       return;
     }
-
+  
     try {
-      console.log(
-        startDate,
-        numberOfRooms,
-        numberOfDays,
-        hotelId,
-        selectedOption,
-        numberOfPeople
-      );
       const hotelReservation = await hotelService.createHotelReservation(
         {
           numberOfRooms,
@@ -139,30 +132,30 @@ const HotelReservation = ({ route }) => {
         "An error occurred while processing your request. Please try again later."
       );
     }
-
+  
     if (hotelReserved.client_secret) {
       const initResponse = await initPaymentSheet({
         merchantDisplayName: "Journify",
-        paymentIntentClientSecret:
-          hotelReserved["client_secret"]["client_secret"],
+        paymentIntentClientSecret: hotelReserved.client_secret.client_secret,
       });
-
+  
       if (initResponse.error) {
         console.log("error", initResponse.error);
         Alert.alert("Something went wrong");
         return;
       }
-
-      // 3. Present the Payment Sheet from Stripe
+  
+      // Present the Payment Sheet from Stripe
       const paymentResponse = await presentPaymentSheet();
-
+  
       if (paymentResponse.error) {
         Alert.alert(
           `Error code: ${paymentResponse.error.code}`,
           paymentResponse.error.message
         );
         try {
-          const hotelReservation = await hotelService.editHotelReservation(
+          // Update the reservation status to "cancelled"
+          const updatedReservation = await hotelService.editHotelReservation(
             {
               status: "cancelled",
             },
@@ -177,56 +170,29 @@ const HotelReservation = ({ route }) => {
           );
         }
       }
-
-      // 4. If payment ok -> create the order
-      console.log(paymentResponse);
+  
+      // If payment is successful, update the reservation status to "confirmed"
       try {
-        const hotelReservation = await hotelService.editHotelReservation(
+        const updatedReservation = await hotelService.editHotelReservation(
           {
             status: "confirmed",
-            paymentId: "paymentId",
+            paymentId: paymentResponse.paymentMethodId, // Replace with the appropriate payment ID
           },
           hotelReserved.id,
           user.token
         );
+
       } catch (error) {
         console.error(error);
+        Alert.alert(
+          error.message
+        )
         setError(
           "An error occurred while processing your request. Please try again later."
         );
       }
     }
-
-    // dispatch(
-    //   reserveHotel({
-    //     numberOfRooms,
-    //     startDate,
-    //     numberOfDays,
-    //     hotel: hotelId,
-    //     room_type: selectedOption,
-    //     numberOfPeople: numberOfPeople,
-    //   })
-    // );
-
-    // const response = await axios.post('http://localhost:8000/stayreservation/', {
-    //   numberOfRooms,
-    //   startDate,
-    //   numberOfDays,
-    //   hotel: hotelId,
-    // });
-    // console.log(response.data);
-    // } catch (error) {
-    //   Alert.alert(
-    //     `Error code: ${paymentResponse.error.code}`,
-    //     paymentResponse.error.message
-    //   );
-    //   const reservationRes = await hotelService.editHotelReservation({
-    //     status:"cancelled",
-    //   }, hotelReserved.id, user.token)
-    //   console.error(error);
-    //   setError('An error occurred while processing your request. Please try again later.');
-    // }
-
+  
     setIsLoading(false);
   };
 

@@ -47,7 +47,36 @@ export const getUserReservations = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await hotelService.getReservations(token);
+      return await hotelService.editHotelReservation(token);
+    } catch (error) {
+      let message = "";
+      const data = error.response.data;
+      if (Object.keys(data).length > 0) {
+        for (const field in data) {
+          const errorMessages = data[field];
+          for (const errorMessage of errorMessages) {
+            message += `${errorMessage}`;
+          }
+        }
+      } else {
+        message =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+      }
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
+export const editUserReservations = createAsyncThunk(
+  "hotelReservation/editUserReservations",
+  async (editedData,hotelId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await hotelService.getReservations(editedData, hotelId, token);
     } catch (error) {
       let message = "";
       const data = error.response.data;
@@ -129,7 +158,7 @@ const hotelReservationSlice = createSlice({
           type: "error",
           text1: "Get reservations status",
           text2: state.message,
-        });
+        });  
       });
   },
 });
