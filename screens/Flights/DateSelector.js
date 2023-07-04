@@ -45,84 +45,16 @@ export default function DateSelector({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View >
+        <View>
           <CalendarPicker availableDates={availableDates}></CalendarPicker>
         </View>
         <View style={{ width: "100%" }}>
-          { (!isLoading) ? 
+          {!isLoading ? (
             <View style={cardStyle.container}>
-              {selectedFlights.map((flight) => (
-                <View key={flight.id} style={cardStyle.card}>
-                  <View style={cardStyle.details}>
-                    <View
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        width: "90%",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                      }}
-                    >
-                      {/* <Text style={cardStyle.name}>
-                        <Icon name="city" size={16} color="#666" />
-                        {"   "}
-                        {flight.company_name}
-                      </Text> */}
-                      {(flightsIDS[flight.id]) && 
-                        <View style={{ marginLeft: 10 }}>
-                          <Text
-                            style={{
-                              ...cardStyle.name,
-                              color: "#2cb8e5",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            Upcoming Flight
-                          </Text>
-                        </View>
-                      }
-                    </View>
-                    <View style={{ ...cardStyle.info, marginTop: 30 }}>
-                      <View>
-                        <Text style={cardStyle.name}>
-                          <Icon name="plane-departure" size={16} color="#666" />
-                          {"   "}
-                          {flight.origin}
-                        </Text>
-                        <Text style={cardStyle.text}>
-                          <Icon
-                            name="clock"
-                            size={20}
-                            color="#666"
-                            style={{ paddingBottom: 15 }}
-                          />
-                          {"   "}
-                          {new Date(flight.traveling_date).getUTCHours() +
-                            " : " +
-                            new Date(flight.traveling_date).getMinutes()}
-                        </Text>
-                      </View>
-                      <View>
-                        <Text style={cardStyle.name}>
-                          <Icon name="plane-arrival" size={16} color="#666" />
-                          {"   "}
-                          {flight.destination}
-                        </Text>
-                        <Text style={cardStyle.text}>
-                          <Icon
-                            name="clock"
-                            size={20}
-                            color="#666"
-                            style={{ paddingBottom: 15 }}
-                          />
-                          {"   "}
-                          {new Date(flight.traveling_date).getUTCHours() +
-                            " : " +
-                            new Date(flight.traveling_date).getMinutes()}
-                        </Text>
-                      </View>
-                    </View>
-                    {!flightsIDS[flight.id] && 
+              {selectedFlights.length ? (
+                selectedFlights.map((flight) => (
+                  <View key={flight.id} style={cardStyle.card}>
+                    <View style={cardStyle.details}>
                       <View
                         style={{
                           display: "flex",
@@ -130,40 +62,128 @@ export default function DateSelector({ navigation }) {
                           width: "90%",
                           justifyContent: "space-between",
                           alignItems: "center",
-                          marginHorizontal: 10,
                         }}
                       >
-                        <View style={{ marginRight: 5 }}>
-                          <Text style={{ ...cardStyle.name }}>
+                        {/* <Text style={cardStyle.name}>
+                        <Icon name="city" size={16} color="#666" />
+                        {"   "}
+                        {flight.company_name}
+                      </Text> */}
+                        {flightsIDS[flight.id] && (
+                          <View style={{ marginLeft: 10 }}>
+                            <Text
+                              style={{
+                                ...cardStyle.name,
+                                color: "#2cb8e5",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              Upcoming Flight
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                      <View style={{ ...cardStyle.info, marginTop: 30 }}>
+                        <View>
+                          <Text style={cardStyle.name}>
                             <Icon
-                              name="money-check-alt"
-                              size={20}
+                              name="plane-departure"
+                              size={16}
                               color="#666"
                             />
                             {"   "}
-                            {flight.ticket_price + " $"}
+                            {flight.origin}
+                          </Text>
+                          <Text style={cardStyle.text}>
+                            <Icon
+                              name="clock"
+                              size={20}
+                              color="#666"
+                              style={{ paddingBottom: 15 }}
+                            />
+                            {"   "}
+                            {new Date(flight.traveling_date).getUTCHours() +
+                              " : " +
+                              new Date(flight.traveling_date).getMinutes()}
                           </Text>
                         </View>
-
-                        <View style={{ marginRight: 5 }}>
-                          <TouchableOpacity
-                            style={{ ...cardStyle.button }}
-                            onPress={() => reserveFlight(flight)}
-                          >
-                            <Text style={cardStyle.buttonText}>
-                              Select Flight
-                            </Text>
-                          </TouchableOpacity>
+                        <View>
+                          <Text style={cardStyle.name}>
+                            <Icon name="plane-arrival" size={16} color="#666" />
+                            {"   "}
+                            {flight.destination}
+                          </Text>
+                          <Text style={cardStyle.text}>
+                            <Icon
+                              name="clock"
+                              size={20}
+                              color="#666"
+                              style={{ paddingBottom: 15 }}
+                            />
+                            {"   "}
+                            {new Date(flight.traveling_date).getUTCHours() +
+                              " : " +
+                              new Date(flight.traveling_date).getMinutes()}
+                          </Text>
                         </View>
                       </View>
-                    }
+                      {!flightsIDS[flight.id] && (
+                        <View
+                          style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            width: "90%",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginHorizontal: 10,
+                          }}
+                        >
+                          <View style={{ marginRight: 5 }}>
+                            <Text style={{ ...cardStyle.name }}>
+                              <Icon
+                                name="money-check-alt"
+                                size={20}
+                                color="#666"
+                              />
+                              {"   "}
+                              {flight.ticket_price + " $"}
+                            </Text>
+                          </View>
+
+                          <View style={{ marginRight: 5 }}>
+                            <TouchableOpacity
+                              style={{ ...cardStyle.button }}
+                              onPress={() => reserveFlight(flight)}
+                            >
+                              <Text style={cardStyle.buttonText}>
+                                Select Flight
+                              </Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      )}
+                    </View>
                   </View>
+                ))
+              ) : (
+                <View
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Text style={{ ...cardStyle.name }}>
+                    {" "}
+                    No Available flights Found{" "}
+                  </Text>
                 </View>
-              ))}
+              )}
             </View>
-           : 
+          ) : (
             <Loader />
-          }
+          )}
         </View>
       </View>
     </ScrollView>

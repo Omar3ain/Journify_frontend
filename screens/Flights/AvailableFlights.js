@@ -215,7 +215,6 @@ export default function Flights({ navigation }) {
       navigation.navigate("My Reservations")
       })
       .catch(async(err) => {
-        console.log(err);
         Alert.alert("Booking Failed");
         dispatch(reserveFlightAction(null));
       });
