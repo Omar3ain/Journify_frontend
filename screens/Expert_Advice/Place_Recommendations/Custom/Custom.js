@@ -97,7 +97,7 @@ const handleGetButtonPress = () => {
                 return (
                   <TouchableWithoutFeedback key={place.xid} style={styles.card} onPress={() => handleButtonPress(place.xid)}>
                     <View>
-                      <Image source={place.preview.source} style={styles.image} />
+                      <Image source={{uri: place.preview.source}} style={styles.image} />
                       <View style={styles.details}>
                         <Text style={styles.name}>{place.name}</Text>
                         <View style={styles.info}>
