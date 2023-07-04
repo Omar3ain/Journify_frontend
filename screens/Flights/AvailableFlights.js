@@ -72,6 +72,9 @@ export default function Flights({ navigation }) {
     // if (user && !isSuccess) {
     //   navigation.navigate("InitialScreen");
     // }
+    if (!user || !user.token) {
+      navigation.navigate("Login");
+    }
   }, [
     dispatch,
     user,
@@ -151,18 +154,62 @@ export default function Flights({ navigation }) {
       });
       return;
     }
-  
+
     // dispatch(
     //   reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
     // );
 
-    const reservationsStat = await flightsService.reserveFlight(
-      selectedFlight,
-      adultsNum + kidsNum,
-      action,
-      flightClass,
-      user.token
-    );
+    const reservationsStat = await flightsService
+      .reserveFlight(
+        selectedFlight,
+        adultsNum + kidsNum,
+        action,
+        flightClass,
+        user.token
+      )
+      .then(async (res) => {
+        dispatch(reserveFlightAction(res));
+        if (res.client_secret) {
+          const initResponse = await initPaymentSheet({
+            merchantDisplayName: "Journify",
+            paymentIntentClientSecret: res["client_secret"]["client_secret"],
+          })
+            .then(async () => {
+              const paymentResponse = await presentPaymentSheet().then(
+                async (res) => {
+                  console.log(res);
+                  const flightStatus = await flightsService
+                    .reserveUpdate(
+                      selectedFlight,
+                      action,
+                      "confirmed",
+                      "paymentId",
+                      user.token
+                    )
+                    .then(async (res) => {
+                      dispatch(reserveFlightAction(res));
+                    });
+                }
+              );
+            })
+            .catch(async (err) => {
+              console.log(err);
+              const flightStatus = await flightsService.reserveUpdate(
+                selectedFlight,
+                action,
+                "cancelled",
+                "paymentId",
+                user.token
+              );
+              Alert.alert("Booking Failed", err.message);
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        Alert.alert("Booking Failed", err);
+        dispatch(reserveFlightAction(null));
+      });
 
     if (reservationsStat.client_secret) {
       const initResponse = await initPaymentSheet({
@@ -205,7 +252,7 @@ export default function Flights({ navigation }) {
         user.token
       );
     }
-  };      
+  };
 
   return (
     <ScrollView>

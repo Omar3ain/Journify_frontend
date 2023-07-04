@@ -150,7 +150,7 @@ const reservationsSlice = createSlice({
         state.message = action.payload;
         Toast.show({
           type: "error",
-          text1: "Delete status",
+          text1: "My Reservation ",
           text2: state.message,
         });
       })
@@ -198,7 +198,7 @@ const reservationsSlice = createSlice({
         state.message = action.payload;
         Toast.show({
           type: "error",
-          text1: "Update Status",
+          text1: "Canel Reservation",
           text2: state.message,
         });
       });
