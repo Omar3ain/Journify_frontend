@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -474,7 +475,7 @@ export default function Flights({ navigation }) {
                 selectedFlight.ticket_price *
                   (kidsNum + adultsNum) *
                   (flightClass === "Business" ? 2 : 1) +
-                " EGP"}
+                " $"}
             </Text>
           </View>
         )}
