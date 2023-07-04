@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import {styles} from './Style'
 import Loader from '../../../../components/Loader'
-const MadeForYou = ({ isSuccess, places, count, status, error, fetchAllRecs, navigation }) => {
+const MadeForYou = ({ places, count, status, error, fetchAllRecs, navigation }) => {
 
   useEffect(() => {
     fetchAllRecs();
@@ -20,7 +20,7 @@ const MadeForYou = ({ isSuccess, places, count, status, error, fetchAllRecs, nav
     return <View style={styles.container_error}>
           <Text style={{textAlign: 'center'}}>Something went wrong, please try again later!</Text>
     
-    </View>
+    </View>;
   }
 
 
@@ -48,11 +48,10 @@ const MadeForYou = ({ isSuccess, places, count, status, error, fetchAllRecs, nav
         return 0;
     }
   }
-  console.log(places);
   return (
     <ScrollView style={{backgroundColor: '#fff'}}>
     <View style={styles.container}>
-      {(!Array.isArray(places) || places.length === 0)&& <View style={[styles.container_error]}><Text style={{textAlign: 'center', color: '#666'}}>Places not found!</Text></View>}
+      {(!Array.isArray(places) || places.length === 0)&& <View style={styles.container_error}><Text style={{textAlign: 'center', color: '#666'}}>Places not found!</Text></View>}
       {Array.isArray(places) && places.map((place) => {
           if(place.image && place.name){
             return <TouchableWithoutFeedback key={place.xid} style={styles.card} onPress={() => handleButtonPress(place.xid)}>
