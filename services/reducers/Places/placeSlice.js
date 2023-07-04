@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 async function getCity() {
   const storedCity = await AsyncStorage.getItem("city");
-  const city = storedCity === "undefined" ? "Paris" : storedCity;
+  const city = !storedCity ? "Paris" : storedCity;
   return city;
 }
 
@@ -53,6 +53,9 @@ const placeSlice = createSlice({
       state.allPlaces = null;
       state.message = "";
     },
+    setAllPlaces: (state) => {
+      state.allPlaces = state.popularPlaces;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -95,5 +98,5 @@ const placeSlice = createSlice({
   },
 });
 
-export const { reset } = placeSlice.actions;
+export const { reset, setAllPlaces } = placeSlice.actions;
 export default placeSlice.reducer;

@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {
   getPopularPlaces,
   SearchPlaces,
+  setAllPlaces,
 } from "../../services/reducers/Places/placeSlice";
 import Loader from "../../components/Loader";
 import { useNavigation } from "@react-navigation/native";
@@ -33,7 +34,7 @@ export default function Home() {
   useEffect(() => {
     dispatch(getPopularPlaces(cityName));
     setSearch("");
-  }, [dispatch, cityName, isSuccess]);
+  }, [dispatch, cityName]);
 
   const handleButtonPress = (xid) => {
     navigation.navigate("PlaceInfo", { xid });
@@ -45,7 +46,7 @@ export default function Home() {
       if (searchTerm.length) {
         dispatch(SearchPlaces({ city_name: cityName, name: searchTerm }));
       } else {
-        dispatch(getPopularPlaces(cityName));
+        dispatch(setAllPlaces());
       }
     }, 2500);
     return () => clearTimeout(timer);
