@@ -2,28 +2,22 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator,
   Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Picker } from "@react-native-picker/picker";
 import Logo from "../../components/Logo";
 import Icon from "react-native-vector-icons/FontAwesome5";
-// import MyCountryPicker from "../../components/CountryPicker";
-// import CountryPickerModal from "react-native-country-picker-modal";
-// import { CountryPicker } from "react-native-country-codes-picker";
-// import { CountryList } from "react-native-country-codes-picker";
 import { useStripe } from "@stripe/stripe-react-native";
 import { API_BASE_URL } from "../../baseUrl";
 import Toast from "react-native-toast-message";
-import availableSlice, {
-  getFlights,
-  reserveFlightAction,
-} from "../../services/reducers/Flights/availableSlice";
+import { getFlights } from "../../services/reducers/Flights//availableSlice";
+import { reserveFlightAction } from "../../services/reducers/Flights/reservationsSlice";
 import flightsService from "../../services/reducers/Flights/flightsService";
 
 const URL = `${API_BASE_URL}flights/`;
@@ -34,8 +28,6 @@ export default function Flights({ navigation }) {
   const [adultsNum, setAdults] = useState(1);
   const [kidsNum, setKids] = useState(0);
   const [flightClass, setClass] = useState("Business");
-  const [show, setShow] = useState(false);
-  const [countryCode, setCountryCode] = useState("");
   const [error, setError] = useState({
     originError: "",
     destinationError: "",
@@ -64,14 +56,9 @@ export default function Flights({ navigation }) {
   };
 
   useEffect(() => {
-    // if (isSuccess) {
-    //   setTimeout(() => {
-    //     navigation.navigate("In boarding one");
-    //   }, 1000);
-    // }
-    // if (user && !isSuccess) {
-    //   navigation.navigate("InitialScreen");
-    // }
+    if (!user || !user.token) {
+      navigation.navigate("Auth");
+    }
   }, [
     dispatch,
     user,
@@ -96,9 +83,6 @@ export default function Flights({ navigation }) {
     }
   };
 
-  const handleCountrySelect = (country) => {
-    setSelectedCountry(country);
-  };
 
   const updateInputs = (name, value) => {
     switch (name) {
@@ -151,61 +135,91 @@ export default function Flights({ navigation }) {
       });
       return;
     }
-  
-    // dispatch(
-    //   reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
-    // );
 
-    const reservationsStat = await flightsService.reserveFlight(
-      selectedFlight,
-      adultsNum + kidsNum,
-      action,
-      flightClass,
-      user.token
-    );
-
-    if (reservationsStat.client_secret) {
-      const initResponse = await initPaymentSheet({
-        merchantDisplayName: "Journify",
-        paymentIntentClientSecret:
-          reservationsStat["client_secret"]["client_secret"],
-      });
-
-      if (initResponse.error) {
-        console.log("error", initResponse.error);
-        Alert.alert("Something went wrong");
-        return;
-      }
-
-      // 3. Present the Payment Sheet from Stripe
-      const paymentResponse = await presentPaymentSheet();
-
-      if (paymentResponse.error) {
-        Alert.alert(
-          `Error code: ${paymentResponse.error.code}`,
-          paymentResponse.error.message
-        );
-        const flightStatus = await flightsService.reserveUpdate(
-          selectedFlight,
-          action,
-          "cancelled",
-          user.token
-        );
-        dispatch(reserveFlightAction(flightStatus));
-        return;
-      }
-
-      // 4. If payment ok -> create the order
-      console.log(paymentResponse);
-      const flightStatus = await flightsService.reserveUpdate(
+    const reservationsStat = await flightsService
+      .reserveFlight(
         selectedFlight,
+        adultsNum + kidsNum,
         action,
-        "confirmed",
-        "paymentId",
+        flightClass,
         user.token
-      );
-    }
-  };      
+      )
+      .then(async (res) => {
+        dispatch(reserveFlightAction(res));
+        if (res.client_secret) {
+          const initResponse = await initPaymentSheet({
+            merchantDisplayName: "Journify",
+            paymentIntentClientSecret: res["client_secret"]["client_secret"],
+          })
+            .then(async (res) => {
+               if(res.error) {
+                Alert.alert("Something went wrong");
+                const flightStatus = await flightsService.reserveUpdate(
+                  selectedFlight,
+                  action,
+                  "cancelled",
+                  "paymentId",
+                  user.token
+                );
+                return;
+               }
+              const paymentResponse = await presentPaymentSheet()
+                .then(async (res) => {
+                  if (res.error) {
+                    Alert.alert(res.error.message);
+                    const flightStatus = await flightsService.reserveUpdate(
+                      selectedFlight,
+                      action,
+                      "cancelled",
+                      "paymentId",
+                      user.token
+                    );
+                    dispatch(reserveFlightAction(null));
+                    return;
+                  }
+                  const flightStatus = await flightsService
+                    .reserveUpdate(
+                      selectedFlight,
+                      action,
+                      "confirmed",
+                      "paymentId",
+                      user.token
+                    )
+                    .then(async (res) => {
+                      dispatch(reserveFlightAction(res));
+                    });
+                })
+                .catch(async (error) => {
+                  const flightStatus = await flightsService.reserveUpdate(
+                    selectedFlight,
+                    action,
+                    "cancelled",
+                    "paymentId",
+                    user.token
+                  );
+                  dispatch(reserveFlightAction(null));
+                });
+            })
+            .catch(async (err) => {
+              const flightStatus = await flightsService.reserveUpdate(
+                selectedFlight,
+                action,
+                "cancelled",
+                "paymentId",
+                user.token
+              );
+              Alert.alert("Booking Failed");
+              dispatch(reserveFlightAction(null));
+
+            });
+        }
+      navigation.navigate("My Reservations")
+      })
+      .catch(async(err) => {
+        Alert.alert("Booking Failed");
+        dispatch(reserveFlightAction(null));
+      });
+    };
 
   return (
     <ScrollView>
@@ -461,7 +475,7 @@ export default function Flights({ navigation }) {
                 selectedFlight.ticket_price *
                   (kidsNum + adultsNum) *
                   (flightClass === "Business" ? 2 : 1) +
-                " EGP"}
+                " $"}
             </Text>
           </View>
         )}

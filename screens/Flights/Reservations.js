@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { View, ScrollView, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  ScrollView,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import { Picker } from "@react-native-picker/picker";
+import Loader from "../../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getReservedFlights,
@@ -14,6 +21,8 @@ const Reservations = () => {
   const reservations = useSelector(
     (state) => state.reservations.flightReservations
   );
+
+  const isLoading = useSelector((state) => state.reservations.isLoading);
 
   const [displayedReservations, setDisplayedReservations] = useState([
     ...reservations,
@@ -52,7 +61,6 @@ const Reservations = () => {
     } else setDisplayedReservations(mapDate([...reservations]));
   }, [reservations, display]);
 
-
   return (
     <ScrollView style={styles.container}>
       <View
@@ -77,122 +85,158 @@ const Reservations = () => {
         <Picker
           selectedValue={display}
           onValueChange={(itemValue) => setDisplay(itemValue)}
-          style={{...styles.input, width:"38%"}}
+          style={{ ...styles.input, width: "38%" }}
           key={display}
         >
-          <Picker.Item label="Recent" value="earliest" />
-          <Picker.Item label="Earliest" value="latest" />
+          <Picker.Item label="Recent" value="latest" />
+          <Picker.Item label="Earliest" value="earliest" />
         </Picker>
       </View>
-      {displayedReservations.map((reservation) => (
-        <View key={reservation.id} style={cardStyle.card}>
-          <View style={cardStyle.details}>
-            <View style={styles.cardPart}>
-              <Text style={cardStyle.name}>
-                <Icon name="city" size={16} color="#666" />
-                {"   "}
-                {reservation.flight.company_name}
-              </Text>
-              <Text
-                style={{
-                  color: active(reservation.flight.traveling_date)
-                    ? "#2cb8e5"
-                    : "#666",
-                }}
-              >
-                <Icon
-                  name="calendar"
-                  solid= {active(reservation.flight.traveling_date) ? true : false}
-                  size={16}
-                  color={
-                    active(reservation.flight.traveling_date) ? "#2cb8e5" : "#666"
-                  }
-                />
-                {"   "}
-                {reservation.flight.traveling_date.split("T")[0]}
-              </Text>
-            </View>
-            <View style={{ ...cardStyle.info2, marginTop: 30 }}>
-              <View style={cardStyle.reservationBox}>
+      {isLoading ? (
+        <Loader />
+      ) : displayedReservations.length ? (
+        displayedReservations.map((reservation) => (
+          <View key={reservation.id} style={cardStyle.card}>
+            <View style={cardStyle.details}>
+              <View style={styles.cardPart}>
                 <Text style={cardStyle.name}>
-                  <Icon name="plane-departure" size={16} color="#666" />
+                  <Icon name="city" size={16} color="#666" />
                   {"   "}
-                  {reservation.flight.origin}
+                  {reservation.flight.company_name}
                 </Text>
-                <Text style={cardStyle.text}>
-                  <Icon
-                    name="clock"
-                    size={20}
-                    color="#666"
-                    style={{ paddingBottom: 15 }}
-                  />
-                  {"   "}
-                  {new Date(reservation.flight.traveling_date).getUTCHours() +
-                    " : " +
-                    new Date(reservation.flight.traveling_date).getMinutes()}
-                </Text>
-              </View>
-              <View style={cardStyle.reservationBox}>
-                <Text style={cardStyle.name}>
-                  <Icon name="plane-arrival" size={16} color="#666" />
-                  {"   "}
-                  {reservation.flight.destination}
-                </Text>
-                <Text style={cardStyle.text}>
-                  <Icon
-                    name="clock"
-                    size={20}
-                    color="#666"
-                    style={{ paddingBottom: 15 }}
-                  />
-                  {"   "}
-                  {new Date(reservation.flight.traveling_date).getUTCHours() +
-                    " : " +
-                    new Date(reservation.flight.traveling_date).getMinutes()}
-                </Text>
-              </View>
-              <View
-                style={{
-                  ...styles.cardPart,
-                  width: "100%",
-                }}
-              >
-                <View
+                <Text
                   style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    paddingTop: 20,
+                    color: active(reservation.flight.traveling_date)
+                      ? "#2cb8e5"
+                      : "#666",
                   }}
                 >
-                  <Text style={{ ...cardStyle.name, marginBottom: 20 }}>
-                    {"Class: "}
-                    {reservation.flightClass}
+                  <Icon
+                    name="calendar"
+                    solid={
+                      active(reservation.flight.traveling_date) ? true : false
+                    }
+                    size={16}
+                    color={
+                      active(reservation.flight.traveling_date)
+                        ? "#2cb8e5"
+                        : "#666"
+                    }
+                  />
+                  {"   "}
+                  {reservation.flight.traveling_date.split("T")[0]}
+                </Text>
+              </View>
+              <View style={{ ...cardStyle.info2, marginTop: 30 }}>
+                <View style={cardStyle.reservationBox}>
+                  <Text style={cardStyle.name}>
+                    <Icon name="plane-departure" size={16} color="#666" />
+                    {"   "}
+                    {reservation.flight.origin}
                   </Text>
                   <Text style={cardStyle.text}>
-                    {"Seats Number: "}
-                    {reservation.number_seats}
+                    <Icon
+                      name="clock"
+                      size={20}
+                      color="#666"
+                      style={{ paddingBottom: 15 }}
+                    />
+                    {"   "}
+                    {new Date(reservation.flight.traveling_date).getUTCHours() +
+                      " : " +
+                      new Date(reservation.flight.traveling_date).getMinutes()}
                   </Text>
                 </View>
-                {canCancel(reservation.flight.traveling_date) && 
-                  <View style={{ paddingTop: 20 }}>
-                    <TouchableOpacity
-                      style={{
-                        ...cardStyle.button,
-                        backgroundColor: "red",
-                      }}
-                      onPress={() =>
-                        dispatch(cancelReservedFlights(reservation))
-                      }
-                    >
-                      <Text style={cardStyle.buttonText}>Cancel </Text>
-                    </TouchableOpacity>
+                <View style={cardStyle.reservationBox}>
+                  <Text style={cardStyle.name}>
+                    <Icon name="plane-arrival" size={16} color="#666" />
+                    {"   "}
+                    {reservation.flight.destination}
+                  </Text>
+                  <Text style={cardStyle.text}>
+                    <Icon
+                      name="clock"
+                      size={20}
+                      color="#666"
+                      style={{ paddingBottom: 15 }}
+                    />
+                    {"   "}
+                    {new Date(reservation.flight.traveling_date).getUTCHours() +
+                      " : " +
+                      new Date(reservation.flight.traveling_date).getMinutes()}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.cardPart,
+                    width: "100%",
+                  }}
+                >
+                  <View
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      paddingTop: 20,
+                    }}
+                  >
+                    <Text style={{ ...cardStyle.name, marginBottom: 20 }}>
+                      {"Class: "}
+                      {reservation.flightClass}
+                    </Text>
+                    <Text style={cardStyle.text}>
+                      {"Seats Number: "}
+                      {reservation.number_seats}
+                    </Text>
                   </View>
-                }
+                  {canCancel(reservation.flight.traveling_date) && (
+                    <View style={{ paddingTop: 20 }}>
+                      <TouchableOpacity
+                        style={{
+                          ...cardStyle.button,
+                          backgroundColor: "red",
+                        }}
+                        onPress={() =>
+                          dispatch(cancelReservedFlights(reservation))
+                        }
+                      >
+                        <Text style={cardStyle.buttonText}>Cancel </Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
               </View>
             </View>
           </View>
+        ))
+      ) : (
+        <View
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Text style={{ ...cardStyle.name }}> No Reservations Found </Text>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Booking");
+            }}
+          >
+            <Text
+              style={{
+                ...cardStyle.name,
+                color: "#2cb8e5",
+                fontWeight: "bold",
+              }}
+            >
+              {" "}
+              Book new flight ?{" "}
+            </Text>
+          </TouchableOpacity>
         </View>
-      ))}
+      )}
     </ScrollView>
   );
 };
