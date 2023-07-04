@@ -11,8 +11,8 @@ export default function Hotels() {
   return (
       <Stack.Navigator>
         <Stack.Screen name="HotelList" component={HotelList} options={{ headerShown: false }} />
-        <Stack.Screen name="HotelDetails" component={HotelDetails} options={{ headerShown: false }} />
-        <Stack.Screen name="HotelReservation" component={HotelReservation} options={{ headerShown: false }} />
+        <Stack.Screen name="HotelDetails" component={HotelDetails} options={{ headerShown: true }} />
+        <Stack.Screen name="HotelReservation" component={HotelReservation} options={{ headerShown: true }} />
       </Stack.Navigator>
   );
 }

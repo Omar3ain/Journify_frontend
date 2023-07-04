@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TextInput, FlatList, Alert, StyleSheet } from 'react-native';
 import { styles } from './Style';
+import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon2 from 'react-native-vector-icons/Entypo';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -12,7 +13,7 @@ import { createHotelReview } from '../../services/reducers/Hotels/Reviews';
 import StarRating from './Ratings';
 import { API_BASE_URL } from "../../baseUrl";
 const URL = `${API_BASE_URL}`;
-const HotelDetails = ({ route }) => {
+const HotelDetails = ({ route,  places, success, error, createHotelReview}) => {
 
   const handleRate = (rating) => {
     console.log('Selected rating:', rating);
@@ -67,7 +68,7 @@ const HotelDetails = ({ route }) => {
       };
   
       fetchHotelsReviews();
-    },[])
+    },[reviews])
 
   const addReview = async () => {
     const user = JSON.parse(await AsyncStorage.getItem("user"));
@@ -85,25 +86,27 @@ const HotelDetails = ({ route }) => {
     } else {
       setCommentError('');
     }
-
-    try {
-      await dispatch(createHotelReview({
+    const alreadyAdded = reviews.find((rev)=> user.id === rev.user)
+    if(alreadyAdded){
+      Alert.alert('Oops, You have already added one before');
+      return;
+    }
+      dispatch(createHotelReview({
         user: user.id,
         hotel: hotelId,
         title: reviewTitle,
         comment: reviewComment,
         rating: reviewRating
       }))
-      
       // if (response.ok) {
-        const newReviewItem = {
-          id: Date.now(),
-          user: user.id, 
-          hotel: hotelId,
-          title: reviewTitle,
-          comment: reviewComment,
-          rating: reviewRating,
-        };
+        // const newReviewItem = {
+        //   id: Date.now(),
+        //   user: user.id, 
+        //   hotel: hotelId,
+        //   title: reviewTitle,
+        //   comment: reviewComment,
+        //   rating: reviewRating,
+        // };
         setReviews([...reviews, newReviewItem]);
         // setReviews(data);
         setReviewTitle('');
@@ -113,11 +116,7 @@ const HotelDetails = ({ route }) => {
       // } else {
       //   Alert.alert('Error', 'Unable to add review. Please try again later.');
       // }
-    } catch (error) {
-      Alert.alert('Error', 'Unable to add review. Please try again later.');
-    }
   };
-
   useEffect(() => {
     const fetchHotelDetails = async () => {
       try {
@@ -164,7 +163,7 @@ const HotelDetails = ({ route }) => {
 
   <ScrollView>
     <View style={styles.container}>
-      <Image source={require('../../assets/Expert_Advice/3959402.jpg')} style={styles.image} />
+      <Image source={{uri: hotel.image}} style={styles.image} />
       <View style={styles.details}>
         <Text style={styles.name}>{hotel.name}</Text>
         <Text style={styles.desc}>{hotel.description}</Text>
@@ -282,8 +281,17 @@ const HotelDetails = ({ route }) => {
         
   );
 };
+const mapStateToProps = (state) => ({
+  hotelReviews: state.hotels.hotelReviews,
+  error: state.hotels.isError,
+  success: state.hotels.isSuccess,
 
-export default HotelDetails;
+});
+
+const mapDispatchToProps = { createHotelReview };
+
+export default connect(mapStateToProps, mapDispatchToProps)(HotelDetails);
+
 
 
 const styless = StyleSheet.create({
@@ -409,3 +417,4 @@ const styless = StyleSheet.create({
     fontWeight: 'bold'
   },
 });
+

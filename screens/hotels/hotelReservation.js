@@ -109,6 +109,7 @@ const HotelReservation = ({ route }) => {
     }
 
     try {
+      console.log(startDate,numberOfRooms,numberOfDays,hotelId,selectedOption,numberOfPeople);
       dispatch(createHotelReserv({
         numberOfRooms,
         startDate,
@@ -159,170 +160,85 @@ const HotelReservation = ({ route }) => {
   };
 
   return (
-       <View style={styles.container}>  
-     <Text style={styles.label}>Number of Rooms:</Text>
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Enter the number of Rooms"
-        keyboardType="numeric"
-        value={numberOfRooms}
-        maxLength={2}
-        onChangeText={setNumberOfRooms}
-      /> */}
-      <View>
-                <View style={styless.inputWrapper}>
-                  <TouchableOpacity
-                    onPress={increaseNumber}
-                  >
-                    <Text>
-                      <Icon
-                        name="plus"
-                        size={20}
-                        
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                  <TextInput
-                    style={{ ...styless.numberInput }}
-                    placeholder='Number of Rooms...'
-                    keyboardType="numeric"
-                    maxLength={15}
-                    onChangeText={setNumberOfRooms}
-                    value={numberOfRooms.toString()}
-                    disabled
-                  />
-                  <TouchableOpacity
-                    onPress={decreaseNumber}
-                  >
-                    <Text>
-                      <Icon
-                        name="minus"
-                        size={20}
-                        
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                
-              </View>
+    <View style={styles.container}>
+      <View style={styles.formContainer}>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Number of Rooms:</Text>
+          <View style={styles.numberInputContainer}>
+            <TouchableOpacity onPress={decreaseNumber}>
+              <Icon name="minus" size={20} color="#727171" />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.numberInput}
+              placeholder="Number of Rooms..."
+              keyboardType="numeric"
+              maxLength={15}
+              onChangeText={setNumberOfRooms}
+              value={numberOfRooms.toString()}
+              editable={false}
+            />
+            <TouchableOpacity onPress={increaseNumber}>
+              <Icon name="plus" size={20} color="#727171" />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      {/* <Text style={styles.label}>Start Date:</Text>
-      <TouchableOpacity style={styles.dateInput} onPress={showDatePicker}>
-        <Text>{startDate ? startDate : 'Select Date'}</Text>
-      </TouchableOpacity>
-      <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleDateConfirm}
-        onCancel={hideDatePicker}
-      /> */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Number of Days:</Text>
+          <View style={styles.numberInputContainer}>
+            <TouchableOpacity onPress={decreaseNumberDays}>
+              <Icon name="minus" size={20} color="#727171" />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.numberInput}
+              placeholder="Number of Days..."
+              keyboardType="numeric"
+              maxLength={15}
+              onChangeText={setNumberOfDays}
+              value={numberOfDays.toString()}
+            />
+            <TouchableOpacity onPress={increaseNumberDays}>
+              <Icon name="plus" size={20} color="#727171" />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      <Text style={styles.label}>Number of Days:</Text>
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Enter the number of Days"
-        keyboardType="numeric"
-        value={numberOfDays}
-        maxLength={2}
-        onChangeText={setNumberOfDays}
-      /> */}
-      <View>
-                <View style={styless.inputWrapper}>
-                  <TouchableOpacity
-                    onPress={increaseNumberDays}
-                  >
-                    <Text>
-                      <Icon
-                        name="plus"
-                        size={20}
-                        
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                  <TextInput
-                    style={{ ...styless.numberInput }}
-                    placeholder='Number of Days...'
-                    keyboardType="numeric"
-                    maxLength={15}
-                    onChangeText={setNumberOfDays}
-                    value={numberOfDays.toString()}
-                    disabled
-                  />
-                  <TouchableOpacity
-                    onPress={decreaseNumberDays}
-                  >
-                    <Text>
-                      <Icon
-                        name="minus"
-                        size={20}
-                        
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                
-              </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Number of People:</Text>
+          <View style={styles.numberInputContainer}>
+            <TouchableOpacity onPress={decreaseNumberPeople}>
+              <Icon name="minus" size={20} color="#727171" />
+            </TouchableOpacity>
+            <TextInput
+              style={styles.numberInput}
+              placeholder="Number of People..."
+              keyboardType="numeric"
+              maxLength={15}
+              onChangeText={setNumberOfPeople}
+              value={numberOfPeople.toString()}
+            />
+            <TouchableOpacity onPress={increaseNumberPeople}>
+              <Icon name="plus" size={20} color="#727171" />
+            </TouchableOpacity>
+          </View>
+        </View>
 
-      <Text style={styles.label}>Number of People:</Text>
-      {/* <TextInput
-        style={styles.input}
-        placeholder="Enter the number of People"
-        keyboardType="numeric"
-        value={numberOfPeople}
-        maxLength={3}
-        onChangeText={setNumberOfPeople}
-      /> */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.label}>Room Type:</Text>
+          <Picker
+            style={styles.picker}
+            selectedValue={selectedOption}
+            onValueChange={itemValue => setSelectedOption(itemValue)}
+          >
+            <Picker.Item label="Single" value="S" />
+            <Picker.Item label="Double" value="D" />
+          </Picker>
+        </View>
 
-<View>
-                <View style={styless.inputWrapper}>
-                  <TouchableOpacity
-                    onPress={increaseNumberPeople}
-                  >
-                    <Text>
-                      <Icon
-                        name="plus"
-                        size={20}
-                        
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                  <TextInput
-                    style={{ ...styless.numberInput }}
-                    placeholder='Number of People...'
-                    keyboardType="numeric"
-                    maxLength={15}
-                    onChangeText={setNumberOfPeople}
-                    value={numberOfPeople.toString()}
-                    disabled
-                  />
-                  <TouchableOpacity
-                    onPress={decreaseNumberPeople}
-                  >
-                    <Text>
-                      <Icon
-                        name="minus"
-                        size={20}
-                        
-                      />
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                
-              </View>
+        {error ? <Text style={styles.error}>{error}</Text> : null}
 
-      <Text style={styles.label}>Room Type:</Text>
-      <Picker
-        style={styles.picker}
-        selectedValue={selectedOption}
-        onValueChange={(itemValue) => setSelectedOption(itemValue)}
-      >
-        <Picker.Item label="Single" value="S" />
-        <Picker.Item label="Double" value="D" />
-      </Picker>
-
-      {error ? <Text style={styles.error}>{error}</Text> : null}
-
-      <Button title="Proceed" onPress={handleSubmit}  disabled={!numberOfDays || !numberOfPeople || !numberOfRooms}/>
+        <Button title="Proceed" onPress={handleSubmit} disabled={!numberOfDays || !numberOfPeople || !numberOfRooms} />
+      </View>
     </View>
   );
 };
@@ -332,175 +248,50 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 30,
+    backgroundColor: '#fff',
   },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginTop: 10,
+  formContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
   },
-  input: {
-    height: 40,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginTop: 5,
+  inputContainer: {
+    marginBottom: 16,
+    width: '100%',
   },
   numberInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  numberInputText: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    paddingHorizontal: 10,
-  },
-  dateInput: {
-    height: 40,
-    borderColor: '#ccc',
+    justifyContent: 'space-between',
     borderWidth: 1,
+    borderColor: '#727171',
+    borderRadius: 5,
     paddingHorizontal: 10,
-    marginTop: 5,
-    justifyContent: 'center',
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    textAlign: 'left',
+  },
+  numberInput: {
+    flex: 1,
+    height: 40,
+    paddingHorizontal: 10,
+    textAlign: 'center',
+    color: '#000'
   },
   picker: {
     height: 40,
     marginTop: 5,
     marginBottom: 15,
-    borderColor: '#ccc',
+    borderColor: '#727171',
     borderWidth: 1,
   },
   error: {
     color: 'red',
     marginTop: 10,
+    textAlign: 'center',
   },
 });
-
-const styless = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    backgroundColor: "#fff",
-    padding: 20,
-    flexDirection: "column",
-  },
-  logoContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 15,
-  },
-  formContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-  },
-  inputContainer: {
-    flexDirection: "column",
-    marginBottom: 16,
-    width: "100%",
-  },
-  inputWrapper: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  input: {
-    flex: 1,
-    height: 40,
-    backgroundColor: "#e8e8e8",
-    border: "none",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-  },
-  numberInput: {
-    width: "95%",
-    height: 40,
-    backgroundColor: "#e8e8e8",
-    border: "none",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingLeft: 10,
-    margin: 20,
-  },
-  label: {
-    color: "#727171",
-    fontWeight: "bold",
-    marginBottom: 8,
-    textAlign: "left",
-  },
-  button: {
-    width: "100%",
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: "#2cb8e5",
-    borderRadius: 5,
-    margin: 20,
-    textAlign: "center",
-  },
-  flighDateButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  dividerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 100,
-    marginBottom: 32,
-  },
-  divider: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderColor: "#727171",
-    width: 150,
-  },
-  dividerText: {
-    marginHorizontal: 8,
-    color: "#727171",
-    fontWeight: "bold",
-  },
-
-  mutedText: {
-    color: "gray",
-    fontWeight: "100",
-  },
-  flightsDates: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    margin: 10,
-  },
-  fieldSet: {
-    marginHorizontal: 10,
-    marginTop: 30,
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#727171",
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-around",
-  },
-  legend: {
-    position: "absolute",
-    top: -10,
-    left: 10,
-    fontWeight: "bold",
-    backgroundColor: "#FFFFFF",
-  },
-  error: {
-    color: 'red',
-    fontSize: 12,
-    fontWeight: 'bold'
-  },
-});
-
 export default HotelReservation;
