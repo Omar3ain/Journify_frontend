@@ -47,7 +47,7 @@ export const getUserReservations = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await hotelService.editHotelReservation(token);
+      return await hotelService.getReservations(token);
     } catch (error) {
       let message = "";
       const data = error.response.data;
@@ -76,7 +76,7 @@ export const editUserReservations = createAsyncThunk(
   async (editedData,hotelId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await hotelService.getReservations(editedData, hotelId, token);
+      return await hotelService.editHotelReservation(editedData, hotelId, token);
     } catch (error) {
       let message = "";
       const data = error.response.data;
