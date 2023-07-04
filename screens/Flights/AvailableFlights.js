@@ -83,7 +83,7 @@ export default function Flights({ navigation }) {
   ]);
 
   const getAvailableFlights = () => {
-    if (origin.length && destination.length) {
+    if (origin.length && destination.length && destination !== origin) {
       dispatch(getFlights({ origin, destination }));
       navigation.navigate("Select Date");
     } else {
@@ -151,7 +151,7 @@ export default function Flights({ navigation }) {
       });
       return;
     }
-
+  
     // dispatch(
     //   reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
     // );
@@ -205,7 +205,7 @@ export default function Flights({ navigation }) {
         user.token
       );
     }
-  };
+  };      
 
   return (
     <ScrollView>

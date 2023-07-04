@@ -3,13 +3,12 @@ import hotelService from "./hotelService";
 import Toast from "react-native-toast-message";
 
 const initialState = {
-    hotelReserv: [],
-    isError: false,
-    isSuccess: false,
-    isLoading: false,
-    message: "",
-  };
-
+  hotelReserv: [],
+  isError: false,
+  isSuccess: false,
+  isLoading: false,
+  message: "",
+};
 
 export const createHotelReserv = createAsyncThunk(
   "hotelReservation/createHotelReserv",
@@ -19,7 +18,7 @@ export const createHotelReserv = createAsyncThunk(
       const token = thunkAPI.getState().auth.user.token;
       return await hotelService.createHotelReservation(createData, token);
     } catch (error) {
-      console.log('sdddddddddddddd');
+      console.log("sdddddddddddddd");
       let message = "";
       const data = error.response.data;
       if (Object.keys(data).length > 0) {
@@ -44,7 +43,7 @@ export const createHotelReserv = createAsyncThunk(
 
 export const getUserReservations = createAsyncThunk(
   "hotelReservation/getUserReservations",
-  async (_,thunkAPI) => {
+  async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await hotelService.getReservations(token);
@@ -81,6 +80,9 @@ const hotelReservationSlice = createSlice({
       state.isLoading = false;
       state.message = "";
       state.hotelReserv = [];
+    },
+    reserveHotel: (state, action) => {
+      state.hotelReserv = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -125,7 +127,6 @@ const hotelReservationSlice = createSlice({
       });
   },
 });
-  
-  export const { reset } = hotelReservationSlice.actions;
-  export default hotelReservationSlice.reducer;
-  
+
+export const { reset,  reserveHotel } = hotelReservationSlice.actions;
+export default hotelReservationSlice.reducer;

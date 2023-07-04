@@ -36,6 +36,24 @@ const createReviews = async (createData, token) => {
     return response.data;
   };
 
+  const editHotelReservation = async (editData, hoteId, token) => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `token ${token}`,
+      },
+    };
+    const response = await axios.patch(
+      URL + `stayreservation/edit/${hoteId}`,
+      editData,
+      config,
+    );
+  console.log(response.data);
+  
+    return response.data;
+  };
+
+
   const getReservations = async (token) => {
     const config = {
       headers: {
@@ -54,7 +72,8 @@ const createReviews = async (createData, token) => {
   const hotelService = {
     createReviews,
     createHotelReservation,
-    getReservations
+    getReservations,
+    editHotelReservation
   };
 
 
