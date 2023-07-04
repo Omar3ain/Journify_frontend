@@ -8,6 +8,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: "",
+  reservedHotel: null,
 };
 
 export const createHotelReserv = createAsyncThunk(
@@ -81,8 +82,13 @@ const hotelReservationSlice = createSlice({
       state.message = "";
       state.hotelReserv = [];
     },
-    reserveHotel: (state, action) => {
-      state.hotelReserv = action.payload;
+    reserveStayAction: (state, action) => {
+      state.reservedHotel = action.payload;
+      if (action.payload && (action.payload.status === "confirmed")) {
+        state.hotelReserv.push(state.reservedHotel);
+      }
+      console.log(state.reservedHotel);
+      console.log(state.hotelReserv);
     },
   },
   extraReducers: (builder) => {
@@ -128,5 +134,5 @@ const hotelReservationSlice = createSlice({
   },
 });
 
-export const { reset,  reserveHotel } = hotelReservationSlice.actions;
+export const { reset, reserveStayAction } = hotelReservationSlice.actions;
 export default hotelReservationSlice.reducer;

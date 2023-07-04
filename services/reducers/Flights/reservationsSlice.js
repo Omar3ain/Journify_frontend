@@ -118,10 +118,14 @@ const reservationsSlice = createSlice({
       state.flightReservations = [];
     },
     reserveFlightAction: (state, action) => {
-      state.reservedFlight = action.payload;
-      state.flightReservations.push(action.payload);
+      state.reservedFlight = action.payload.flight;
+      if (action.payload && (action.payload.status === "confirmed")) {
+        state.flightReservations.push(action.payload);
+      }
       console.log(state.reservedFlight);
+      console.log(state.flightReservations);
     },
+    setReservedFlgiht: (state, action) => {},
   },
   extraReducers: (builder) => {
     builder
