@@ -75,7 +75,7 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
 const HotelReservation = ({ route }) => {
-  const { hotelId } = route.params;
+  const { hotelId, roomPrice } = route.params;
 
   const [numberOfRooms, setNumberOfRooms] = useState("");
   const [startDate, setStartDate] = useState(new Date());
@@ -88,6 +88,7 @@ const HotelReservation = ({ route }) => {
   const [error, setError] = useState("");
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [ hotelReserved, setHotelReserved ] = useState({});
+  const [ totalPrice, setTotalPrice ] = useState(route.params.roomPrice);
 
   const { user } = useSelector((state) => state.auth);
   console.log(user);
@@ -198,6 +199,7 @@ const HotelReservation = ({ route }) => {
 
   const increaseNumber = () => {
     setNumberOfRooms((prevRating) => Math.min(prevRating + 1, 10));
+
   };
 
   const decreaseNumber = () => {
@@ -331,7 +333,11 @@ const HotelReservation = ({ route }) => {
               <Picker.Item label="Single" value="S" />
               <Picker.Item label="Double" value="D" />
             </Picker>
+
           </View>
+
+          {!numberOfPeople || !numberOfDays || !numberOfRooms ? <Text style={{color: 'red' , fontWeight: 'bold', paddingBottom: 30}}>Fill all fields for total price</Text> : <Text style={{paddingBottom: 30, fontWeight: 'bold', color: 'blue'}}>Total price: {totalPrice * numberOfRooms * numberOfDays * numberOfPeople}$</Text> }
+
 
           {error ? <Text style={styles.error}>{error}</Text> : null}
 

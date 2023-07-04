@@ -53,7 +53,7 @@ const HotelDetails = ({ route,  places, success, error, createHotelReview}) => {
 
   const navigateToOtherPage = (itemId) => {
     console.log('itemId:', hotelId);
-  navigation.navigate('HotelReservation', { hotelId: hotelId });
+  navigation.navigate('HotelReservation', { hotelId: hotelId, roomPrice: hotel.room_price });
 };
 
     useEffect(()=>{
@@ -140,9 +140,10 @@ const HotelDetails = ({ route,  places, success, error, createHotelReview}) => {
     
       <View style={{backgroundColor: '#eee', borderColor: 'black', borderStyle: 'solid', borderWidth: 3, borderRadius: 5, marginTop: 4}}>
         {/* <Text>User: {item.user}</Text> */}
-        <Text style={{ fontWeight: 'bold' }}> {item.title}</Text> 
-        <Text> {item.comment}</Text>
-        <Text> {item.rating}</Text>
+        <Text style={{textDecorationLine: 'underline'}}>User Review:</Text>
+        <Text style={{ fontWeight: 'bold', paddingTop: 10, paddingBottom: 10 }}> {item.title}</Text>
+        <Text style={{paddingTop: 5, paddingBottom: 10}}> {item.comment}</Text>
+        <Text style={{paddingTop: 5, paddingBottom: 10}}><Icon2 name="star" size={16} color="gold" /> {item.rating}</Text>
 
         {/* <TouchableOpacity onPress={() => deleteReview(item.id)}>
         <Text>Delete</Text>
