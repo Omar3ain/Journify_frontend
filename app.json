@@ -20,8 +20,9 @@
         }
       ]
     ],
-
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.journfiy"
@@ -35,6 +36,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "71465c13-4942-4eea-8194-a277a6e1dc66"
+      }
     }
   }
 }
