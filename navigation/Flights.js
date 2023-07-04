@@ -29,6 +29,7 @@ export function FlightTabNavigator() {
 
 export function FlightsNavigator() {
   const { isLoggedIn } = useSelector((state) => state.auth);
+  console.log(isLoggedIn);
   return (
     <Stack.Navigator>
       <Stack.Screen

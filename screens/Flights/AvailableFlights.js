@@ -69,9 +69,9 @@ export default function Flights({ navigation }) {
     //     navigation.navigate("In boarding one");
     //   }, 1000);
     // }
-    if (user && !isSuccess) {
-      navigation.navigate("InitialScreen");
-    }
+    // if (user && !isSuccess) {
+    //   navigation.navigate("InitialScreen");
+    // }
   }, [
     dispatch,
     user,
