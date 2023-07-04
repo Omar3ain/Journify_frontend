@@ -68,7 +68,7 @@ const HotelDetails = ({ route,  places, success, error, createHotelReview}) => {
       };
   
       fetchHotelsReviews();
-    },[reviews])
+    },[reviewRating, dispatch])
 
   const addReview = async () => {
     const user = JSON.parse(await AsyncStorage.getItem("user"));
