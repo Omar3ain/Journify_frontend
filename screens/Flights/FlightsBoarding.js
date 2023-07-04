@@ -21,7 +21,7 @@ function FlgihtsTab() {
       }}
     >
       <Tab.Screen
-        name="Booking"
+        name="Reserving"
         component={FlightsNavigator}
         options={{ tabBarLabel: "Booking" }}
       />

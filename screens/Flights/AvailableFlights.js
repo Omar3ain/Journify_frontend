@@ -6,15 +6,25 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Picker } from "@react-native-picker/picker";
 import Logo from "../../components/Logo";
 import Icon from "react-native-vector-icons/FontAwesome5";
+// import MyCountryPicker from "../../components/CountryPicker";
+// import CountryPickerModal from "react-native-country-picker-modal";
+// import { CountryPicker } from "react-native-country-codes-picker";
+// import { CountryList } from "react-native-country-codes-picker";
+import { useStripe } from "@stripe/stripe-react-native";
 import { API_BASE_URL } from "../../baseUrl";
 import Toast from "react-native-toast-message";
-import { getFlights } from "../../services/reducers/Flights/availableSlice";
-import { reserveFlight } from "../../services/reducers/Flights/reservationsSlice";
+import availableSlice, {
+  getFlights,
+  reserveFlightAction,
+} from "../../services/reducers/Flights/availableSlice";
+import flightsService from "../../services/reducers/Flights/flightsService";
 
 const URL = `${API_BASE_URL}flights/`;
 
@@ -24,6 +34,8 @@ export default function Flights({ navigation }) {
   const [adultsNum, setAdults] = useState(1);
   const [kidsNum, setKids] = useState(0);
   const [flightClass, setClass] = useState("Business");
+  const [show, setShow] = useState(false);
+  const [countryCode, setCountryCode] = useState("");
   const [error, setError] = useState({
     originError: "",
     destinationError: "",
@@ -32,6 +44,7 @@ export default function Flights({ navigation }) {
   });
 
   const dispatch = useDispatch();
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
@@ -83,6 +96,10 @@ export default function Flights({ navigation }) {
     }
   };
 
+  const handleCountrySelect = (country) => {
+    setSelectedCountry(country);
+  };
+
   const updateInputs = (name, value) => {
     switch (name) {
       case "Departure":
@@ -126,7 +143,7 @@ export default function Flights({ navigation }) {
     }
   };
 
-  const bookFlight = (action) => {
+  const bookFlight = async (action) => {
     if (adultsNum + kidsNum > 15) {
       Toast.show({
         type: "error",
@@ -134,9 +151,60 @@ export default function Flights({ navigation }) {
       });
       return;
     }
-    dispatch(
-      reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
+
+    // dispatch(
+    //   reserveFlight({ seatsNumber: adultsNum + kidsNum, action, flightClass })
+    // );
+
+    const reservationsStat = await flightsService.reserveFlight(
+      selectedFlight,
+      adultsNum + kidsNum,
+      action,
+      flightClass,
+      user.token
     );
+
+    if (reservationsStat.client_secret) {
+      const initResponse = await initPaymentSheet({
+        merchantDisplayName: "Journify",
+        paymentIntentClientSecret:
+          reservationsStat["client_secret"]["client_secret"],
+      });
+
+      if (initResponse.error) {
+        console.log("error", initResponse.error);
+        Alert.alert("Something went wrong");
+        return;
+      }
+
+      // 3. Present the Payment Sheet from Stripe
+      const paymentResponse = await presentPaymentSheet();
+
+      if (paymentResponse.error) {
+        Alert.alert(
+          `Error code: ${paymentResponse.error.code}`,
+          paymentResponse.error.message
+        );
+        const flightStatus = await flightsService.reserveUpdate(
+          selectedFlight,
+          action,
+          "cancelled",
+          user.token
+        );
+        dispatch(reserveFlightAction(flightStatus));
+        return;
+      }
+
+      // 4. If payment ok -> create the order
+      console.log(paymentResponse);
+      const flightStatus = await flightsService.reserveUpdate(
+        selectedFlight,
+        action,
+        "confirmed",
+        "paymentId",
+        user.token
+      );
+    }
   };
 
   return (
@@ -198,7 +266,8 @@ export default function Flights({ navigation }) {
           <View style={styles.inputContainer}>
             <Text style={styles.label}>
               {" "}
-              <Icon name="plane-arrival" size={14} color="#666" /> {"  "}
+              <Icon name="plane-arrival" size={14} color="#666" />
+              {"  "}
               Destination
             </Text>
             <View style={styles.inputWrapper}>
@@ -227,7 +296,7 @@ export default function Flights({ navigation }) {
           </View>
           <View style={styles.inputContainer}>
             <Text style={styles.label}>Class</Text>
-            <View style={{ ...styles.inputWrapper, width: "30%" }}>
+            <View style={{ ...styles.inputWrapper, width: "50%" }}>
               <Picker
                 selectedValue={flightClass}
                 onValueChange={(itemValue) => setClass(itemValue)}
@@ -284,7 +353,7 @@ export default function Flights({ navigation }) {
         )}
         <View style={styles.dividerContainer}>
           <View style={styles.divider} />
-          <Text style={styles.dividerText}>Seats Number</Text>
+          <Text style={styles.dividerText}>Passengers</Text>
           <View style={styles.divider} />
         </View>
         <View>
@@ -300,7 +369,7 @@ export default function Flights({ navigation }) {
                     <Text>
                       <Icon
                         name="plus"
-                        size={20}
+                        size={16}
                         color={
                           adultsNum >= 15 || kidsNum + adultsNum >= 15
                             ? "gray"
@@ -310,8 +379,8 @@ export default function Flights({ navigation }) {
                     </Text>
                   </TouchableOpacity>
                   <TextInput
-                    style={{ ...styles.numberInput }}
-                    value={adultsNum}
+                    style={{ ...styles.numberInput, width: "30%" }}
+                    value={adultsNum.toString()}
                     onChangeText={setAdults}
                     keyboardType="numeric"
                     maxLength={15}
@@ -323,7 +392,7 @@ export default function Flights({ navigation }) {
                     <Text>
                       <Icon
                         name="minus"
-                        size={20}
+                        size={16}
                         color={adultsNum > 0 ? "#2cb8e5" : "gray"}
                       />
                     </Text>
@@ -342,7 +411,7 @@ export default function Flights({ navigation }) {
                     <Text>
                       <Icon
                         name="plus"
-                        size={20}
+                        size={16}
                         color={
                           kidsNum >= 15 || kidsNum + adultsNum >= 15
                             ? "gray"
@@ -352,8 +421,8 @@ export default function Flights({ navigation }) {
                     </Text>
                   </TouchableOpacity>
                   <TextInput
-                    style={{ ...styles.numberInput }}
-                    value={kidsNum}
+                    style={{ ...styles.numberInput, width: "30%" }}
+                    value={kidsNum.toString()}
                     onChangeText={setKids}
                     keyboardType="numeric"
                     maxLength={2}
@@ -365,7 +434,7 @@ export default function Flights({ navigation }) {
                     <Text>
                       <Icon
                         name="minus"
-                        size={20}
+                        size={16}
                         color={kidsNum > 0 ? "#2cb8e5" : "gray"}
                       />
                     </Text>
@@ -376,16 +445,23 @@ export default function Flights({ navigation }) {
           </View>
         </View>
         {!disableBooking() && (
-          <View style={{ width: "100%" }}>
+          <View
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-start",
+            }}
+          >
             <Text style={{ color: "#2cb8e5", fontWeight: "bold" }}>
               Total Price:{" "}
-              <span style={{ color: "black", fontWeight: "bold" }}>
-                {" " +
-                  selectedFlight.ticket_price *
-                    (kidsNum + adultsNum) *
-                    (flightClass === "Business" ? 2 : 1) +
-                  " EGP"}
-              </span>
+            </Text>
+            <Text style={{ color: "black", fontWeight: "bold" }}>
+              {" " +
+                selectedFlight.ticket_price *
+                  (kidsNum + adultsNum) *
+                  (flightClass === "Business" ? 2 : 1) +
+                " EGP"}
             </Text>
           </View>
         )}
@@ -452,7 +528,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     backgroundColor: "#e8e8e8",
-    border: "none",
+    // border: "none",
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
@@ -461,7 +537,6 @@ const styles = StyleSheet.create({
     width: "95%",
     height: 40,
     backgroundColor: "#e8e8e8",
-    border: "none",
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,

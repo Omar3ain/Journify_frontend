@@ -4,6 +4,7 @@ import Toast from "react-native-toast-message";
 
 const initialState = {
   flightReservations: [],
+  flightsIDS: {},
   reservedFlight: null,
   isError: false,
   isSuccess: false,
@@ -71,7 +72,7 @@ export const cancelReservedFlights = createAsyncThunk(
 
 export const reserveFlight = createAsyncThunk(
   "flightReservations/reserveFlight",
-  async ({ seatsNumber, action, flighClass }, thunkAPI) => {
+  async ({ seatsNumber, action, flightClass }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
       const flight = thunkAPI.getState().flights.selectedFlight;
@@ -79,7 +80,7 @@ export const reserveFlight = createAsyncThunk(
         flight,
         seatsNumber,
         action,
-        flighClass,
+        flightClass,
         token
       );
     } catch (error) {
@@ -105,7 +106,6 @@ export const reserveFlight = createAsyncThunk(
   }
 );
 
-
 const reservationsSlice = createSlice({
   name: "flightReservations",
   initialState,
@@ -116,6 +116,11 @@ const reservationsSlice = createSlice({
       state.isLoading = false;
       state.message = "";
       state.flightReservations = [];
+    },
+    reserveFlightAction: (state, action) => {
+      state.reservedFlight = action.payload;
+      state.flightReservations.push(action.payload);
+      console.log(state.reservedFlight);
     },
   },
   extraReducers: (builder) => {
@@ -128,6 +133,12 @@ const reservationsSlice = createSlice({
         state.isSuccess = true;
         state.isError = false;
         state.flightReservations = action.payload;
+        const newFlightIDS = {};
+        state.flightReservations.forEach(
+          (reservation) =>
+            (newFlightIDS[reservation.flight.id] = reservation.status)
+        );
+        state.flightsIDS = { ...newFlightIDS };
       })
       .addCase(getReservedFlights.rejected, (state, action) => {
         state.isLoading = false;
@@ -149,6 +160,7 @@ const reservationsSlice = createSlice({
         state.isError = false;
         state.reservedFlight = action.payload;
         state.flightReservations.push(action.payload);
+        console.log(state.reservedFlight);
         Toast.show({
           type: "success",
           text1: "Flight Reservation",
@@ -189,5 +201,5 @@ const reservationsSlice = createSlice({
   },
 });
 
-export const { reset } = reservationsSlice.actions;
+export const { reset, reserveFlightAction } = reservationsSlice.actions;
 export default reservationsSlice.reducer;

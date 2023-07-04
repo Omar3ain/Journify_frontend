@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import Logo from "../../components/Logo";
 import CalendarPicker from "../../components/CalenderPicker";
 import Loader from "../../components/Loader";
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -19,10 +18,10 @@ export default function DateSelector({ navigation }) {
   const dispatch = useDispatch();
   const [availableDates, setAvailableDates] = useState([]);
   const [selectedFlights, setSelectedFlights] = useState([]);
-  const [loadFlights, setLoadFlights] = useState(false);
   const { availableFlights, selectedDate, isLoading } = useSelector(
     (state) => state.flights
   );
+  const { flightsIDS } = useSelector((state) => state.reservations);
 
   useEffect(() => {
     const newAvailableDates = availableFlights.map(
@@ -32,13 +31,11 @@ export default function DateSelector({ navigation }) {
   }, [availableFlights]);
 
   useEffect(() => {
-    setLoadFlights(true);
     const filtered_flights = availableFlights.filter(
       (flight) => flight.traveling_date.split("T")[0] == selectedDate
     );
     setSelectedFlights([...filtered_flights]);
-    setLoadFlights(false);
-  }, [selectedDate]);
+  }, [availableFlights, selectedDate]);
 
   const reserveFlight = (flight) => {
     dispatch(selectFlight(flight));
@@ -48,105 +45,125 @@ export default function DateSelector({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <View style={styles.logoContainer}>
-          <Image
-            source={require("../../assets/plan.jpg")}
-            style={{ ...styles.image, width: "100%", height: "100%" }}
-          />
-        </View>
-        <View>
+        <View >
           <CalendarPicker availableDates={availableDates}></CalendarPicker>
         </View>
         <View style={{ width: "100%" }}>
-          {/* { !isLoading ? */}
-          {/* ( */}
-          <View style={cardStyle.container}>
-            {selectedFlights.map((flight) => (
-              <View key={flight.id} style={cardStyle.card}>
-                <Image
-                  source={require("../../assets/plan.jpg")}
-                  style={cardStyle.image}
-                />
-                <View style={cardStyle.details}>
-                  <Text style={cardStyle.name}>
-                    <Icon name="city" size={16} color="#666" />
-                    {"   "}
-                    {flight.company_name}
-                  </Text>
-                  <View style={{ ...cardStyle.info, marginTop: 30 }}>
-                    <View>
-                      <Text style={cardStyle.name}>
-                        <Icon name="plane-departure" size={16} color="#666" />
+          { (!isLoading) ? 
+            <View style={cardStyle.container}>
+              {selectedFlights.map((flight) => (
+                <View key={flight.id} style={cardStyle.card}>
+                  <View style={cardStyle.details}>
+                    <View
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "90%",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      {/* <Text style={cardStyle.name}>
+                        <Icon name="city" size={16} color="#666" />
                         {"   "}
-                        {flight.origin}
-                      </Text>
-                      <Text style={cardStyle.text}>
-                        <Icon
-                          name="clock"
-                          size={20}
-                          color="#666"
-                          style={{ paddingBottom: 15 }}
-                        />
-                        {"   "}
-                        {new Date(flight.traveling_date).getUTCHours() +
-                          " : " +
-                          new Date(flight.traveling_date).getMinutes()}
-                      </Text>
-                      <Text style={{...cardStyle.name, marginTop:30}}>
-                        <Icon
-                          name="money-check-alt"
-                          size={20}
-                          color="#666"
-                        />
-                        {"   "}
-                        {flight.ticket_price}
-                      </Text>
+                        {flight.company_name}
+                      </Text> */}
+                      {(flightsIDS[flight.id]) && 
+                        <View style={{ marginLeft: 10 }}>
+                          <Text
+                            style={{
+                              ...cardStyle.name,
+                              color: "#2cb8e5",
+                              fontWeight: "bold",
+                            }}
+                          >
+                            Upcoming Flight
+                          </Text>
+                        </View>
+                      }
                     </View>
-                    <View>
-                      <Text style={cardStyle.name}>
-                        <Icon name="plane-arrival" size={16} color="#666" />
-                        {"   "}
-                        {flight.destination}
-                      </Text>
-                      <Text style={cardStyle.text}>
-                        <Icon
-                          name="clock"
-                          size={20}
-                          color="#666"
-                          style={{ paddingBottom: 15 }}
-                        />
-                        {"   "}
-                        {new Date(flight.traveling_date).getUTCHours() +
-                          " : " +
-                          new Date(flight.traveling_date).getMinutes()}
-                      </Text>
+                    <View style={{ ...cardStyle.info, marginTop: 30 }}>
+                      <View>
+                        <Text style={cardStyle.name}>
+                          <Icon name="plane-departure" size={16} color="#666" />
+                          {"   "}
+                          {flight.origin}
+                        </Text>
+                        <Text style={cardStyle.text}>
+                          <Icon
+                            name="clock"
+                            size={20}
+                            color="#666"
+                            style={{ paddingBottom: 15 }}
+                          />
+                          {"   "}
+                          {new Date(flight.traveling_date).getUTCHours() +
+                            " : " +
+                            new Date(flight.traveling_date).getMinutes()}
+                        </Text>
+                      </View>
+                      <View>
+                        <Text style={cardStyle.name}>
+                          <Icon name="plane-arrival" size={16} color="#666" />
+                          {"   "}
+                          {flight.destination}
+                        </Text>
+                        <Text style={cardStyle.text}>
+                          <Icon
+                            name="clock"
+                            size={20}
+                            color="#666"
+                            style={{ paddingBottom: 15 }}
+                          />
+                          {"   "}
+                          {new Date(flight.traveling_date).getUTCHours() +
+                            " : " +
+                            new Date(flight.traveling_date).getMinutes()}
+                        </Text>
+                      </View>
                     </View>
+                    {!flightsIDS[flight.id] && 
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          width: "90%",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginHorizontal: 10,
+                        }}
+                      >
+                        <View style={{ marginRight: 5 }}>
+                          <Text style={{ ...cardStyle.name }}>
+                            <Icon
+                              name="money-check-alt"
+                              size={20}
+                              color="#666"
+                            />
+                            {"   "}
+                            {flight.ticket_price + " $"}
+                          </Text>
+                        </View>
+
+                        <View style={{ marginRight: 5 }}>
+                          <TouchableOpacity
+                            style={{ ...cardStyle.button }}
+                            onPress={() => reserveFlight(flight)}
+                          >
+                            <Text style={cardStyle.buttonText}>
+                              Select Flight
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    }
                   </View>
                 </View>
-                <View
-                  style={{
-                    width: "100%",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <TouchableOpacity
-                    style={{ ...cardStyle.button, width: "50%" }}
-                    onPress={() => reserveFlight(flight)}
-                  >
-                    <Text style={cardStyle.buttonText}>Select Flight</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            ))}
-          </View>
-          {/* )  */}
-          {/* : ( */}
-          {/* <Loader /> */}
-          {/* ) */}
-          {/* } */}
+              ))}
+            </View>
+           : 
+            <Loader />
+          }
         </View>
       </View>
     </ScrollView>

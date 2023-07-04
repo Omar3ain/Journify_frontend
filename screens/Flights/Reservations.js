@@ -77,7 +77,7 @@ const Reservations = () => {
         <Picker
           selectedValue={display}
           onValueChange={(itemValue) => setDisplay(itemValue)}
-          style={styles.input}
+          style={{...styles.input, width:"38%"}}
           key={display}
         >
           <Picker.Item label="Recent" value="earliest" />
@@ -166,14 +166,14 @@ const Reservations = () => {
                 >
                   <Text style={{ ...cardStyle.name, marginBottom: 20 }}>
                     {"Class: "}
-                    {" Business"}
+                    {reservation.flightClass}
                   </Text>
                   <Text style={cardStyle.text}>
                     {"Seats Number: "}
                     {reservation.number_seats}
                   </Text>
                 </View>
-                {canCancel(reservation.flight.traveling_date) && (
+                {canCancel(reservation.flight.traveling_date) && 
                   <View style={{ paddingTop: 20 }}>
                     <TouchableOpacity
                       style={{
@@ -187,7 +187,7 @@ const Reservations = () => {
                       <Text style={cardStyle.buttonText}>Cancel </Text>
                     </TouchableOpacity>
                   </View>
-                )}
+                }
               </View>
             </View>
           </View>

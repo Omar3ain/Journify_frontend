@@ -4,41 +4,41 @@ import { Calendar } from "react-native-calendars";
 import { useSelector, useDispatch } from "react-redux";
 import { selectDate } from "../services/reducers/Flights/availableSlice";
 
-// const theme = {
-//   arrowColor: "black",
-//   // todayTextColor: 'black',
-//   // monthTextColor: 'black',
-//   textDayHeaderFontWeight: "bold",
-// };
+const theme = {
+  backgroundColor: "#ffffff",
+  calendarBackground: "#ffffff",
+  textSectionTitleColor: "#b6c1cd",
+  selectedDayBackgroundColor: "#00adf5",
+  selectedDayTextColor: "#ffffff",
+  todayTextColor: "#00adf5",
+  dayTextColor: "#2d4150",
+  textDisabledColor: "gray",
+  arrowColor: "#2cb8e5",
+};
 
 const CalendarPicker = ({ availableDates }) => {
-  const initialDate = useSelector(state => state.flights.selectedDate.length ? state.flights.selectedDate.length : null)
+  const initialDate = availableDates.length ? availableDates[availableDates.length - 1] : null;
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [markedDates, setMarkedDates] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {
     const newMarkedDates = {};
-    availableDates.forEach((date) => {
-      newMarkedDates[date.split("T")[0]] = { marked: true, selected: false };
+    availableDates.forEach((date, i) => {
+      if (i === availableDates.length - 1) {
+      // if (date == selectedDate) {
+        console.log(date);
+        console.log(selectedDate);
+        newMarkedDates[date.split("T")[0]] = {
+          marked: true,
+          selected: true,
+          selectedColor: "#2cb8e5",
+        };
+      } else
+        newMarkedDates[date.split("T")[0]] = { marked: true, selected: false };
     });
     setMarkedDates({ ...newMarkedDates });
   }, [availableDates]);
-
-
-  // const showFlights = (day) => {
-  //   setSelectedDate(day.dateString);
-  //   dispatch(selectDate(day.dateString));
-  //   setMarkedDates({
-  //     ...markedDates,
-  //     [day.dateString]: {
-  //       ...markedDates[day.dateString],
-  //       selected: true,
-  //       selectedColor: "#2cb8e5",
-  //     },
-  //   });
-  // };
-
 
   const showFlights = (day) => {
     if (selectedDate) {
@@ -76,10 +76,11 @@ const CalendarPicker = ({ availableDates }) => {
         onDayPress={(day) => showFlights(day)}
         markedDatesStyle={{ backgroundColor: "#2cb8e5" }}
         markingType="simple"
-        current={selectedDate || availableDates[0]}
+        current={selectedDate || availableDates[availableDates.length - 1]}
+        // disableAllTouchEventsForDisabledDays={true}
+        theme={theme}
         // minDate={availableDates[0]}
         // maxDate={availableDates[availableDates.length - 1]}
-        // theme={theme}
       />
     </View>
   );
