@@ -1,10 +1,9 @@
-import { View, Image, Text, StyleSheet } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Icon2 from 'react-native-vector-icons/Entypo';
+import { View, Image, Text } from 'react-native';
 import { styles } from './Styles';
 import Loader from '../../components/Loader';
 import { Linking } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from "../../baseUrl";
@@ -19,7 +18,29 @@ export default function PlaceInfo() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const storedXids = await AsyncStorage.getItem("xids");
+        let xids = storedXids === null ? [] : storedXids;
+        if (xids.length) {
+          xids = JSON.parse(xids);
+    
+          let obj = xids.find((p) => p.xid === xid);
+          if (obj) {
+            setResponseData(obj["place"]);
+            return;
+          }
+        }
+
         const response = await axios.get(`${URL}place/${xid}/`);
+
+        let obj = xids.find((p) => p.xid === xid);
+        if (!obj) {
+          xids.push({ xid, place: response.data });
+        }
+        await AsyncStorage.setItem(
+          "xids",
+          JSON.stringify(xids)
+        );
+  
         setResponseData(response.data);
       } catch (error) {
         console.error(error);
