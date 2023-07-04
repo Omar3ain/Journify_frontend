@@ -29,14 +29,16 @@ const getPopular = async (city_name) => {
       ...config,
     });
     if (response.data) {
-      let obj = popularPlaces.find((p) => p.city_name === city_name);
-      if (!obj) {
-        popularPlaces.push({ city_name, places: response.data });
+      if (response.data.length) {
+        let obj = popularPlaces.find((p) => p.city_name === city_name);
+        if (!obj) {
+          popularPlaces.push({ city_name, places: response.data });
+        }
+        await AsyncStorage.setItem(
+          "popularPlaces",
+          JSON.stringify(popularPlaces)
+        );
       }
-      await AsyncStorage.setItem(
-        "popularPlaces",
-        JSON.stringify(popularPlaces)
-      );
       await AsyncStorage.setItem("city", city_name);
       return response.data;
     }

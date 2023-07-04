@@ -32,14 +32,16 @@ export default function PlaceInfo() {
 
         const response = await axios.get(`${URL}place/${xid}/`);
 
-        let obj = xids.find((p) => p.xid === xid);
-        if (!obj) {
-          xids.push({ xid, place: response.data });
+        if(!response.data.message) {
+          let obj = xids.find((p) => p.xid === xid);
+          if (!obj) {
+            xids.push({ xid, place: response.data });
+          }
+          await AsyncStorage.setItem(
+            "xids",
+            JSON.stringify(xids)
+          );
         }
-        await AsyncStorage.setItem(
-          "xids",
-          JSON.stringify(xids)
-        );
   
         setResponseData(response.data);
       } catch (error) {
