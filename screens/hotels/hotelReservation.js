@@ -73,6 +73,7 @@ import { reserveHotel } from "../../services/reducers/Hotels/HotelReservation";
 import hotelService from "../../services/reducers/Hotels/hotelService";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { fetchPlans } from '../../services/reducers/Expert_Advice/JourneyPlans/JourneyPlans';
 
 const HotelReservation = ({ route }) => {
   const { hotelId } = route.params;
@@ -181,6 +182,7 @@ const HotelReservation = ({ route }) => {
           hotelReserved.id,
           user.token
         );
+        dispatch(fetchPlans());
 
       } catch (error) {
         console.error(error);
