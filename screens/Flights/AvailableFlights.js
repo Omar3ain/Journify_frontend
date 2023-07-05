@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   ScrollView,
-  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -238,7 +237,7 @@ export default function Flights({ navigation }) {
             disabled={!origin.length || !destination.length}
             activeOpacity={0.5}
           >
-            <Text style={styles.flighDateButtonText}>Fly out</Text>
+            <Text style={styles.flighDateButtonText}>GO</Text>
           </TouchableOpacity>
           {/* <TouchableOpacity
             style={styles.button}
