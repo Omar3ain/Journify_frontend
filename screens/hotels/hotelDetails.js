@@ -170,7 +170,7 @@ const HotelDetails = ({ route,  places, success, error, createHotelReview}) => {
         <Text style={styles.desc}>{hotel.description}</Text>
         <View style={styles.info}>
           <Text style={styles.text}>
-            <Icon2 name="location-pin" size={16} color="red" /> {hotel.countryId}
+            <Icon2 name="location-pin" size={16} color="red" /> {hotel.city}, {hotel.countryId}
           </Text>
           <Text style={styles.text}>Available Rooms: {hotel.available_rooms}</Text>
         </View>

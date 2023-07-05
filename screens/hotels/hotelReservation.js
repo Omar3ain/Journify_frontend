@@ -53,7 +53,7 @@
 
 // export default HotelReservation;
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -96,6 +96,8 @@ const HotelReservation = ({ route }) => {
   const dispatch = useDispatch();
   const handleValidation = () => {
     setError("");
+
+
 
     const availableRooms = 10;
     if (numberOfRooms > availableRooms) {
@@ -243,6 +245,14 @@ const HotelReservation = ({ route }) => {
     showMode("date");
   };
 
+  useEffect(() => {
+      if (selectedOption === 'D') {
+        setTotalPrice(2 * route.params.roomPrice);
+      } else {
+        setTotalPrice(route.params.roomPrice);
+      }
+    }, [selectedOption]);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -261,6 +271,7 @@ const HotelReservation = ({ route }) => {
                 onChangeText={setNumberOfRooms}
                 value={numberOfRooms.toString()}
                 editable={false}
+                disabled
               />
               <TouchableOpacity onPress={increaseNumber}>
                 <Icon name="plus" size={20} color="#727171" />
@@ -281,6 +292,9 @@ const HotelReservation = ({ route }) => {
                 maxLength={15}
                 onChangeText={setNumberOfDays}
                 value={numberOfDays.toString()}
+                editable={false}
+                disabled
+
               />
               <TouchableOpacity onPress={increaseNumberDays}>
                 <Icon name="plus" size={20} color="#727171" />
@@ -301,6 +315,8 @@ const HotelReservation = ({ route }) => {
                 maxLength={15}
                 onChangeText={setNumberOfPeople}
                 value={numberOfPeople.toString()}
+                editable={false}
+                disabled
               />
               <TouchableOpacity onPress={increaseNumberPeople}>
                 <Icon name="plus" size={20} color="#727171" />
@@ -331,6 +347,7 @@ const HotelReservation = ({ route }) => {
               style={styles.picker}
               selectedValue={selectedOption}
               onValueChange={(itemValue) => setSelectedOption(itemValue)}
+
             >
               <Picker.Item label="Single" value="S" />
               <Picker.Item label="Double" value="D" />
@@ -339,14 +356,14 @@ const HotelReservation = ({ route }) => {
           </View>
 
           {!numberOfPeople || !numberOfDays || !numberOfRooms ? <Text style={{color: 'red' , fontWeight: 'bold', paddingBottom: 30}}>Fill all fields for total price</Text> : <Text style={{paddingBottom: 30, fontWeight: 'bold', color: 'blue'}}>Total price: {totalPrice * numberOfRooms * numberOfDays * numberOfPeople}$</Text> }
-
+           {numberOfRooms > numberOfPeople ? <Text style={styles.error}>You cannot reserve rooms more than people</Text> : null}
 
           {error ? <Text style={styles.error}>{error}</Text> : null}
 
           <Button
             title="Proceed"
             onPress={handleSubmit}
-            disabled={!numberOfDays || !numberOfPeople || !numberOfRooms}
+            disabled={!numberOfDays || !numberOfPeople || !numberOfRooms || numberOfRooms > numberOfPeople}
           />
         </View>
       </View>
