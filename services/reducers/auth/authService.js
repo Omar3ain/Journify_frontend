@@ -34,7 +34,7 @@ const loginOAuth = async (access_token) => {
     if (response.ok) {
       const data = await response.json();
       if (data) {
-        await AsyncStorage.setItem("user", JSON.stringify(data.user));
+        await AsyncStorage.setItem("user", JSON.stringify(data));
       }
       return data;
     } else {

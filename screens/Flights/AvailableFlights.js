@@ -237,7 +237,7 @@ export default function Flights({ navigation }) {
             disabled={!origin.length || !destination.length}
             activeOpacity={0.5}
           >
-            <Text style={styles.flighDateButtonText}>Fly out</Text>
+            <Text style={styles.flighDateButtonText}>GO</Text>
           </TouchableOpacity>
           {/* <TouchableOpacity
             style={styles.button}
@@ -474,7 +474,7 @@ export default function Flights({ navigation }) {
                 selectedFlight.ticket_price *
                   (kidsNum + adultsNum) *
                   (flightClass === "Business" ? 2 : 1) +
-                " EGP"}
+                " $"}
             </Text>
           </View>
         )}

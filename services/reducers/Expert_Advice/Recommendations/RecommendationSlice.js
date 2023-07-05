@@ -8,10 +8,13 @@ export const fetchAllRecs = createAsyncThunk('allRecs/fetchAllRecs', async () =>
   try {
     // Retrieve the token from AsyncStorage
     const user = await AsyncStorage.getItem('user');
+
     const userId = JSON.parse(user);
+    
+    console.log(userId);
     const response = await axios.get(`${URL}recommendation/data/`, {
       headers: {
-        userId: userId.id,
+        userId: userId.user.id ,
       },
     });
 

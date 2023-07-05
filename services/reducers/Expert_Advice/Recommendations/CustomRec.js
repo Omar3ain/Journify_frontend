@@ -10,7 +10,7 @@ export const fetchAllRecs = createAsyncThunk('customRec/fetchAllRecs', async ({r
     const userId = JSON.parse(user);
     const response = await axios.get(`${URL}recommendation/data/?radius=${radius}&kinds=${kinds}&name=${name}`, {
         headers: {
-            userId: userId.id,
+            userId: userId.user.id,
           },
     });
     return response.data;

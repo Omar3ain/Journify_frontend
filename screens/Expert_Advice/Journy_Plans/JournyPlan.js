@@ -22,7 +22,7 @@ const JourneyPlan = () => {
     const checkAndFetchPlans = async () => {
       try {
         const storedPlans = await AsyncStorage.getItem('plans');
-
+        console.log(storedPlans);
         if (storedPlans) {
           const parsedPlans = JSON.parse(storedPlans);
           dispatch({ type: 'allPlans/fetchPlans/fulfilled', payload: parsedPlans });

@@ -10,10 +10,11 @@ export const fetchPlans = createAsyncThunk('allPlans/fetchPlans', async () => {
     const userId = JSON.parse(user);
     const response = await axios.get(`${URL}jplans/`, {
       headers: {
-        userId: userId.id,
+        userId: userId.user.id,
       },
     });
-
+    console.log(response.data);
+    await AsyncStorage.removeItem('plans');
     await AsyncStorage.setItem('plans', JSON.stringify(response.data));
     
     return response.data;

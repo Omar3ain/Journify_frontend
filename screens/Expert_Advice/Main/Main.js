@@ -40,7 +40,7 @@ const ExpertMain = () => {
     });
   };
 
-
+console.log(hotelReserv);
 
 //Handle Navigate
 const handleJournyPress = () => {
